@@ -37,4 +37,6 @@ Real cloud Chromium pop-up windows were measured at 320 × 740 and 390 × 844 po
 - A real challenge completion and claim awarded 60 XP and one crystal, advanced the story and rotated the eighth leader back to the first. The next wizard-hat card and expanded hands-on alternatives displayed correctly.
 - The browser reported the game and artwork cache checked on the preview origin. This is not a disconnected-network or installed-PWA test.
 - A 200% computed-font-size stress test exposed a header overflow; the corrected brand wraps while keeping Settings visible. All five sections then fit the 320-pixel browser viewport. This authored stress test is not a claim about a physical phone’s text-size setting.
-- Simultaneous-window save regression checks are recorded below after the preview fixes.
+- Final fresh-preview two-window test passed: a sixth adult ghost was retained, changing the adventure in one window dismissed the other window’s stale editor, and both displayed 60 XP / one crystal. Reloading both windows preserved the same progress and all six players.
+- Final 320-pixel player dialog at 200% text (38px heading) had no document or internal dialog/form overflow; portrait and details wrapped into a readable column.
+- Final tested application preview: commit `b1114af787a39b7835d8656e4df84def285e5f02`, Netlify deploy `6ad52496f189cf79be108a92`. The following release commit removes only the temporary browser-test harness and completes this QA record.
