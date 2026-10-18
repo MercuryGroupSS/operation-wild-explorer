@@ -18,9 +18,11 @@ Date: 2026-10-18. Synthetic fixtures only; no family data or photos are deployed
 
 ## Player and costume verification
 
-Combined automated checks pass: syntax/assets/cache versions, classic compatibility, 66 unit tests, 22 app-runtime integration groups, nine engine groups with 193,037 assertions and six mocked service-worker groups. Runtime additions cover more-than-five normalization, adding/cancelling/duplicate submission, the 24-player UI limit, extra-player editing/rotation, mode-specific outfits, larger imports and complete postcard rosters.
+Combined automated checks pass: syntax/assets/cache versions, classic compatibility, 66 unit tests, 32 app-runtime integration groups, nine engine groups with 193,037 assertions and six mocked service-worker groups. Runtime additions cover more-than-five normalization, adding/cancelling/duplicate submission, the 24-player UI limit, extra-player editing/rotation, mode-specific outfits, larger imports and complete postcard rosters.
 
 Independent additional checks passed with 1–128 normalized players, stable/deduplicated IDs, 37-player edit/import/export/postcards, 11-player leader rotation and all day/night/classic avatar surfaces. These checks use DOM stubs; preview browser observations and production verification follow below.
+
+A browser-discovered stale-window save bug was fixed before release. Independent review and ten additional runtime groups cover lifecycle saves, current-storage refresh, stale reward/edit cancellation, malformed changed saves, deliberate restores, delayed import/photo dialogs and queued close events.
 
 ## Limits
 
@@ -34,4 +36,5 @@ Real cloud Chromium pop-up windows were measured at 320 × 740 and 390 × 844 po
 - Halloween entry correctly required the grown-up readiness check. Every player received the selected wizard, ghost, pumpkin or bat outfit. Daytime and classic modes restored the saved daylight appearance for all eight players.
 - A real challenge completion and claim awarded 60 XP and one crystal, advanced the story and rotated the eighth leader back to the first. The next wizard-hat card and expanded hands-on alternatives displayed correctly.
 - The browser reported the game and artwork cache checked on the preview origin. This is not a disconnected-network or installed-PWA test.
-- Enlarged text and simultaneous-window save regression checks are recorded below after the preview fixes.
+- A 200% computed-font-size stress test exposed a header overflow; the corrected brand wraps while keeping Settings visible. All five sections then fit the 320-pixel browser viewport. This authored stress test is not a claim about a physical phone’s text-size setting.
+- Simultaneous-window save regression checks are recorded below after the preview fixes.

@@ -7,6 +7,8 @@
 - Replace imagination-only activities and alternatives across Halloween, daytime and classic hunts with real making, observation, comparison and family actions.
 - Add practical household-material costume, palace, storybook and shadow activities, with grown-up help and simple accessible alternatives.
 - Preserve card IDs, eligibility, clue positions, rewards, saved progress and all story modes.
+- Protect newer progress from stale open windows, validate changed saves and dismiss outdated asynchronous dialogs.
+- Keep the home/settings header usable with enlarged text.
 - Synchronize app/service-worker/cache versions; retain the same public site and save keys.
 
 ## 3.1.0 — 2026-10-18

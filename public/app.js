@@ -127,12 +127,13 @@
     d.checks=[0,1,2].map(i=>d.expedition.active.done.some(r=>r.chapter===d.expedition.active.chapter&&r.step===i));
     return d;
   }
-  let saveIssue='', importedLegacy=false;
+  const validSaveData=raw=>raw&&typeof raw==='object'&&!Array.isArray(raw)&&Array.isArray(raw.names)&&raw.names.length>0&&Array.isArray(raw.checks)&&Number.isInteger(raw.index)&&raw.index>=0&&raw.index<=10&&typeof raw.xp==='number'&&Number.isFinite(raw.xp)&&raw.xp>=0;
+  let saveIssue='', importedLegacy=false, lastSavedValue=null;
   function loadState(){
     try{
       for(const key of [SAVE_KEY,OLD_KEY]){
-        const raw=localStorage.getItem(key);if(!raw)continue;
-        try{const parsed=JSON.parse(raw);if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed)){importedLegacy=key===OLD_KEY;return normalise(parsed);}}catch{/* Try the original save next, without destroying the unreadable copy. */}
+        const raw=localStorage.getItem(key);if(key===SAVE_KEY)lastSavedValue=raw;if(!raw)continue;
+        try{const parsed=JSON.parse(raw);if(validSaveData(parsed)){importedLegacy=key===OLD_KEY;return normalise(parsed);}}catch{/* Try the original save next, without destroying the unreadable copy. */}
       }
     }catch{saveIssue='This browser is blocking saved progress. You can play, but use Settings → Export backup before closing.';}
     return freshState();
@@ -142,17 +143,37 @@
   state.expedition=E.normaliseExpansion(state.expedition,state);
   function showSaveIssue(){const el=$('save-warning');el.textContent=saveIssue;el.hidden=!saveIssue;}
   function save(){
+    // A stale window must never replace progress written by another window.
+    if(syncFromStorage())return false;
     try{
-      localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+      const value=JSON.stringify(state);localStorage.setItem(SAVE_KEY,value);lastSavedValue=value;
       // Keep the original fields readable, plus additive roster data for fallback recovery.
       localStorage.setItem(OLD_KEY,JSON.stringify({index:state.index,checks:state.checks,xp:state.xp,gems:state.gems,names:state.names,roles:state.roles.map(r=>ROLE(r).emoji+' '+ROLE(r).label),looks:state.looks,heroIds:state.heroIds,heroKinds:state.heroKinds,costumes:state.costumes,specialties:state.specialties,leader:state.leader,park:state.park,start:state.start}));
       saveIssue='';
     }catch{saveIssue='Progress could not be saved on this device. Use Settings → Export backup before closing the game.';}
-    showSaveIssue();
+    showSaveIssue();return true;
   }
   let activeTab='home', treasureTab='crystals', toastTimer=null, audioContext=null, sheetReturn=null, draftHero=null, speechActive=false;
   let locationFix=null,gpsBusy=false,gpsError='',gpsRequestId=0,swRegistration=null;
-  let uid=0, offlineReady=false, photoBusy=false, viewedPostcardId=null, challengeTapUntil=0;
+  let uid=0, offlineReady=false, photoBusy=false, viewedPostcardId=null, challengeTapUntil=0, sheetEpoch=0;
+  function syncFromStorage(showMessage=true){
+    let value;
+    try{value=localStorage.getItem(SAVE_KEY);}catch{return false;}
+    if(value===lastSavedValue)return false;
+    // A cleared key has no newer progress to adopt. Keep the current in-memory
+    // adventure available for export; only a later explicit action can save it.
+    if(value===null){lastSavedValue=null;return false;}
+    let latest;
+    try{const parsed=JSON.parse(value);if(!validSaveData(parsed))throw new Error('Invalid save');latest=normalise(parsed);}
+    catch{saveIssue='Saved progress changed in another window but could not be read. Export your current backup, then reload before playing.';showSaveIssue();return true;}
+    state=latest;lastSavedValue=value;saveIssue='';
+    draftHero=null;pendingRestore=null;puzzlePicked=[];viewedPostcardId=null;challengeTapUntil=0;
+    closeSheet();$('sheet-content').innerHTML='';
+    if('speechSynthesis'in window)speechSynthesis.cancel();speechActive=false;
+    renderAll();
+    if(showMessage)toast('Your adventure was updated in another window. Please try your action again.');
+    return true;
+  }
   const active=()=>state.expedition.active;
   const currentCard=()=>E.getCurrentCard(state.expedition);
   const specialty=i=>SPECIALTIES[state.specialties[i]]||SPECIALTIES.scout;
@@ -268,11 +289,11 @@
     el.innerHTML=`<div class="quest-head"><span class="eyebrow">CLASSIC CHAPTER ${c.index+1} OF 10 · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read this classic clue aloud">${icon('sound')}</button></div><h1 class="page-title">${esc(m.title)}</h1><p class="intro">${esc(m.story)}</p><div class="challenge-card"><div class="card-meta"><span class="type-chip">Classic hunt</span><span>${c.checks.filter(Boolean).length}/${m.tasks.length} explored</span></div>${i<0?`<span class="challenge-symbol">${m.symbols[0]}</span><h2>Our crystal is ready!</h2><button class="btn gold full" data-action="classic-claim" data-chapter="${c.index}">Claim crystal + ${m.xp} XP</button>`:`<span class="challenge-symbol">${m.symbols[i]}</span><h2>${esc(m.tasks[i][c.variants[i]||0])}</h2>${m.hints?.[i]?`<p class="challenge-prompt">${esc(m.hints[i])}</p>`:''}<button class="btn full" data-action="classic-check" data-value="${i}" data-chapter="${c.index}">We explored it!</button><button class="subtle-button wide" data-action="classic-swap" data-value="${i}" data-chapter="${c.index}">Try a safe alternative</button>`}</div><p class="helper">Your original ten-chapter progress is saved separately, with shared family XP and camp crystals. You can pause at any time.</p><div class="quick-actions"><button class="btn quiet" data-action="rest">Take a break</button><button class="btn quiet" data-action="expedition-mode">Varied adventures</button></div>${safetyTip()}`;
   }
   function classicCollection(){return `<section class="panel"><h3>Original crystal collection · ${state.classic.index}/10</h3><div class="classic-gems">${C.MISSIONS.map((m,i)=>`<span class="badge" title="${esc(m.gem)}">${i<state.classic.index?esc(m.gem):'🔒 '+esc(m.short)}</span>`).join('')}</div><button class="subtle-button wide" data-action="classic-mode">${state.classic.index===10?'See our classic celebration':'Continue the original hunt'}</button></section>`;}
-  function classicCheck(button){
-    if(Date.now()<challengeTapUntil)return;const r=C.mark(state.classic,Number(button.dataset.value),Number(button.dataset.chapter));if(!r.changed)return;state.classic=r.state;challengeTapUntil=Date.now()+500;state.leader=(state.leader+1)%state.names.length;save();renderAll();playSound();toast(`${state.names[state.leader]} leads the next clue.`);
+  function classicCheck(button){if(syncFromStorage())return;
+    if(Date.now()<challengeTapUntil)return;const r=C.mark(state.classic,Number(button.dataset.value),Number(button.dataset.chapter));if(!r.changed)return;state.classic=r.state;challengeTapUntil=Date.now()+500;state.leader=(state.leader+1)%state.names.length;if(!save())return;renderAll();playSound();toast(`${state.names[state.leader]} leads the next clue.`);
   }
-  function classicClaim(expected){
-    const m=C.MISSIONS[expected],r=C.claim(state.classic,expected);if(!r.changed)return;state.classic=r.state;state.xp+=r.xp;state.expedition.lifetime.xp+=r.xp;state.expedition.wallet+=r.crystals;state.expedition.lifetime.crystals+=r.crystals;save();renderAll();confetti();playSound(true);
+  function classicClaim(expected){if(syncFromStorage())return;
+    const m=C.MISSIONS[expected],r=C.claim(state.classic,expected);if(!r.changed)return;state.classic=r.state;state.xp+=r.xp;state.expedition.lifetime.xp+=r.xp;state.expedition.wallet+=r.crystals;state.expedition.lifetime.crystals+=r.crystals;if(!save())return;renderAll();confetti();playSound(true);
     openSheet(sheetHeader('An original crystal is yours!')+`<div class="reward-body">${gem(m,'reward-crystal')}<h2>${esc(m.gem)}</h2><p>${esc(m.celebrate)}</p><div class="xp-reward">+${r.xp} family XP · +1 camp crystal</div><button class="btn full" data-action="next-quest">Continue the classic story</button></div>`);
   }
 
@@ -331,6 +352,7 @@
     window.scrollTo({top:0,behavior:'auto'});
   }
   function openSheet(content){
+    sheetEpoch++;
     const dialog=$('sheet');if(!dialog.open)sheetReturn=document.activeElement;
     $('sheet-content').innerHTML=content;
     if(!dialog.open)dialog.showModal();
@@ -338,8 +360,8 @@
     dialog.querySelector('button, input, select, textarea')?.focus({preventScroll:true});
   }
   const sheetHeader=title=>`<div class="sheet-top"><h2 id="sheet-title">${esc(title)}</h2><button data-action="close-sheet" aria-label="Close">${icon('close')}</button></div>`;
-  function closeSheet(){const dialog=$('sheet');if(dialog.open)dialog.close();}
-  $('sheet').addEventListener('close',()=>{draftHero=null;const target=sheetReturn;if(target?.isConnected)target.focus({preventScroll:true});else $('settings-button').focus({preventScroll:true});});
+  function closeSheet(){sheetEpoch++;draftHero=null;pendingRestore=null;puzzlePicked=[];viewedPostcardId=null;const dialog=$('sheet');if(dialog.open)dialog.close();}
+  $('sheet').addEventListener('close',()=>{if($('sheet').open)return;sheetEpoch++;draftHero=null;pendingRestore=null;puzzlePicked=[];viewedPostcardId=null;const target=sheetReturn;if(target?.isConnected)target.focus({preventScroll:true});else $('settings-button').focus({preventScroll:true});});
   $('sheet').addEventListener('click',e=>{if(e.target===$('sheet')){const r=$('sheet').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeSheet();}});
   function openHero(index,adding=false){
     if(adding&&state.names.length>=MAX_NEW_PLAYERS){toast(`You can add up to ${MAX_NEW_PLAYERS} players. Your whole saved team is kept.`);return;}
@@ -359,11 +381,11 @@
       <button class="btn full" type="submit">${icon('star')} ${adding?'Add player':'Save & make me the leader'}</button><button class="subtle-button wide" type="button" data-action="close-sheet">Cancel</button><p class="helper">A grown-up still leads the real walk. Names and character choices are saved only on this device.</p></form>`);
   }
   function updateHeroPreview(){if(!draftHero)return;$('hero-size-label').textContent=draftHero.kind==='adult'?'GROWN-UP HERO':'LITTLE HERO';$('avatar-preview').innerHTML=avatar(draftHero.index,draftHero.look,draftHero);const r=ROLE(draftHero.role);$('hero-power').textContent=r.power;$('hero-power-desc').textContent=r.description;}
-  function claimCrystal(expectedChapter){
+  function claimCrystal(expectedChapter){if(syncFromStorage())return;
     const before=active().chapter;if(expectedChapter!==undefined&&Number(expectedChapter)!==before)return;
     const result=E.finishChapter(state.expedition,before);if(!result.changed)return;
     state.expedition=result.expansion;state.xp+=result.xp;state.index=active().claimedChapters.length;state.gems=MISSIONS.slice(0,state.index).map(m=>m.gem);state.checks=[false,false,false];state.variants=[0,0,0];
-    enrichLatestPostcard();save();renderAll();playSound(true);confetti();const m=storyMissions()[before];
+    enrichLatestPostcard();if(!save())return;renderAll();playSound(true);confetti();const m=storyMissions()[before];
     openSheet(`<div class="sheet-top"><span class="eyebrow">A MAP PIECE AND A CRYSTAL!</span><button data-action="close-sheet" aria-label="Close reward">${icon('close')}</button></div><div class="reward-body">${gem(m,'reward-crystal')}<h2 id="sheet-title">${isNight()?'Lantern':'Piece'} ${before+1} is home!</h2><p>${esc(m.celebrate)}</p><div class="xp-reward">${icon('star')} +${result.xp} family XP · +1 camp crystal</div><button class="btn full" data-action="next-quest">${active().ended?'Bring our map together':'On to the next chapter'} ${icon('arrow')}</button><button class="subtle-button wide" data-action="camp">Visit base camp</button></div>`);
   }
   function openGem(index){const m=storyMissions()[index];if(!m)return;if(index>=state.index){toast(`Finish quest ${index+1} to unlock this crystal.`);return;}openSheet(sheetHeader('A treasure you earned')+`<div class="reward-body">${gem(m,'reward-crystal')}<h2>${esc(m.gem.replace(/^[^A-Za-z]+/,''))}</h2><p>${esc(m.celebrate)}</p><span class="badge">Earned together · ${m.xp} XP</span><button class="btn quiet full" data-action="close-sheet">Back to our treasures</button></div>`);}
@@ -394,12 +416,12 @@
     if(!swRegistration){toast('Open the HTTPS site online to enable updates.');return;}
     try{await swRegistration.update();if(swRegistration.waiting){$('update-banner').hidden=false;closeSheet();toast('A new version is ready. Tap Update game.');}else toast('Update check complete. New versions appear in the banner when ready.');}catch{toast('Could not check for updates. Your saved adventure is unchanged.');}
   }
-  function completeChallenge(button){
+  function completeChallenge(button){if(syncFromStorage())return;
     if(Date.now()<challengeTapUntil)return;
     const a=active(),card=currentCard();if(!card)return;
     const r=E.completeChallenge(state.expedition,{cardId:button.dataset.card,challengeKey:button.dataset.key,expectedChapter:Number(button.dataset.chapter),expectedStep:Number(button.dataset.step),at:new Date().toISOString(),note:clean($('clue-memory')?.value,140),specialty:state.specialties[state.leader]});
     if(!r.changed)return;challengeTapUntil=Date.now()+500;state.expedition=r.expansion;state.leader=(state.leader+1)%state.names.length;
-    state.checks=[0,1,2].map(i=>active().done.some(x=>x.chapter===active().chapter&&x.step===i));save();renderAll();playSound();
+    state.checks=[0,1,2].map(i=>active().done.some(x=>x.chapter===active().chapter&&x.step===i));if(!save())return;renderAll();playSound();
     toast(`${state.names[state.leader]} gets the next pretend lead!`);$('quest-screen').querySelector('.challenge-card')?.scrollIntoView({block:'nearest',behavior:'auto'});
   }
   function openFinishEarly(){
@@ -413,22 +435,22 @@
     const p=NIGHT_PLACES[setting];
     openSheet(sheetHeader(p.emoji+' '+p.name)+`<form id="night-ready-form" class="sheet-body" data-setting="${setting}"><p><b>A quick grown-up check</b></p><ul class="night-checklist"><li>${setting==='indoor'?'Keep comfortable room lighting on. Clear the floor and stay away from stairs, hot things and flames.':setting==='neighbourhood'?'Choose a familiar, safe sidewalk route. Stay beside your grown-ups. No clue requires crossing a road, approaching a home or speaking to a stranger.':'Confirm the familiar trail is open after dark and safe for your children today. If you cannot confirm, choose the cozy house instead.'}</li>${setting!=='indoor'?'<li>Bring suitable lights and visible clothing. Stop in a safe place before reading or tapping the screen. Stay together on the marked path or sidewalk, away from roads, water and edges.</li>':''}<li>Use a separate flashlight if you want. Keep beams low and away from eyes, traffic, homes and wildlife. This game does not switch on your phone’s flashlight.</li><li>Use what you already have; no purchases needed. Every challenge has a simpler seated indoors option, and a grown-up can help while a child chooses or directs. Swap any activity that does not fit your materials or family.</li>${setting==='indoor'?'<li>Grown-ups handle any cutting. Keep hats above eyes, faces uncovered and fabric short; never tie or fasten costumes around the neck. Remove loose costumes before moving. No candles or flames.</li>':'<li>If you want a homemade costume, make and check it indoors before the walk. Keep faces and hands clear; remove loose fabric before walking. Outdoor clues need no craft supplies or collecting.</li>'}<li>No need to find a real animal, pick plants, run, climb or enter darkness.</li></ul><label class="night-ready-check"><input type="checkbox" id="night-ready-check" required> <span>${setting==='trail'?'I’ve checked this trail is open and suitable after dark, and I’ll lead our family.':'Our space is safe and comfortable, and a grown-up will lead.'}</span></label><button class="btn full" type="submit">🏮 Start or resume our lantern story</button>${setting!=='indoor'?'<button class="btn quiet full" type="button" data-action="night-ready" data-value="indoor">🏠 Choose the cozy house instead</button>':''}<button class="subtle-button wide" type="button" data-action="night-picker">Choose another setting</button><p class="helper">The pictures are pretend. The game does not research opening times, weather or safe routes.</p></form>`);
   }
-  function switchAdventure(theme,setting){
+  function switchAdventure(theme,setting){if(syncFromStorage())return;
     const r=E.switchAdventure(state.expedition,theme,setting,Date.now());
     if(r.changed)state.expedition=r.expansion;
     state.mode='expedition';state.index=active().claimedChapters.length;state.gems=MISSIONS.slice(0,state.index).map(m=>m.gem);state.checks=[0,1,2].map(i=>active().done.some(x=>x.chapter===active().chapter&&x.step===i));state.variants=[0,0,0];
-    save();closeSheet();setTab('quest');toast(theme==='halloween'?'Your little lantern story is ready.':'Your daytime adventure is right where you left it.');
+    if(!save())return;closeSheet();setTab('quest');toast(theme==='halloween'?'Your little lantern story is ready.':'Your daytime adventure is right where you left it.');
   }
   function openBuilder(){
     const a=active(),o=a.options,hasProgress=a.done.length>0||a.claimedChapters.length>0;
     const fields=isNight()?[['duration','Adventure length',['short','medium','long']],['difficulty','Challenge style',['gentle','curious','challenge']]]:[['habitat','Where',['woodland','park','garden','neighbourhood']],['season','Season',['spring','summer','autumn','winter']],['duration','Adventure length',['short','medium','long']],['difficulty','Challenge style',['gentle','curious','challenge']]];
     openSheet(sheetHeader(a.ended?'Plan our next adventure':'Shape our adventure')+`<form id="outing-form" class="sheet-body"><p>${isNight()?'Five little lanterns in our '+esc(NIGHT_PLACES[o.setting].name.toLowerCase())+' story.':'Five story chapters,'} with a mix of Find, Listen, Move, Make & tell and Solve. Everything has an easy alternative.</p><div class="builder-grid">${fields.map(([name,label,values])=>`<label class="field-label" for="outing-${name}">${label}<select class="text-field" name="${name}" id="outing-${name}">${values.map(v=>`<option value="${v}" ${o[name]===v?'selected':''}>${name==='duration'?{short:'Short · 5 challenges · about 10–15 min',medium:'Medium · 10 challenges · about 20–30 min',long:'Long · 15 challenges · about 35–50 min'}[v]:optionLabel(v)}</option>`).join('')}</select></label>`).join('')}</div><p class="helper">Times are a loose guide, never a timer. Gentle uses one simple idea, Curious adds noticing, Challenge adds a little reasoning. Recent cards are avoided when there are enough choices.</p>${!a.ended&&hasProgress?'<p class="safe-note">Your current outing has discoveries. Finish it first to keep its postcard, or close this planner to continue it.</p><button class="btn quiet full" type="button" data-action="finish-early">Finish the current outing first</button>':`<button class="btn full" type="submit">${icon('compass')} ${a.ended?'Start our next adventure':'Build this adventure'}</button>`}<button class="btn quiet full" type="button" data-action="night-picker">🌙 ${isNight()?'Change night setting':'Choose a Halloween night adventure'}</button>${isNight()?'<button class="subtle-button wide" type="button" data-action="daylight-mode">Return to our saved daytime adventure</button>':''}<p class="helper">Heroes, lifetime XP, journal, camp purchases and previous postcards stay with you. Switching day/night or night settings saves your place.</p></form>`);
   }
-  function startPlannedOuting(form){
+  function startPlannedOuting(form){if(syncFromStorage())return;
     const o={...active().options,...Object.fromEntries(new FormData(form).entries())};let exp=state.expedition;
     if(active().ended){const r=E.startNext(exp,o,Date.now());if(!r.changed){toast('Finish the current outing first.');return;}exp=r.expansion;}
     else{if(active().done.length||active().claimedChapters.length){toast('Finish your current outing before planning another.');return;}exp={...exp,options:E.normaliseOptions(o),active:E.createOuting(o,exp.recentIds,Date.now())};}
-    state.mode='expedition';state.expedition=exp;state.index=0;state.gems=[];state.checks=[false,false,false];state.variants=[0,0,0];save();closeSheet();setTab('quest');toast('Your next five-chapter story is ready.');
+    state.mode='expedition';state.expedition=exp;state.index=0;state.gems=[];state.checks=[false,false,false];state.variants=[0,0,0];if(!save())return;closeSheet();setTab('quest');toast('Your next five-chapter story is ready.');
   }
   function renderCamp(){
     const e=state.expedition,owned=e.owned||[],equipped=Object.values(e.equipped||{}),items=E.SHOP;
@@ -439,7 +461,7 @@
     const item=E.SHOP.find(x=>x.id===id);if(!item)return;
     openSheet(sheetHeader('A little something for camp')+`<div class="reward-body"><span class="shop-emoji">${item.emoji}</span><h2>${esc(item.name)}</h2><p>Spend ${item.cost} of your ${state.expedition.wallet} camp crystals?</p><p class="helper">Pretend currency only. This stays in your family camp across outings.</p><button class="btn full" data-action="confirm-camp" data-value="${esc(id)}">Spend ${item.cost} camp crystals</button><button class="btn quiet full" data-action="close-sheet">Keep our crystals</button></div>`);
   }
-  function equipCampItem(id){const r=E.equipItem(state.expedition,id);if(r.changed){state.expedition=r.expansion;save();renderAll();toast('Your camp has a new look.');}}
+  function equipCampItem(id){if(syncFromStorage())return;const r=E.equipItem(state.expedition,id);if(r.changed){state.expedition=r.expansion;if(!save())return;renderAll();toast('Your camp has a new look.');}}
   function enrichLatestPostcard(){
     const p=state.expedition.postcards.find(x=>x.id===active().id)||state.expedition.postcards.at(-1);if(!p)return;
     p.park=p.park||(p.options.theme==='halloween'?`Halloween night · ${NIGHT_PLACES[p.options.setting].name}`:state.park);p.date=p.date||p.createdAt||new Date().toISOString();p.createdAt=p.createdAt||p.date;p.heroes=p.heroes?.length?p.heroes:[...state.names];p.favorite=p.favorite||'';p.photoIds=p.photoIds||[];
@@ -456,14 +478,18 @@
     for(const photoId of p.photoIds){try{const data=await WildPostcards.loadPhoto(photoId);if(viewedPostcardId!==id||!$('postcard-photos'))return;const div=document.createElement('div');div.className='postcard-photo';if(data){const img=document.createElement('img');img.src=data;img.alt='Your chosen adventure photo';div.append(img);}else{div.textContent='This photo is unavailable on this browser. Add it again from your device.';}const button=document.createElement('button');button.type='button';button.className='subtle-button';button.dataset.action='remove-photo';button.dataset.value=id;button.dataset.photo=photoId;button.textContent='Remove photo';div.append(button);$('postcard-photos').append(div);}catch{toast('Photo storage is unavailable. Your postcard text is safe.');}}
   }
   async function removePostcardPhoto(id,photoId){
+    if(syncFromStorage())return;const expectedState=state,expectedSave=lastSavedValue,expectedSheet=sheetEpoch;
     const p=state.expedition.postcards.find(x=>x.id===id);if(!p||!p.photoIds.includes(photoId))return;
     const shared=state.expedition.postcards.some(x=>x.id!==id&&x.photoIds.includes(photoId));
     if(!shared){try{await WildPostcards.deletePhoto(photoId);}catch(error){toast(error.message||'Could not remove the stored photo. Please try again.');return;}}
-    p.photoIds=p.photoIds.filter(x=>x!==photoId);save();void openPostcard(id);
+    if(syncFromStorage()||state!==expectedState||lastSavedValue!==expectedSave){toast('Your adventure changed. Please check this postcard again.');return;}
+    p.photoIds=p.photoIds.filter(x=>x!==photoId);if(!save())return;
+    if(viewedPostcardId===id&&sheetEpoch===expectedSheet&&$('sheet').open)void openPostcard(id);
   }
   async function exportPostcard(id,withoutPhotos=false){
+    if(syncFromStorage())return;
     const p=state.expedition.postcards.find(x=>x.id===id);if(!p)return;
-    if($('postcard-favorite')&&viewedPostcardId===id){p.favorite=clean($('postcard-favorite').value,280);save();}
+    if($('postcard-favorite')&&viewedPostcardId===id){p.favorite=clean($('postcard-favorite').value,280);if(!save())return;}
     try{const result=await WildPostcards.exportPostcard(p,{photoIds:withoutPhotos?[]:p.photoIds});toast(result?.missingPhotoIds?.length?'Postcard downloaded; some photos were unavailable.':'Your private postcard is ready to save.');}catch(error){toast(error.message||'Could not export. Your postcard is still on this device.');}
   }
   let puzzlePicked=[];
@@ -472,12 +498,12 @@
     const done=active().puzzleSolved;
     openSheet(sheetHeader(isNight()?'The cozy lantern finale':'The Guardian’s discovery map')+`<div class="sheet-body"><div class="puzzle-map">${isNight()?'🏮 🌙 🏮<br>🏮 🎃 🏮':'🧩 🌳 🧩<br>🧩 🦊 🧩'}</div><p>${done?(isNight()?'The five lanterns glow. Our friendly bat folds its wings, the pumpkin host gives a tiny wave, and the moon says: “Every hero belongs.” Tell your favourite memory, then say a gentle goodnight.':'Your discoveries made the Guardian’s map whole. You are family storytellers!'):'The last spell uses your own adventure. Put these three discoveries in the order you explored them.'}</p><p class="helper">No wrong-answer penalty. Tell the story together, or use your journey notes below.</p><div id="puzzle-progress" class="puzzle-progress" role="status">${done?'Map complete!':'First → Then → Last'}</div>${done?'':`<div class="puzzle-choices">${puzzle.choices.map(c=>`<button class="btn quiet full" data-action="puzzle-choice" data-value="${esc(c.id)}">${c.emoji} ${esc(c.title)}</button>`).join('')}</div>`}<details><summary>Our journey notes</summary><ol>${active().done.map(d=>`<li>${esc(E.CARD_BY_ID[d.cardId]?.title||'A little wonder')}${d.note?': '+esc(d.note):''}</li>`).join('')}</ol></details><button class="btn full" data-action="postcards">Our adventure postcard</button></div>`);
   }
-  function choosePuzzle(id){
+  function choosePuzzle(id){if(syncFromStorage())return;
     const p=E.getPuzzle(state.expedition);if(!p.choices.some(c=>c.id===id)||puzzlePicked.includes(id))return;puzzlePicked.push(id);
     const button=$('sheet-content').querySelector(`[data-action="puzzle-choice"][data-value="${id}"]`);if(button)button.disabled=true;
     $('puzzle-progress').textContent=puzzlePicked.map(x=>E.CARD_BY_ID[x]?.emoji||'🧩').join(' → ');
     if(puzzlePicked.length!==p.answerIds.length)return;const r=E.solvePuzzle(state.expedition,puzzlePicked);
-    if(r.changed){state.expedition=r.expansion;enrichLatestPostcard();save();confetti();openPuzzle();toast('Your family’s story made the map whole!');}
+    if(r.changed){state.expedition=r.expansion;enrichLatestPostcard();if(!save())return;confetti();openPuzzle();toast('Your family’s story made the map whole!');}
     else{puzzlePicked=[];$('puzzle-progress').textContent='Let’s try the story order again. Check our journey notes below.';$('sheet-content').querySelectorAll('[data-action="puzzle-choice"]').forEach(x=>x.disabled=false);}
   }
   async function verifyOffline(showMessage=true,repair=false){
@@ -487,20 +513,26 @@
       swRegistration=ready;const worker=ready.active;if(!worker)throw new Error('Offline setup has not finished yet.');
       const result=await new Promise((resolve,reject)=>{const channel=new MessageChannel();const timer=setTimeout(()=>reject(new Error('Offline verification timed out. Try again while online.')),12000);channel.port1.onmessage=e=>{clearTimeout(timer);resolve(e.data);};worker.postMessage({type:repair?'PREPARE_OFFLINE':'CHECK_OFFLINE'},[channel.port2]);});
       offlineReady=result.ready===true&&result.version===VERSION;if(!offlineReady)throw new Error(result.error||'Offline files are incomplete. Stay online and try again, or install the waiting game update.');
-      save();renderHome();if(showMessage)toast('Adventure and artwork are ready offline on this device.');return true;
+      syncFromStorage(false);renderHome();if(showMessage)toast('Adventure and artwork are ready offline on this device.');return true;
     }catch(error){offlineReady=false;if(showMessage)toast(error.message||'Could not confirm offline files. Keep internet on for now.');return false;}
   }
   async function downloadAdventure(){const b=document.querySelector('[data-action="download-adventure"]');if(b)b.disabled=true;toast('Checking the game, challenge deck and artwork for offline use…');await verifyOffline(true,true);if(b?.isConnected)b.disabled=false;}
   $('postcard-photo').addEventListener('change',async event=>{
-    const file=event.target.files?.[0];event.target.value='';const id=viewedPostcardId,p=state.expedition.postcards.find(x=>x.id===id);if(!file||!p||photoBusy||p.photoIds.length>=4)return;photoBusy=true;
-    try{const photoId=await WildPostcards.storePhoto(file);const target=state.expedition.postcards.find(x=>x.id===id);if(target){target.photoIds.push(photoId);save();toast('Photo saved only on this device.');}else await WildPostcards.deletePhoto(photoId);}
-    catch(error){toast(error.message||'Could not save the photo. The postcard still works without it.');}
-    finally{photoBusy=false;if(viewedPostcardId===id)void openPostcard(id);}
+    const file=event.target.files?.[0];event.target.value='';if(syncFromStorage())return;
+    const id=viewedPostcardId,p=state.expedition.postcards.find(x=>x.id===id);if(!file||!p||photoBusy||p.photoIds.length>=4)return;
+    const expectedState=state,expectedSave=lastSavedValue;photoBusy=true;
+    try{
+      const photoId=await WildPostcards.storePhoto(file),changed=syncFromStorage(),target=state.expedition.postcards.find(x=>x.id===id);
+      if(changed||state!==expectedState||lastSavedValue!==expectedSave||target!==p||viewedPostcardId!==id){await WildPostcards.deletePhoto(photoId);toast('Your adventure changed while the photo was saving. Choose it again on the right postcard.');return;}
+      target.photoIds.push(photoId);if(!save())return;toast('Photo saved only on this device.');
+    }catch(error){toast(error.message||'Could not save the photo. The postcard still works without it.');}
+    finally{photoBusy=false;if(viewedPostcardId===id&&state===expectedState)void openPostcard(id);}
   });
 
   document.addEventListener('click',e=>{
-    const button=e.target.closest('button[data-action]');if(!button||button.disabled)return;
+    const button=e.target.closest('button[data-action]');if(!button||button.disabled||button.isConnected===false)return;
     const a=button.dataset.action,v=button.dataset.value;
+    if(syncFromStorage()&&!['settings','export','close-sheet'].includes(a))return;
     switch(a){
       case 'tab':setTab(v);break;
       case 'settings':openSettings();break;
@@ -508,19 +540,19 @@
       case 'night-picker':openNightPicker();break;
       case 'night-ready':openNightReady(v);break;
       case 'daylight-mode':switchAdventure('daylight','indoor');break;
-      case 'classic-mode':{const r=E.switchAdventure(state.expedition,'daylight','indoor',Date.now());if(r.changed){state.expedition=r.expansion;state.index=active().claimedChapters.length;state.gems=MISSIONS.slice(0,state.index).map(m=>m.gem);state.checks=[0,1,2].map(i=>active().done.some(x=>x.chapter===active().chapter&&x.step===i));state.variants=[0,0,0];}state.mode='classic';save();closeSheet();setTab('quest');break;}
-      case 'expedition-mode':state.mode='expedition';save();closeSheet();setTab('quest');break;
+      case 'classic-mode':{const r=E.switchAdventure(state.expedition,'daylight','indoor',Date.now());if(r.changed){state.expedition=r.expansion;state.index=active().claimedChapters.length;state.gems=MISSIONS.slice(0,state.index).map(m=>m.gem);state.checks=[0,1,2].map(i=>active().done.some(x=>x.chapter===active().chapter&&x.step===i));state.variants=[0,0,0];}state.mode='classic';if(!save())return;closeSheet();setTab('quest');break;}
+      case 'expedition-mode':state.mode='expedition';if(!save())return;closeSheet();setTab('quest');break;
       case 'classic-check':classicCheck(button);break;
-      case 'classic-swap':{const r=C.swap(state.classic,Number(v),Number(button.dataset.chapter));if(r.changed){state.classic=r.state;save();renderQuest();}break;}
+      case 'classic-swap':{const r=C.swap(state.classic,Number(v),Number(button.dataset.chapter));if(r.changed){state.classic=r.state;if(!save())return;renderQuest();}break;}
       case 'classic-claim':classicClaim(Number(button.dataset.chapter));break;
       case 'complete-challenge':completeChallenge(button);break;
-      case 'swap-challenge':{const r=E.swapChallenge(state.expedition);if(r.changed){state.expedition=r.expansion;save();renderQuest();toast('An easier way, with the same reward.');}break;}
-      case 'pass-lead':state.leader=(state.leader+1)%state.names.length;save();renderQuest();renderHome();break;
+      case 'swap-challenge':{const r=E.swapChallenge(state.expedition);if(r.changed){state.expedition=r.expansion;if(!save())return;renderQuest();toast('An easier way, with the same reward.');}break;}
+      case 'pass-lead':state.leader=(state.leader+1)%state.names.length;if(!save())return;renderQuest();renderHome();break;
       case 'finish-early':openFinishEarly();break;
-      case 'finish-confirmed':{const r=E.finishEarly(state.expedition);if(r.changed){state.expedition=r.expansion;enrichLatestPostcard();save();}closeSheet();setTab('quest');break;}
+      case 'finish-confirmed':{const r=E.finishEarly(state.expedition);if(r.changed){state.expedition=r.expansion;enrichLatestPostcard();if(!save())return;}closeSheet();setTab('quest');break;}
       case 'camp':closeSheet();treasureTab='camp';setTab('treasure');break;
       case 'buy-camp':buyCampItem(v);break;
-      case 'confirm-camp':{const r=E.buyItem(state.expedition,v);if(r.changed){state.expedition=r.expansion;save();closeSheet();renderAll();toast('A new treasure for your family base camp!');}else toast('That item is already owned or needs more crystals.');break;}
+      case 'confirm-camp':{const r=E.buyItem(state.expedition,v);if(r.changed){state.expedition=r.expansion;if(!save())return;closeSheet();renderAll();toast('A new treasure for your family base camp!');}else toast('That item is already owned or needs more crystals.');break;}
       case 'equip-camp':equipCampItem(v);break;
       case 'postcards':closeSheet();treasureTab='postcards';setTab('treasure');break;
       case 'view-postcard':void openPostcard(v);break;
@@ -536,8 +568,8 @@
       case 'add-player':openHero(state.names.length,true);break;
       case 'swatch':{if(!draftHero)return;const kind=button.dataset.kind;if(!['skin','colour','hair'].includes(kind))return;draftHero.look[kind]=clampInt(v,0,kind==='colour'?4:3);button.parentElement.querySelectorAll('button').forEach(b=>{const picked=b===button;b.setAttribute('aria-pressed',String(picked));b.textContent=picked?'✓':'';});updateHeroPreview();break;}
       case 'long-hair':if(draftHero){draftHero.look.long=!draftHero.look.long;button.setAttribute('aria-checked',String(draftHero.look.long));updateHeroPreview();}break;
-      case 'check':{const i=Number(v);if(state.index>=5||![0,1,2].includes(i))return;state.checks[i]=!state.checks[i];save();renderQuest();renderStatus();renderHome();const newButton=$('quest-screen').querySelector(`[data-action="check"][data-value="${i}"]`);newButton?.focus({preventScroll:true});if(state.checks[i]){playSound();if(state.checks.every(Boolean))toast('All three clues found! Your crystal is ready.');}break;}
-      case 'swap':{const i=Number(v);if(state.index>=5||![0,1,2].includes(i)||state.checks[i])return;state.variants[i]=(state.variants[i]+1)%3;save();renderQuest();$('quest-screen').querySelector(`[data-action="swap"][data-value="${i}"]`)?.focus({preventScroll:true});toast('A new clue! Stay right on your safe path.');break;}
+      case 'check':{const i=Number(v);if(state.index>=5||![0,1,2].includes(i))return;state.checks[i]=!state.checks[i];if(!save())return;renderQuest();renderStatus();renderHome();const newButton=$('quest-screen').querySelector(`[data-action="check"][data-value="${i}"]`);newButton?.focus({preventScroll:true});if(state.checks[i]){playSound();if(state.checks.every(Boolean))toast('All three clues found! Your crystal is ready.');}break;}
+      case 'swap':{const i=Number(v);if(state.index>=5||![0,1,2].includes(i)||state.checks[i])return;state.variants[i]=(state.variants[i]+1)%3;if(!save())return;renderQuest();$('quest-screen').querySelector(`[data-action="swap"][data-value="${i}"]`)?.focus({preventScroll:true});toast('A new clue! Stay right on your safe path.');break;}
       case 'claim':claimCrystal(button.dataset.chapter);break;
       case 'next-quest':closeSheet();setTab('quest');break;
       case 'reward-bag':closeSheet();treasureTab='crystals';setTab('treasure');break;
@@ -549,26 +581,27 @@
       case 'map-stop':{const i=Number(v);if(i<state.index)openGem(i);else if(i===state.index)setTab('quest');else toast('Finish your current quest to open the next chapter.');break;}
       case 'gps':requestGPS();break;
       case 'clear-gps':gpsRequestId++;locationFix=null;gpsBusy=false;gpsError='';renderTrail();toast('Location reading cleared.');break;
-      case 'setting':if(v==='sound'||v==='motion'){state.settings[v]=!state.settings[v];save();renderStatus();button.setAttribute('aria-checked',String(state.settings[v]));if(v==='sound'&&state.settings.sound)playSound();}break;
+      case 'setting':if(v==='sound'||v==='motion'){state.settings[v]=!state.settings[v];if(!save())return;renderStatus();button.setAttribute('aria-checked',String(state.settings[v]));if(v==='sound'&&state.settings.sound)playSound();}break;
       case 'install':openInstall();break;
       case 'export':exportSave();break;
       case 'import':$('import-file').click();break;
-      case 'restore-confirmed':if(pendingRestore){state=pendingRestore;pendingRestore=null;enrichLatestPostcard();save();closeSheet();renderAll();toast('Your saved family adventure is restored.');}break;
+      case 'restore-confirmed':if(pendingRestore){state=pendingRestore;pendingRestore=null;enrichLatestPostcard();if(!save())return;closeSheet();renderAll();toast('Your saved family adventure is restored.');}break;
       case 'new-adventure':newAdventurePrompt();break;
       case 'reset-confirmed':openBuilder();break;
       case 'check-update':void checkForUpdate();break;
       case 'update':if(swRegistration?.waiting)swRegistration.waiting.postMessage({type:'SKIP_WAITING'});else{toast('Checking for an update…');void checkForUpdate();}break;
     }
   });
-  document.addEventListener('change',e=>{if(!draftHero)return;if(e.target.id==='hero-role')draftHero.role=ROLE(e.target.value).id;else if(e.target.id==='hero-kind'&&['adult','child'].includes(e.target.value))draftHero.kind=e.target.value;else if(e.target.id==='hero-costume'&&Object.hasOwn(COSTUMES,e.target.value))draftHero.costume=e.target.value;else return;updateHeroPreview();});
+  document.addEventListener('change',e=>{if(syncFromStorage()||!draftHero)return;if(e.target.id==='hero-role')draftHero.role=ROLE(e.target.value).id;else if(e.target.id==='hero-kind'&&['adult','child'].includes(e.target.value))draftHero.kind=e.target.value;else if(e.target.id==='hero-costume'&&Object.hasOwn(COSTUMES,e.target.value))draftHero.costume=e.target.value;else return;updateHeroPreview();});
   document.addEventListener('submit',e=>{
     const form=e.target;
+    if(form.isConnected===false||syncFromStorage()){e.preventDefault();return;}
     if(form.id==='night-ready-form'){
       e.preventDefault();if(!$('night-ready-check').checked){toast('Please check your space with a grown-up first.');return;}if(NIGHT_PLACES[form.dataset.setting])switchAdventure('halloween',form.dataset.setting);
     }else if(form.id==='outing-form'){
       e.preventDefault();startPlannedOuting(form);
     }else if(form.id==='postcard-form'){
-      e.preventDefault();const card=state.expedition.postcards.find(x=>x.id===form.dataset.id);if(card){card.favorite=clean($('postcard-favorite').value,280);save();toast('Favourite moment saved on this device.');}
+      e.preventDefault();const card=state.expedition.postcards.find(x=>x.id===form.dataset.id);if(card){card.favorite=clean($('postcard-favorite').value,280);if(!save())return;toast('Favourite moment saved on this device.');}
     }else if(form.id==='hero-form'){
       e.preventDefault();if(!draftHero)return;
       const i=draftHero.index,adding=draftHero.adding,name=clean($('hero-name').value,24);
@@ -576,27 +609,32 @@
       if(adding&&(i!==state.names.length||state.names.length>=MAX_NEW_PLAYERS))return;
       if(adding){const used=new Set(state.heroIds);let next=1;while(used.has(`player-${next}`))next++;state.heroIds.push(`player-${next}`);}
       state.names[i]=name;state.roles[i]=ROLE($('hero-role').value).id;state.specialties[i]=Object.hasOwn(SPECIALTIES,$('hero-specialty').value)?$('hero-specialty').value:draftHero.specialty;state.looks[i]={...draftHero.look};state.heroKinds[i]=draftHero.kind;state.costumes[i]=draftHero.costume;
-      if(!adding)state.leader=i;save();closeSheet();renderAll();toast(adding?`${name} joined your adventure team!`:`${name} is ready to lead the pretend quest!`);
+      if(!adding)state.leader=i;if(!save())return;closeSheet();renderAll();toast(adding?`${name} joined your adventure team!`:`${name} is ready to lead the pretend quest!`);
 
     }else if(form.id==='place-form'){
-      e.preventDefault();state.park=clean($('park-name').value,100)||freshState().park;state.start=clean($('start-point').value,120);save();renderAll();toast('Your adventure location is saved.');
+      e.preventDefault();state.park=clean($('park-name').value,100)||freshState().park;state.start=clean($('start-point').value,120);if(!save())return;renderAll();toast('Your adventure location is saved.');
     }else if(form.id==='discovery-form'){
       e.preventDefault();const note=clean($('discovery-note').value,280),category=form.dataset.category;if(!note||!CATEGORIES[category])return;
-      if(state.journal.length>=150)state.journal.shift();state.journal.push({category,note,at:new Date().toISOString()});save();closeSheet();treasureTab='journal';setTab('treasure');toast('A little forest memory, saved!');
+      if(state.journal.length>=150)state.journal.shift();state.journal.push({category,note,at:new Date().toISOString()});if(!save())return;closeSheet();treasureTab='journal';setTab('treasure');toast('A little forest memory, saved!');
     }
   });
-  let pendingRestore=null;
+  let pendingRestore=null,importRequest=0;
   $('import-file').addEventListener('change',async e=>{
-    const file=e.target.files?.[0];e.target.value='';if(!file)return;if(file.size>10000000){toast('That file is too large. Choose a Wild Explorer JSON progress backup.');return;}
+    const file=e.target.files?.[0];e.target.value='';if(!file||syncFromStorage())return;const expectedState=state,expectedSave=lastSavedValue,expectedSheet=sheetEpoch,wasSheetOpen=$('sheet').open,request=++importRequest;pendingRestore=null;if(file.size>10000000){toast('That file is too large. Choose a Wild Explorer JSON progress backup.');return;}
     try{
-      const data=JSON.parse(await file.text());const raw=data?.app==='operation-wild-explorer'?data.state:data;
-      if(!raw||typeof raw!=='object'||!Array.isArray(raw.names)||raw.names.length<1||!Array.isArray(raw.checks)||!Number.isInteger(raw.index)||raw.index<0||raw.index>10||typeof raw.xp!=='number'||!Number.isFinite(raw.xp))throw new Error('Invalid save');
+      const text=await file.text();if(request!==importRequest||sheetEpoch!==expectedSheet||(wasSheetOpen&&!$('sheet').open))return;
+      if(syncFromStorage()||state!==expectedState||lastSavedValue!==expectedSave){toast('Your adventure changed while the backup was opening. Choose the backup again to review it.');return;}
+      const data=JSON.parse(text);const raw=data?.app==='operation-wild-explorer'?data.state:data;
+      if(!validSaveData(raw))throw new Error('Invalid save');
       pendingRestore=normalise(raw);
       openSheet(sheetHeader('Restore this adventure?')+`<div class="sheet-body"><p>This backup has <b>${pendingRestore.names.length} players</b>, <b>${pendingRestore.xp} XP</b>, <b>${pendingRestore.classic.index}/10 original crystals</b> and <b>${pendingRestore.index}/5 outing crystals</b> and <b>${pendingRestore.journal.length} memories</b>.</p><p>Restoring replaces the current progress, heroes and journal on this device. Export your current adventure first to keep both.</p><button class="btn quiet full" data-action="export">Export current progress first</button><button class="btn full" data-action="restore-confirmed">Restore this backup</button><button class="subtle-button wide" data-action="close-sheet">Keep current progress</button></div>`);
-    }catch{pendingRestore=null;toast('That isn’t a valid Wild Explorer progress backup. Nothing was changed.');}
+    }catch{if(request!==importRequest||sheetEpoch!==expectedSheet||(wasSheetOpen&&!$('sheet').open))return;pendingRestore=null;toast('That isn’t a valid Wild Explorer progress backup. Nothing was changed.');}
   });
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){if('speechSynthesis'in window)speechSynthesis.cancel();speechActive=false;save();}});
-  window.addEventListener('pagehide',save);
+  // Actions save immediately. Unload/background saves can overwrite a newer tab.
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){if('speechSynthesis'in window)speechSynthesis.cancel();speechActive=false;}else syncFromStorage();});
+  window.addEventListener('focus',()=>syncFromStorage());
+  window.addEventListener('pageshow',()=>syncFromStorage());
+  window.addEventListener('storage',event=>{if((!event.storageArea||event.storageArea===localStorage)&&(event.key===SAVE_KEY||event.key===null))syncFromStorage();});
   // First-launch migration is non-destructive; the original save fields remain usable.
   if(importedLegacy)save();
   enrichLatestPostcard();

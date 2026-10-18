@@ -24,3 +24,5 @@
 
 /* Keep the home brand and settings reachable when text is enlarged. */
 .topbar{min-height:68px;height:auto;padding:8px 0}.brand{flex:1 1 auto}.brand img{flex-shrink:0}.brand>span{min-width:0}.brand b{white-space:normal;overflow-wrap:anywhere}
+/* Let character details move below the portrait at narrow or large-text sizes. */
+.hero-preview{flex-wrap:wrap;gap:8px}.hero-preview svg{flex:0 0 130px}.hero-preview .power{flex:1 1 140px;max-width:none;padding-left:0;overflow-wrap:anywhere}
