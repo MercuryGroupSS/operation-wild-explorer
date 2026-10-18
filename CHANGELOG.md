@@ -1,3 +1,11 @@
+## 3.1.0 — 2026-10-18
+
+- Add friendly Halloween/night adventures for a lit indoor space, a grown-up-led neighbourhood walk, and an adult-verified open/safe nighttime trail.
+- Keep an independent ongoing adventure for daytime and each night setting, with shared heroes, XP, crystals, camp, journal and postcards. Existing saves and seeded daytime decks remain compatible.
+- Add 45 filtered night challenges, five lantern story chapters, a cozy finale, warm night artwork, Moon cape, pretend bat friend and pumpkin-lantern camp reward.
+- Include readiness checks, comfortable-light and flashlight guidance, indoor/seated alternatives, no-screen-while-walking reminders and no GPS route assumptions.
+- Extend engine, runtime, save migration and offline-asset tests. Physical-device and disconnected-browser checks are reported separately.
+
 # Changelog
 
 ## 3.0.2

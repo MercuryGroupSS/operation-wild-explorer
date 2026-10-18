@@ -1,10 +1,10 @@
 /* Increment VERSION and CSS/JS query versions together for every update. */
 'use strict';
-const VERSION = '3.0.2';
+const VERSION = '3.1.0';
 const CACHE = 'wild-explorer-' + VERSION;
-const CORE = ['./', './index.html', './styles.css?v=3.0.2', './app.js?v=3.0.2', './engine.js?v=3.0.2', './postcards.js?v=3.0.2', './classic.js?v=3.0.2',
+const CORE = ['./', './index.html', './styles.css?v=3.1.0', './app.js?v=3.1.0', './engine.js?v=3.1.0', './postcards.js?v=3.1.0', './classic.js?v=3.1.0',
   './manifest.webmanifest', './assets/icon.svg', './assets/icon-180.png',
-  './assets/icon-192.png', './assets/icon-512.png', './assets/forest-friends-v2.webp'];
+  './assets/icon-192.png', './assets/icon-512.png', './assets/forest-friends-v2.webp', './assets/night-lanterns.svg'];
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);

@@ -10,7 +10,7 @@ const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
 const fixture={version:2,index:2,checks:[true,false,true],variants:[1,0,2],xp:140,names:['QA A','QA B','QA C','QA D','QA E'],roles:['ranger','guardian','whisperer','wizard','hunter'],looks:Array.from({length:5},(_,i)=>({skin:i%4,hair:i%4,colour:i,long:!!(i%2)})),leader:4,park:'Synthetic QA Park',start:'Synthetic start',journal:[{category:'tree',note:'Synthetic <tree> memory',at:'2026-10-01T00:00:00.000Z'}],settings:{sound:false,motion:false}};
 const copy=x=>JSON.parse(JSON.stringify(x));
 class Element {
-  constructor(id=''){this.id=id;this.innerHTML='';this.textContent='';this.value='';this.hidden=false;this.disabled=false;this.isConnected=true;this.dataset={};this.attributes={};this.listeners={};this.style={setProperty(){}};this.classList={toggle(){},add(){},remove(){}};this.children=[];}
+  constructor(id=''){this.id=id;this.innerHTML='';this.textContent='';this.value='';this.hidden=false;this.disabled=false;this.isConnected=true;this.dataset={};this.attributes={};this.listeners={};this.style={setProperty(){}};this.classes=new Set();this.classList={toggle:(name,on)=>{if(on)this.classes.add(name);else this.classes.delete(name);},add:(name)=>this.classes.add(name),remove:(name)=>this.classes.delete(name)};this.children=[];}
   addEventListener(type,fn){this.listeners[type]=fn;}
   setAttribute(key,v){this.attributes[key]=v;}
   removeAttribute(key){delete this.attributes[key];}
@@ -110,6 +110,41 @@ await test('2.1 complete backup restores all ten classic crystals only after con
   const q=boot(),before=copy(q.api.getState()),raw={...fixture,version:3,index:10,xp:780,checks:[]};
   await q.el('import-file').listeners.change({target:{files:[{size:600,text:async()=>JSON.stringify(raw)}],value:'synthetic'}});
   assert.deepEqual(copy(q.api.getState()),before);q.click('restore-confirmed');assert.equal(q.api.getState().classic.index,10);assert.equal(q.api.getState().expedition.wallet,10);assert.equal(q.api.getState().xp,780);
+});
+await test('Night picker checks grown-up readiness and all four adventures retain their own place',()=>{
+  const q=boot({wildExplorerSaveV2:JSON.stringify(fixture)}),day=copy(q.api.getState().expedition.active),original=copy(q.api.getState());
+  q.click('night-picker');assert.match(q.el('sheet-content').innerHTML,/Cozy house/);assert.match(q.el('sheet-content').innerHTML,/Neighbourhood walk/);assert.match(q.el('sheet-content').innerHTML,/Nearby trail/);
+  const saved={};
+  for(const setting of E.NIGHT_SETTINGS){
+    q.click('night-ready',setting);assert.match(q.el('sheet-content').innerHTML,/night-ready-check/);if(setting==='trail')assert.match(q.el('sheet-content').innerHTML,/open and suitable after dark/);
+    const before=copy(q.api.getState());q.el('night-ready-check').checked=false;q.events.submit({target:{id:'night-ready-form',dataset:{setting}},preventDefault(){}});assert.deepEqual(copy(q.api.getState()),before);
+    q.el('night-ready-check').checked=true;q.events.submit({target:{id:'night-ready-form',dataset:{setting}},preventDefault(){}});
+    const a=q.api.getState().expedition.active;assert.equal(a.options.theme,'halloween');assert.equal(a.options.setting,setting);assert.equal(a.options.duration,'short');assert.equal(a.deck.flat().length,5);assert.ok(q.context.document.body.classes.has('night-theme'));
+    assert.match(q.el('home-screen').innerHTML,/night-lanterns.svg/);assert.match(q.el('quest-screen').innerHTML,/The Pumpkin Invitation/);assert.match(q.el('quest-screen').innerHTML,/Stop together to play/);
+    const c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});q.advance();saved[setting]=copy(q.api.getState().expedition.active);
+  }
+  q.click('daylight-mode');assert.deepEqual(copy(q.api.getState().expedition.active),day);assert.equal(q.api.getState().xp,original.xp);assert.deepEqual(copy(q.api.getState().names),original.names);assert.deepEqual(copy(q.api.getState().journal),original.journal);assert.ok(!q.context.document.body.classes.has('night-theme'));
+  const reloaded=boot(Object.fromEntries(q.store));
+  for(const setting of E.NIGHT_SETTINGS){reloaded.click('night-ready',setting);reloaded.el('night-ready-check').checked=true;reloaded.events.submit({target:{id:'night-ready-form',dataset:{setting}},preventDefault(){}});assert.deepEqual(copy(reloaded.api.getState().expedition.active),saved[setting]);}
+  reloaded.click('classic-mode');assert.equal(reloaded.api.getState().mode,'classic');assert.equal(reloaded.api.getState().expedition.active.options.theme,'daylight');assert.equal(reloaded.api.getState().classic.index,original.classic.index);
+});
+await test('Each night setting completes a cozy story with duplicate-safe rewards, postcard and preserved day save',()=>{
+  for(const setting of E.NIGHT_SETTINGS){
+    const q=boot(),day=copy(q.api.getState().expedition.active);q.click('night-ready',setting);q.el('night-ready-check').checked=true;q.events.submit({target:{id:'night-ready-form',dataset:{setting}},preventDefault(){}});
+    while(!q.api.getState().expedition.active.ended){const e=q.api.getState().expedition,c=E.getCurrentCard(e);if(c){assert.equal(c.theme,'halloween');assert.ok(c.settings.includes(setting));q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});const once=copy(q.api.getState());q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});assert.deepEqual(copy(q.api.getState()),once);q.advance();}else{const chapter=String(e.active.chapter);q.click('claim',undefined,{chapter});const once=copy(q.api.getState());q.click('claim',undefined,{chapter});assert.deepEqual(copy(q.api.getState()),once);}}
+    const s=q.api.getState();assert.equal(s.xp,440);assert.equal(s.expedition.wallet,5);assert.equal(s.expedition.postcards.length,1);assert.match(s.expedition.postcards[0].park,/Halloween night/);assert.ok(s.expedition.postcards[0].badges.includes('Little Lantern Keeper'));assert.match(q.el('quest-screen').innerHTML,/pumpkin party/);
+    q.click('puzzle');for(const id of E.getPuzzle(s.expedition).answerIds)q.click('puzzle-choice',id);assert.equal(q.api.getState().expedition.active.puzzleSolved,true);assert.match(q.el('sheet-content').innerHTML,/Every hero belongs/);
+    q.click('confirm-camp','moon-cape');assert.equal(q.api.getState().expedition.equipped.gear,'moon-cape');assert.ok(q.el('heroes-screen').innerHTML.includes('#7662ad'));
+    q.click('daylight-mode');assert.deepEqual(copy(q.api.getState().expedition.active),day);assert.equal(q.api.getState().xp,440);
+    const restored=boot(Object.fromEntries(q.store));assert.equal(restored.api.getState().expedition.equipped.gear,'moon-cape');assert.equal(restored.api.getState().expedition.postcards[0].options.setting,setting);
+  }
+});
+await test('Night planner keeps context, lengths and safe alternatives; export/import retains paused stories',async()=>{
+  const q=boot();q.click('night-ready','indoor');q.el('night-ready-check').checked=true;q.events.submit({target:{id:'night-ready-form',dataset:{setting:'indoor'}},preventDefault(){}});
+  q.api.startPlannedOuting({fields:{duration:'long',difficulty:'curious'}});assert.equal(q.api.getState().expedition.active.options.theme,'halloween');assert.equal(q.api.getState().expedition.active.deck.flat().length,15);
+  for(let i=0;i<20;i++){q.click('swap-challenge');const c=E.getCurrentCard(q.api.getState().expedition);assert.equal(c.theme,'halloween');assert.ok(c.settings.includes('indoor'));assert.match(q.el('quest-screen').innerHTML,/safe-alternative/);}
+  const c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});q.click('daylight-mode');q.api.exportSave();const backup=JSON.parse(await q.downloads.at(-1).text());assert.ok(backup.state.expedition.parkedOutings['halloween:indoor']);assert.ok(!JSON.stringify(backup).includes('data:image'));
+  const restored=boot();await restored.el('import-file').listeners.change({target:{files:[{size:20000,text:async()=>JSON.stringify(backup)}],value:'synthetic'}});restored.click('restore-confirmed');assert.deepEqual(copy(restored.api.getState().expedition.parkedOutings),copy(q.api.getState().expedition.parkedOutings));
 });
 console.log(`\nRuntime integration: ${passed} passed, ${failed} failed. DOM stubs do not validate visual layout, browser events, IndexedDB or real service workers.`);
 if(failed)process.exitCode=1;

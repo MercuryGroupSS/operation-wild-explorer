@@ -5,7 +5,17 @@ A bright, mobile-first family nature RPG for two adults and three young children
 Production: https://operation-wild-explorer.netlify.app
 Netlify project: `142205d8-6800-49d7-996f-5e0ee5094ee7`
 
-## Release 3.0.2
+## Release 3.1.0: little night explorers
+
+Choose **Halloween night adventures** on Play, then **Cozy house**, **Neighbourhood walk**, or **Nearby trail**. Each setting has a separate, resumable story; return to the daytime expedition or original ten-crystal hunt at any time. All modes share the same five heroes, lifetime XP, earned camp crystals and private memories.
+
+- 45 friendly night challenges, with 25 eligible per setting, filtered again on swaps and saved-game reloads. Every card has a no-equipment seated/indoor alternative.
+- Five little lantern chapters and a cozy pumpkin-party finale, a warm nonflashing night palette, illustrated moon/bat/pumpkin cover, a wearable Moon cape, a pretend bat companion and a pumpkin lantern for camp.
+- New night settings start with 5 gentle challenges. The planner still supports 5 / 10 / 15 and three challenge styles.
+- A grown-up readiness check before entering a night setting. Indoors stays comfortably lit; sidewalk tasks do not require road crossings or door visits; the trail requires the grown-up to verify it is open and suitable after dark. Stop in a safe place before looking at the phone. The game does not operate the phone flashlight, research routes or opening times, or attract real animals.
+- Existing 3.0.2, 2.1, v2 and legacy progress is retained with additive mode/context fields and three paused outing slots. See `docs/QA-3.1.md` for release checks and remaining device-test limitations.
+
+## Daytime adventures retained
 
 - A varied Find / Listen / Move / Imagine / Solve deck; adjacent categories differ and recent cards are avoided when possible.
 - Safe alternatives for every card, swaps, breaks and a shorter ending without losing earned progress.
@@ -25,7 +35,7 @@ Run:
 ```
 node scripts/check.mjs
 node scripts/check-hunt.mjs
-node --test scripts/engine.test.cjs scripts/postcards.test.cjs
+node --test scripts/engine.test.cjs scripts/postcards.test.cjs scripts/night.test.cjs
 node scripts/qa-engine.mjs
 node scripts/qa-runtime.mjs
 node scripts/qa-worker.mjs

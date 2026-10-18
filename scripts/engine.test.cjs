@@ -64,7 +64,7 @@ test('required family activities have explicit safe fallbacks', () => {
 });
 
 test('options normalize aliases, invalid values and durations safely', () => {
-  assert.deepEqual(E.normaliseOptions({ habitat: 'forest', season: 'fall', difficulty: 'hard', duration: 'medium' }), { habitat: 'woodland', season: 'autumn', difficulty: 'challenge', duration: 'medium' });
+  assert.deepEqual(E.normaliseOptions({ habitat: 'forest', season: 'fall', difficulty: 'hard', duration: 'medium' }), { habitat: 'woodland', season: 'autumn', difficulty: 'challenge', duration: 'medium', theme: 'daylight', setting: 'indoor' });
   assert.equal(E.normaliseOptions({ duration: '__proto__' }).duration, 'long');
   assert.equal(E.normaliseOptions(null).duration, 'long');
 });
