@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wild Explorer preview layout QA</title>
+<style>body{margin:16px;font:14px system-ui;background:#dce5e8;color:#153c32}nav{display:flex;gap:8px;flex-wrap:wrap}button{padding:10px;border:1px solid #426b60;border-radius:8px;background:white;color:#153c32}iframe{display:block;margin-top:12px;border:2px solid #426b60;background:white;max-width:none}pre{white-space:pre-wrap}</style>
+<h1>Preview-only layout QA</h1><p>Synthetic browser checks. No physical-device claim. This test page is removed before production.</p>
+<nav><button data-size="320,740">320 portrait</button><button data-size="390,844">390 portrait</button><button data-size="844,390">844 landscape</button><button id="text">200% text: off</button><button id="inspect">Inspect layout</button></nav>
+<pre id="report">390 × 844 CSS viewport</pre><iframe id="game" title="Wild Explorer test viewport" src="./index.html" width="390" height="844"></iframe>
+<script>
+const frame=document.getElementById('game'),report=document.getElementById('report');let large=false,observer;
+function applyText(){const d=frame.contentDocument,w=frame.contentWindow;if(!d?.body)return;const entries=[...d.querySelectorAll('body *')].filter(e=>e instanceof w.HTMLElement);const sizes=entries.map(e=>[e,w.getComputedStyle(e).fontSize]);for(const [e,size] of sizes){if(large&&!e.hasAttribute('data-qa-base')){e.dataset.qaBase=e.style.fontSize;e.style.fontSize=(parseFloat(size)*2)+'px';}else if(!large&&e.hasAttribute('data-qa-base')){e.style.fontSize=e.dataset.qaBase;e.removeAttribute('data-qa-base');}}}
+frame.addEventListener('load',()=>{observer?.disconnect();observer=new MutationObserver(applyText);observer.observe(frame.contentDocument.body,{childList:true,subtree:true});applyText();});
+document.querySelectorAll('[data-size]').forEach(b=>b.onclick=()=>{const [width,height]=b.dataset.size.split(',');frame.width=width;frame.height=height;report.textContent=`${width} × ${height} CSS viewport`;});
+document.getElementById('text').onclick=()=>{large=!large;document.getElementById('text').textContent='200% text: '+(large?'on':'off');applyText();};
+document.getElementById('inspect').onclick=()=>{const w=frame.contentWindow,d=frame.contentDocument,width=d.documentElement.clientWidth;const overflow=[...d.querySelectorAll('body *')].filter(e=>{const r=e.getBoundingClientRect(),s=w.getComputedStyle(e);return r.width&&r.height&&s.visibility!=='hidden'&&s.display!=='none'&&!e.closest('[hidden]')&&!e.classList.contains('skip')&&(r.right>width+1||r.left < -1);}).map(e=>({tag:e.tagName,id:e.id,cls:e.className?.baseVal??e.className,text:e.textContent.slice(0,90)}));report.textContent=JSON.stringify({viewport:[w.innerWidth,w.innerHeight],contentWidth:width,documentWidth:d.documentElement.scrollWidth,enlargedText:large,overflow},null,2);};
+</script></html>

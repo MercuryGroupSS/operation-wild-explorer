@@ -90,11 +90,11 @@ test('night guidance explicitly retains adult leadership, lighting and context-s
   for (const c of E.NIGHT_CARDS.filter(c => c.settings.length === 1 && c.settings[0] === 'trail')) assert.match(c.prompt, /open and safe after dark/);
 });
 
-test('all original 48 daytime cards retain exact content and eligibility', () => {
-  const originalFields = ['id', 'type', 'title', 'prompt', 'alternative', 'emoji', 'specialty', 'habitats', 'seasons'];
+test('all 48 daytime cards retain IDs, categories, specialties and eligibility after content refresh', () => {
+  const originalFields = ['id', 'type', 'emoji', 'specialty', 'habitats', 'seasons'];
   const cards = E.CARDS.filter(c => c.theme === 'daylight').map(c => Object.fromEntries(originalFields.map(key => [key, c[key]])));
   assert.equal(cards.length, 48);
-  assert.equal(crypto.createHash('sha256').update(JSON.stringify(cards)).digest('hex'), 'c188615e929dc75eca974aeb08b5d0eaefcc8af3b8d22ec077706ec302890a92');
+  assert.equal(crypto.createHash('sha256').update(JSON.stringify(cards)).digest('hex'), '896fe3c6d3dd482f50bf1d79780f1aa214d2ec8efeb77205bd0d548d944466cc');
 });
 
 test('pre-night deterministic daytime decks and IDs do not change with additive defaults', () => {
@@ -389,4 +389,34 @@ test('new camp items share existing crystals, preserve trophies and reject dupli
   }
   const originals = ['compass', 'leaf-cape', 'explorer-lantern', 'fox-friend', 'bunting', 'cosy-tent', 'guardian-flag'];
   for (const id of originals) assert.ok(E.SHOP.some(c => c.id === id));
+});
+
+
+test('hands-on release preserves all 45 night card identities and eligibility', () => {
+  const metadata = E.NIGHT_CARDS.map(({ id, type, theme, settings }) => ({ id, type, theme, settings }));
+  assert.equal(crypto.createHash('sha256').update(JSON.stringify(metadata)).digest('hex'), '9f0af6b12b452db6ec8eec028732dc6327b1218dd03ffd149eb605f4662267a5');
+});
+
+test('indoor crafts use real materials with adult help and practical fallbacks', () => {
+  const hat = E.CARD_BY_ID['night-indoor-find-costume'];
+  assert.match(hat.prompt, /scrap paper/);
+  assert.match(hat.prompt, /large enough.*grown-up fits it above your eyes/);
+  assert.match(hat.prompt, /Grown-ups handle any cutting; no neck ties/);
+  assert.match(hat.alternative, /No paper or hat/);
+  const cape = E.CARD_BY_ID['night-indoor-move-cape'];
+  assert.match(cape.prompt, /tea towel.*drape it over your shoulders/);
+  assert.match(cape.prompt, /Never tie or fasten it around your neck/);
+  assert.match(cape.prompt, /Take it off before moving/);
+  assert.match(cape.alternative, /Without either/);
+  assert.match(E.CARD_BY_ID['night-indoor-imagine-palace'].prompt, /Place them side by side/);
+  assert.match(E.CARD_BY_ID['night-indoor-imagine-mouse'].prompt, /fold a sheet of scrap paper/i);
+  assert.match(E.CARD_BY_ID['night-indoor-solve-shadow'].prompt, /Move your hand a little nearer/);
+  assert.match(E.NIGHT_GUIDANCE.indoor, /materials you already have/);
+  assert.match(E.NIGHT_GUIDANCE.indoor, /No flames or climbing/);
+});
+
+test('daytime and night activities no longer offer imagination-only completion', () => {
+  for (const c of E.CARDS) {
+    assert.doesNotMatch(c.prompt + ' ' + c.alternative, /silently imagine|or imagine|or picture|only in your story|No costume|No real cape|pretend alternative/i, c.id);
+  }
 });

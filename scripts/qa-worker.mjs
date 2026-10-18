@@ -21,28 +21,28 @@ await test('First install precaches all 14 assets and activates; update waits fo
   const update=harness(true);await update.fire('install');assert.equal(update.events.skip,0);await update.fire('message',{data:{type:'SKIP_WAITING'}});assert.equal(update.events.skip,1);
 });
 await test('Offline verification checks every required asset and reports missing files',async()=>{
-  const h=harness();await h.fire('install');let reply;await h.fire('message',{data:{type:'CHECK_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,true);assert.equal(reply.files,14);assert.equal(reply.version,'3.1.0');
-  const cache=await h.caches.open('wild-explorer-3.1.0');await cache.delete('./engine.js?v=3.1.0');await h.fire('message',{data:{type:'CHECK_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,false);assert.equal(reply.files,13);
+  const h=harness();await h.fire('install');let reply;await h.fire('message',{data:{type:'CHECK_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,true);assert.equal(reply.files,14);assert.equal(reply.version,'3.2.0');
+  const cache=await h.caches.open('wild-explorer-3.2.0');await cache.delete('./engine.js?v=3.2.0');await h.fire('message',{data:{type:'CHECK_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,false);assert.equal(reply.files,13);
 });
 await test('Installed HTML stays paired with cached JS, and all required files work offline',async()=>{
   const h=harness();await h.fire('install');h.offline();const nav=await h.fire('fetch',{request:{method:'GET',url:origin+'/',mode:'navigate'}});assert.match(await nav.text(),/cached:.\/index.html/);assert.equal(h.events.network,0);
-  for(const file of ['styles.css','app.js','engine.js','postcards.js','classic.js']){const response=await h.fire('fetch',{request:{method:'GET',url:origin+'/'+file+'?v=3.1.0',mode:'cors'}});assert.equal(response.status,200);}
+  for(const file of ['styles.css','app.js','engine.js','postcards.js','classic.js']){const response=await h.fire('fetch',{request:{method:'GET',url:origin+'/'+file+'?v=3.2.0',mode:'cors'}});assert.equal(response.status,200);}
   const art=await h.fire('fetch',{request:{method:'GET',url:origin+'/assets/night-lanterns.svg',mode:'cors'}});assert.equal(art.status,200);assert.match(await art.text(),/cached/);
   assert.equal(h.events.network,0);
 });
 await test('Activation removes only older game caches and preserves unrelated sites',async()=>{
-  const h=harness();await h.caches.open('wild-explorer-2.0.0');await h.caches.open('other-app-cache');await h.fire('install');await h.fire('activate');assert.deepEqual(await h.caches.keys(),['other-app-cache','wild-explorer-3.1.0']);assert.equal(h.events.claim,1);
+  const h=harness();await h.caches.open('wild-explorer-2.0.0');await h.caches.open('other-app-cache');await h.fire('install');await h.fire('activate');assert.deepEqual(await h.caches.keys(),['other-app-cache','wild-explorer-3.2.0']);assert.equal(h.events.claim,1);
 });
 await test('Uncached offline navigation gives clear 503; POST and cross-origin requests are untouched',async()=>{
   const h=harness();h.offline();const response=await h.fire('fetch',{request:{method:'GET',url:origin+'/',mode:'navigate'}});assert.equal(response.status,503);assert.match(await response.text(),/once with internet/);
   assert.equal(await h.fire('fetch',{request:{method:'POST',url:origin+'/',mode:'cors'}}),undefined);assert.equal(await h.fire('fetch',{request:{method:'GET',url:'https://other.invalid/',mode:'cors'}}),undefined);
 });
 await test('Explicit offline download repairs missing assets only for the matching release',async()=>{
-  const h=harness();await h.fire('install');const cache=await h.caches.open('wild-explorer-3.1.0');await cache.delete('./engine.js?v=3.1.0');let reply;
+  const h=harness();await h.fire('install');const cache=await h.caches.open('wild-explorer-3.2.0');await cache.delete('./engine.js?v=3.2.0');let reply;
   await h.fire('message',{data:{type:'PREPARE_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,true);assert.equal(reply.files,14);
-  const newer=harness(false,script.replace("const VERSION = '3.1.0'", "const VERSION = '3.2.0'"));await newer.fire('install');const old=await newer.caches.open('wild-explorer-3.1.0');await old.delete('./app.js?v=3.1.0');
-  await newer.fire('message',{data:{type:'PREPARE_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,false);assert.match(reply.error,/different game release/);assert.equal(await old.match('./app.js?v=3.1.0'),undefined);
-  const offline=harness();await offline.fire('install');const incomplete=await offline.caches.open('wild-explorer-3.1.0');await incomplete.delete('./postcards.js?v=3.1.0');offline.offline();
+  const newer=harness(false,script.replace("const VERSION = '3.2.0'", "const VERSION = '3.3.0'"));await newer.fire('install');const old=await newer.caches.open('wild-explorer-3.2.0');await old.delete('./app.js?v=3.2.0');
+  await newer.fire('message',{data:{type:'PREPARE_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,false);assert.match(reply.error,/different game release/);assert.equal(await old.match('./app.js?v=3.2.0'),undefined);
+  const offline=harness();await offline.fire('install');const incomplete=await offline.caches.open('wild-explorer-3.2.0');await incomplete.delete('./postcards.js?v=3.2.0');offline.offline();
   await offline.fire('message',{data:{type:'PREPARE_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,false);assert.match(reply.error,/offline/);
 });
 console.log(`\n${passed} service-worker groups passed. These are mocks; an installed browser worker still needs end-to-end QA.`);

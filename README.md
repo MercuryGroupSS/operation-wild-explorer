@@ -1,15 +1,27 @@
 # Operation Wild Explorer
 
-A bright, mobile-first family nature RPG for two adults and three young children. Five customizable heroes share lifetime XP, five story chapters and a family base camp. Deterministic, bundled content runs without accounts, APIs, telemetry or runtime dependencies.
+A bright, mobile-first family nature RPG for two adults and three young children. Start with five customizable heroes and add players in Heroes. The whole team shares lifetime XP, five story chapters and a family base camp. Deterministic, bundled content runs without accounts, APIs, telemetry or runtime dependencies.
 
 Production: https://operation-wild-explorer.netlify.app
 Netlify project: `142205d8-6800-49d7-996f-5e0ee5094ee7`
 
-## Release 3.1.0: little night explorers
+## Release 3.2.0: more explorers, real little adventures
 
-Choose **Halloween night adventures** on Play, then **Cozy house**, **Neighbourhood walk**, or **Nearby trail**. Each setting has a separate, resumable story; return to the daytime expedition or original ten-crystal hunt at any time. All modes share the same five heroes, lifetime XP, earned camp crystals and private memories.
+Activities across Halloween, daytime and the classic hunt now lead to something children actually make, notice, compare or do. The fantasy stays in the story and rewards. Stable card IDs, clue positions, saved progress and all existing modes are retained.
 
-- 45 friendly night challenges, with 25 eligible per setting, filtered again on swaps and saved-game reloads. Every card has a no-equipment seated/indoor alternative.
+- Add players in Heroes, with names, adult/child choice and independent appearance. The creation screen supports up to 24 players; existing larger imported teams are retained.
+- Every explorer automatically wears a friendly wizard, ghost, pumpkin or bat costume in Halloween mode. Costume choices are separate from daytime outfits, which return when switching back.
+- Indoor Halloween examples include folded paper wizard hats, short loose seated capes, low cushion palaces, tiny folded storybooks and a real shadow-size experiment.
+- Use household materials already available, with no purchases needed. Simpler seated options, child-directed grown-up help and no-material alternatives keep everyone involved. Outdoor activities need no craft supplies or collecting.
+- Grown-ups handle any cutting and fit costumes safely: clear faces, no neck ties, short fabric removed before moving, no candles or climbing.
+- “Make & tell” is the visible label for creative activity cards; saved category values remain compatible.
+- See `docs/QA-3.2.md` for the checks and device-test limits.
+
+## Halloween night adventures
+
+Choose **Halloween night adventures** on Play, then **Cozy house**, **Neighbourhood walk**, or **Nearby trail**. Each setting has a separate, resumable story; return to the daytime expedition or original ten-crystal hunt at any time. All modes share the same explorer team, lifetime XP, earned camp crystals and private memories.
+
+- 45 friendly night challenges, with 25 eligible per setting, filtered again on swaps and saved-game reloads. Every card has a simpler seated/indoor alternative, including a no-material action when craft supplies are unavailable.
 - Five little lantern chapters and a cozy pumpkin-party finale, a warm nonflashing night palette, illustrated moon/bat/pumpkin cover, a wearable Moon cape, a pretend bat companion and a pumpkin lantern for camp.
 - New night settings start with 5 gentle challenges. The planner still supports 5 / 10 / 15 and three challenge styles.
 - A grown-up readiness check before entering a night setting. Indoors stays comfortably lit; sidewalk tasks do not require road crossings or door visits; the trail requires the grown-up to verify it is open and suitable after dark. Stop in a safe place before looking at the phone. The game does not operate the phone flashlight, research routes or opening times, or attract real animals.
@@ -17,7 +29,7 @@ Choose **Halloween night adventures** on Play, then **Cozy house**, **Neighbourh
 
 ## Daytime adventures retained
 
-- A varied Find / Listen / Move / Imagine / Solve deck; adjacent categories differ and recent cards are avoided when possible.
+- A varied Find / Listen / Move / Make & tell / Solve deck; adjacent categories differ and recent cards are avoided when possible.
 - Safe alternatives for every card, swaps, breaks and a shorter ending without losing earned progress.
 - Five linked map pieces and a final ordering puzzle using the family's discoveries.
 - Scout / Listener / Detective specialties, rotating pretend lead and shared-phone play.

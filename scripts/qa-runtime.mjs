@@ -28,7 +28,7 @@ function boot(initial={},options={}){
   const navigator={onLine:true,geolocation:{getCurrentPosition:(success,error)=>{if(options.deferGPS)options.gpsCallback={success,error};else error({code:1});}}};
   const context={console,Date:ClockDate,Math,JSON,Number,String,Object,Array,Set,Map,Boolean,Promise,RegExp,URL:{createObjectURL:b=>{downloads.push(b);return 'blob:synthetic';},revokeObjectURL(){}},Blob,localStorage,navigator,document,setTimeout:()=>1,clearTimeout(){},WildPostcards:{},FormData:class{constructor(form){this.data=form.fields||{};}entries(){return Object.entries(this.data);}}};
   context.window=context;context.WildEngine=E;context.WildClassic=require('../public/classic.js');context.isSecureContext=true;context.matchMedia=()=>({matches:false});context.addEventListener=(type,fn)=>windowEvents[type]=fn;context.scrollTo=()=>{};
-  const hooks=`\nObject.assign(globalThis,{__qa:{getState:()=>state,setState:v=>{state=normalise(v);},save,renderAll,renderQuest,renderTreasure,renderPostcards,openBuilder,openHero,startPlannedOuting,completeChallenge,claimCrystal,openFinishEarly,readQuest,requestGPS,openSettings,exportSave,openPostcard,getLocation:()=>locationFix,normalise}});\n`;
+  const hooks=`\nObject.assign(globalThis,{__qa:{getState:()=>state,setState:v=>{state=normalise(v);},save,renderAll,renderQuest,renderTreasure,renderPostcards,openBuilder,openHero,startPlannedOuting,completeChallenge,claimCrystal,openFinishEarly,readQuest,requestGPS,openSettings,exportSave,openPostcard,getLocation:()=>locationFix,normalise,avatar}});\n`;
   const code=app.slice(0,app.lastIndexOf('})();'))+hooks+app.slice(app.lastIndexOf('})();'));
   vm.runInNewContext(code,context,{filename:'app.js'});
   const click=(action,value,extra={})=>{const button=new Element();button.parentElement=new Element();button.dataset={action,value,...extra};events.click({target:{closest:()=>button}});return button;};
@@ -145,6 +145,73 @@ await test('Night planner keeps context, lengths and safe alternatives; export/i
   for(let i=0;i<20;i++){q.click('swap-challenge');const c=E.getCurrentCard(q.api.getState().expedition);assert.equal(c.theme,'halloween');assert.ok(c.settings.includes('indoor'));assert.match(q.el('quest-screen').innerHTML,/safe-alternative/);}
   const c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});q.click('daylight-mode');q.api.exportSave();const backup=JSON.parse(await q.downloads.at(-1).text());assert.ok(backup.state.expedition.parkedOutings['halloween:indoor']);assert.ok(!JSON.stringify(backup).includes('data:image'));
   const restored=boot();await restored.el('import-file').listeners.change({target:{files:[{size:20000,text:async()=>JSON.stringify(backup)}],value:'synthetic'}});restored.click('restore-confirmed');assert.deepEqual(copy(restored.api.getState().expedition.parkedOutings),copy(q.api.getState().expedition.parkedOutings));
+});
+
+function addPlayer(q,name,kind='child',costume){
+  q.click('add-player');q.el('hero-name').value=name;q.el('hero-role').value='ranger';q.el('hero-specialty').value='detective';
+  q.events.change({target:{id:'hero-kind',value:kind}});
+  if(costume)q.events.change({target:{id:'hero-costume',value:costume}});
+  q.events.submit({preventDefault(){},target:{id:'hero-form'}});
+}
+function enterNight(q,setting='indoor'){
+  q.click('night-ready',setting);q.el('night-ready-check').checked=true;q.events.submit({target:{id:'night-ready-form',dataset:{setting}},preventDefault(){}});
+}
+await test('Add player stages edits, cancels safely, ignores duplicate submit and preserves existing progress',()=>{
+  const q=boot({wildExplorerSaveV2:JSON.stringify(fixture)}),before=copy(q.api.getState());
+  q.click('add-player');q.click('add-player');q.el('hero-name').value='Never saved';q.click('close-sheet');
+  q.events.submit({preventDefault(){},target:{id:'hero-form'}});assert.deepEqual(copy(q.api.getState()),before);
+  q.click('add-player');q.el('hero-name').value='  ';q.events.submit({preventDefault(){},target:{id:'hero-form'}});assert.deepEqual(copy(q.api.getState()),before);assert.match(q.el('toast').textContent,/name first/);
+  addPlayer(q,'QA New grown-up','adult','ghost');const added=copy(q.api.getState());
+  assert.equal(added.names.length,6);assert.deepEqual(added.names.slice(0,5),before.names);assert.equal(added.leader,before.leader);assert.equal(added.heroKinds[5],'adult');assert.equal(added.costumes[5],'ghost');assert.equal(added.specialties[5],'detective');
+  for(const key of ['xp','classic','expedition','journal'])assert.deepEqual(added[key],before[key],key);
+  q.events.submit({preventDefault(){},target:{id:'hero-form'}});assert.deepEqual(copy(q.api.getState()),added);
+  q.api.openHero(5);q.el('hero-name').value='QA Sixth edited';q.el('hero-role').value='wizard';q.el('hero-specialty').value='listener';q.click('swatch','3',{kind:'skin'});q.events.submit({preventDefault(){},target:{id:'hero-form'}});
+  const saved=q.api.getState();assert.equal(saved.names[5],'QA Sixth edited');assert.equal(saved.roles[5],'wizard');assert.equal(saved.looks[5].skin,3);assert.equal(saved.leader,5);assert.equal(saved.heroIds[5],added.heroIds[5]);assert.deepEqual(copy(boot(Object.fromEntries(q.store)).api.getState()),copy(saved));
+});
+await test('24-player creation guard is explicit and larger imported rosters are never truncated',async()=>{
+  const q=boot();for(let i=5;i<24;i++)addPlayer(q,`QA Hero ${i+1}`,i%2?'adult':'child');
+  const s=copy(q.api.getState());assert.equal(s.names.length,24);assert.equal(new Set(s.heroIds).size,24);assert.match(q.el('heroes-screen').innerHTML,/Add up to 24/);
+  q.click('add-player');assert.deepEqual(copy(q.api.getState()),s);assert.match(q.el('toast').textContent,/up to 24/);
+  const large={...s,names:Array.from({length:30},(_,i)=>`QA Imported ${i+1}`),leader:29};
+  const p=boot({wildExplorerSaveV2:JSON.stringify(large)});assert.equal(p.api.getState().names.length,30);assert.equal(p.api.getState().leader,29);assert.equal(p.api.getState().looks.length,30);assert.equal(new Set(p.api.getState().heroIds).size,30);assert.match(p.el('heroes-screen').innerHTML,/larger saved team is kept/);
+  p.api.exportSave();const backup=JSON.parse(await p.downloads.at(-1).text());const restored=boot();await restored.el('import-file').listeners.change({target:{files:[{size:30000,text:async()=>JSON.stringify(backup)}],value:'synthetic'}});restored.click('restore-confirmed');assert.deepEqual(copy(restored.api.getState()),copy(p.api.getState()));assert.deepEqual(copy(boot(Object.fromEntries(p.store)).api.getState()),copy(p.api.getState()));
+});
+await test('Legacy roster migration repairs duplicate or unsafe IDs without changing valid identities',()=>{
+  const raw={...fixture,names:[...fixture.names,'QA F','QA G','QA H'],heroIds:['player-2','player-2','player-1','safe-custom','<unsafe>','player-8',null,'safe-tail'],costumes:['ghost','__proto__','bat'],heroKinds:['adult','child','adult']};
+  const q=boot({wildExplorerSaveV2:JSON.stringify(raw)}),s=copy(q.api.getState());assert.equal(s.heroIds.length,8);assert.equal(new Set(s.heroIds).size,8);assert.equal(s.heroIds[0],'player-2');assert.equal(s.heroIds[2],'player-1');assert.equal(s.heroIds[3],'safe-custom');assert.equal(s.heroIds[5],'player-8');assert.equal(s.heroIds[7],'safe-tail');assert.ok(s.heroIds.every(id=>/^[A-Za-z0-9_-]{1,64}$/.test(id)));assert.equal(s.costumes[0],'ghost');assert.equal(s.costumes[1],'ghost');assert.equal(s.costumes[2],'bat');
+  assert.deepEqual(copy(q.api.normalise(s)),s);assert.deepEqual(copy(boot(Object.fromEntries(q.store)).api.getState()),s);
+  const fallback=boot({wildExplorerSaveV2:'{bad',wildExplorerSave:q.store.get('wildExplorerSave')}).api.getState();
+  for(const key of ['names','heroIds','heroKinds','costumes','looks','specialties','leader'])assert.deepEqual(copy(fallback[key]),s[key],key);
+});
+await test('Manual, varied and classic leadership rotate through every added player',()=>{
+  const q=boot();for(let i=5;i<8;i++)addPlayer(q,`QA Extra ${i}`);
+  const start=q.api.getState().leader,seen=new Set();for(let i=0;i<8;i++){seen.add(q.api.getState().leader);q.click('pass-lead');}assert.equal(seen.size,8);assert.equal(q.api.getState().leader,start);
+  const checkRotation=()=>{const s=q.api.getState(),c=E.getCurrentCard(s.expedition),lead=s.leader;q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});assert.equal(q.api.getState().leader,(lead+1)%8);q.advance();};
+  q.api.getState().leader=7;checkRotation();q.api.getState().leader=5;checkRotation();
+  q.click('classic-mode');q.api.getState().leader=7;q.click('classic-check','0',{chapter:'0'});assert.equal(q.api.getState().leader,0);q.advance();q.api.getState().leader=5;q.click('classic-check','1',{chapter:'0'});assert.equal(q.api.getState().leader,6);
+});
+await test('Every avatar wears a Halloween costume including new players; daytime looks return unchanged',()=>{
+  const q=boot({wildExplorerSaveV2:JSON.stringify(fixture)});addPlayer(q,'QA Sixth','adult','ghost');addPlayer(q,'QA Seventh','child','wizard');
+  const day=copy(q.api.getState()),dayArtwork=day.names.map((_,i)=>q.api.avatar(i).replace(/hero-\d+/g,'hero-ID'));
+  for(const setting of E.NIGHT_SETTINGS){
+    enterNight(q,setting);const s=q.api.getState();
+    assert.equal((q.el('heroes-screen').innerHTML.match(/data-costume="(wizard|ghost|pumpkin|bat)"/g)||[]).length,7);
+    assert.equal((q.el('home-screen').innerHTML.match(/data-costume="(wizard|ghost|pumpkin|bat)"/g)||[]).length,7);
+    assert.match(q.el('quest-screen').innerHTML,/data-costume="(wizard|ghost|pumpkin|bat)"/);
+    for(let i=0;i<7;i++){q.api.openHero(i);assert.ok(q.el('sheet-content').innerHTML.includes(`data-costume="${s.costumes[i]}"`));q.click('close-sheet');}
+    for(const key of ['names','heroIds','heroKinds','looks','roles','xp','journal'])assert.deepEqual(copy(s[key]),day[key],key);
+    q.click('daylight-mode');assert.deepEqual(day.names.map((_,i)=>q.api.avatar(i).replace(/hero-\d+/g,'hero-ID')),dayArtwork);
+  }
+  enterNight(q);addPlayer(q,'QA Added at night','child','bat');assert.match(q.el('heroes-screen').innerHTML,/QA Added at night/);assert.equal(q.api.getState().costumes[7],'bat');assert.equal((q.el('home-screen').innerHTML.match(/data-costume="(wizard|ghost|pumpkin|bat)"/g)||[]).length,8);
+  q.api.openHero(7);q.events.change({target:{id:'hero-costume',value:'ghost'}});assert.match(q.el('avatar-preview').innerHTML,/data-costume="ghost"/);q.el('hero-name').value='QA Added at night';q.el('hero-role').value='ranger';q.el('hero-specialty').value='scout';q.events.submit({target:{id:'hero-form'},preventDefault(){}});assert.equal(q.api.getState().costumes[7],'ghost');
+  q.click('classic-mode');assert.equal((q.el('heroes-screen').innerHTML.match(/data-costume="daylight"/g)||[]).length,8);assert.deepEqual(copy(q.api.getState().looks.slice(0,7)),day.looks);
+});
+await test('Completed postcards keep every roster name through save, reload and HTML export',()=>{
+  const q=boot();for(let i=5;i<12;i++)addPlayer(q,`QA Postcard ${i+1}`);
+  const c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});q.click('finish-confirmed');
+  const s=q.api.getState();assert.equal(s.expedition.postcards[0].heroes.length,12);
+  const reloaded=boot(Object.fromEntries(q.store)).api.getState();assert.deepEqual(copy(reloaded.expedition.postcards[0].heroes),copy(s.names));
+  const html=require('../public/postcards.js').renderPreview(reloaded.expedition.postcards[0],[]);for(const name of s.names)assert.ok(html.includes(name),name);
 });
 console.log(`\nRuntime integration: ${passed} passed, ${failed} failed. DOM stubs do not validate visual layout, browser events, IndexedDB or real service workers.`);
 if(failed)process.exitCode=1;

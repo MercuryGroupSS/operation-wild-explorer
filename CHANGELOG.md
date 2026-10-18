@@ -1,3 +1,14 @@
+# Changelog
+
+## 3.2.0 — More players, Halloween costumes and hands-on adventures
+
+- Add players with persistent identities, adult/child choice and expandable mobile roster.
+- Automatically dress every explorer in a friendly Halloween outfit; keep separate daytime looks and per-player costume choices.
+- Replace imagination-only activities and alternatives across Halloween, daytime and classic hunts with real making, observation, comparison and family actions.
+- Add practical household-material costume, palace, storybook and shadow activities, with grown-up help and simple accessible alternatives.
+- Preserve card IDs, eligibility, clue positions, rewards, saved progress and all story modes.
+- Synchronize app/service-worker/cache versions; retain the same public site and save keys.
+
 ## 3.1.0 — 2026-10-18
 
 - Add friendly Halloween/night adventures for a lit indoor space, a grown-up-led neighbourhood walk, and an adult-verified open/safe nighttime trail.
@@ -6,7 +17,7 @@
 - Include readiness checks, comfortable-light and flashlight guidance, indoor/seated alternatives, no-screen-while-walking reminders and no GPS route assumptions.
 - Extend engine, runtime, save migration and offline-asset tests. Physical-device and disconnected-browser checks are reported separately.
 
-# Changelog
+
 
 ## 3.0.2
 

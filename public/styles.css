@@ -17,3 +17,7 @@
 
 .night-theme .hero-card .hero-selected{color:#48321d}.night-theme .settings-row{border-color:#57546b}.night-theme .story-map .map-stop.locked .node{color:#e3dce5;background:#484c66;border-color:#7a7588}.night-theme .brand img{filter:none}
 .night-theme .status-line span,.night-theme .journal-note header time{color:#d8d1e3}.night-theme .skip{background:#252c44;color:#ffe1a2;border:2px solid #ffe1a2}
+
+/* 3.2: larger rosters wrap instead of shrinking or hiding extra players. */
+.party-row{grid-template-columns:repeat(auto-fit,minmax(52px,1fr));row-gap:10px}.party-member{max-width:110px}.team-heading{flex-wrap:wrap}.team-heading h2{min-width:0}.roster-count{margin:10px 0 18px}.hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-copy{min-width:0}.hero-card .costume-label{font-weight:750;line-height:1.4;margin-top:7px}.hero-card .hero-type{max-width:calc(100% - 40px);overflow-wrap:anywhere}.hero-preview .power{min-width:0}.hero-preview .power b,.lead-banner b{overflow-wrap:anywhere}
+@media(max-width:359px){.party-row{grid-template-columns:repeat(4,minmax(0,1fr))}.hero-card .hero-type{font-size:8px}.hero-card .hero-stage{height:150px}.hero-card .hero-stage svg{height:145px}}
