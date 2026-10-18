@@ -313,6 +313,7 @@
     $('sheet-content').innerHTML=content;
     if(!dialog.open)dialog.showModal();
     dialog.scrollTop=0;
+    dialog.querySelector('button, input, select, textarea')?.focus({preventScroll:true});
   }
   const sheetHeader=title=>`<div class="sheet-top"><h2 id="sheet-title">${esc(title)}</h2><button data-action="close-sheet" aria-label="Close">${icon('close')}</button></div>`;
   function closeSheet(){const dialog=$('sheet');if(dialog.open)dialog.close();}

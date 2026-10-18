@@ -26,3 +26,16 @@ Static/source review and DOM stubs do not prove visual layout, real focus behavi
 ## Release verification
 
 Final preview and production verification are recorded with the release handoff. The public site remains the existing https://operation-wild-explorer.netlify.app origin. Existing installations should accept **Update game** when ready; do not clear site data.
+
+### Cloud Chromium preview observations
+
+Preview `6ad4fefd1ee9a04487fb1a64`, commit `73f9281c8a2c09b3192ee783b259ac1193edc38a`:
+
+- Real checkbox validation blocked an unchecked indoor start. All three context safety panels and their context-specific text were inspected; night map excludes daytime location/GPS controls.
+- Real indoor challenge completion and crystal claim awarded 60 XP and one crystal. Switching through neighbourhood/trail/daytime and reloading preserved the shared XP and the saved indoor second chapter.
+- Night artwork, challenge card, home and picker were visually inspected using full native-window screenshots. Desktop zoom at 200% produced measured CSS viewports of 320×418 and 390×418; home/picker had no horizontal overflow. These are narrow/enlarged-text browser checks, not physical phone emulation.
+- Native window resizing produced an 844×390 landscape CSS viewport. All five screens were opened and had no document overflow (829px content width). Home and navigation were visually inspected.
+- The installed preview service worker verified all current offline assets via the real app UI. This is cache verification, not a disconnected-network reload claim.
+- A focus omission when replacing an already-open modal was found: focus fell to the document after choosing a setting. The final follow-up commit explicitly focuses the new modal’s first control and preserves the original return target.
+
+Physical iPhone/Safari, real 390×844/320×740 phone heights, real disconnected startup, a staged installed-worker update, and on-device photo/GPS flows remain unverified.
