@@ -1,0 +1,388 @@
+/* Operation Wild Explorer 2.0.0 — static, camera-free, mobile-first.
+   No API keys, analytics, remote scripts, or location uploads.
+   New saves migrate from and mirror the original wildExplorerSave key. */
+'use strict';
+(() => {
+  const VERSION = '2.0.0';
+  const SAVE_KEY = 'wildExplorerSaveV2';
+  const OLD_KEY = 'wildExplorerSave';
+  const $ = id => document.getElementById(id);
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const clean = (value, limit = 80) => typeof value === 'string' ? value.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, limit) : '';
+  const clampInt = (value, min, max, fallback = min) => Number.isFinite(Number(value)) ? Math.max(min, Math.min(max, Math.floor(Number(value)))) : fallback;
+  const ICONS = {
+    leaf:'<path d="M5 19C1 9 8 3 21 3c0 12-6 18-14 14"/><path d="m3 22 14-15M9 16l-1-6m5 2 5 1"/>',
+    home:'<path d="m3 11 9-8 9 8M5 10v11h5v-7h4v7h5V10"/>',
+    compass:'<circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5z"/>',
+    heroes:'<circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3zM17 4a3 3 0 0 1 0 6m1 4a5 5 0 0 1 4 5v2h-4"/>',
+    chest:'<path fill="#d7a559" d="M3 10V8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2Z"/><path fill="#e8bd73" d="M3 10h18v10H3z"/><path d="M7 4v6m10-6v6M3 15h6m6 0h6"/><path fill="#fff2aa" d="M9 12h6v6H9z"/>',
+    map:'<path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2zm6-2v16m6-14v16"/><path d="m6 10 2 1m4-1 2 1m4-1 1-1"/>',
+    star:'<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.2L5.8 21 7 14.2 2 9.3l6.9-1z"/>',
+    settings:'<path d="m9 2-1 3-3 1-2 3 2 3-1 3 2 3 3 1 2 3 3-1 1-3 3-1 2-3-2-3 1-3-2-3-3-1-2-2z"/><circle cx="12" cy="12" r="3.5"/>',
+    play:'<path fill="currentColor" stroke="none" d="M6 3.5c0-1 1-1.5 1.9-1L21 11a1.2 1.2 0 0 1 0 2L7.9 21.5c-.9.5-1.9 0-1.9-1z"/>',
+    pin:'<path d="M19 9c0 5-7 12-7 12S5 14 5 9a7 7 0 0 1 14 0z"/><circle cx="12" cy="9" r="2"/>',
+    sound:'<path d="M3 9h4l5-5v16l-5-5H3zm13-3a8 8 0 0 1 0 12m3-15a12 12 0 0 1 0 18"/>',
+    arrow:'<path d="M4 12h15m-6-6 6 6-6 6"/>',
+    check:'<path d="m5 12 4 4L19 6"/>',
+    close:'<path d="m6 6 12 12M6 18 18 6"/>',
+    lock:'<rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V6a4 4 0 0 1 8 0v4m-4 5v2"/>',
+    stone:'<path fill="#a9b8bb" d="m3 16 3-9 7-4 7 5 2 10-8 4z"/><path d="m6 7 8 5 6-4m-6 4v10M3 16l11-4"/>',
+    tree:'<path fill="#b2d893" d="m12 2-6 7h3l-6 7h7v6h4v-6h7l-6-7h3z"/>',
+    bird:'<path d="M3 16c9 5 18 0 16-8l3-2-5-1a5 5 0 0 0-8 4L2 7l3 6-3 3z"/><path d="m9 13 4-3m2-3h.1"/>',
+    sparkles:'<path fill="#f4cd69" d="m10 3 2 6 6 2-6 2-2 6-2-6-6-2 6-2zm10 11 1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/>',
+    refresh:'<path d="M20 8a8 8 0 0 0-14-3L3 8m0-5v5h5m-4 8a8 8 0 0 0 14 3l3-3m0 5v-5h-5"/>',
+    download:'<path d="M12 3v12m-5-5 5 5 5-5M3 16v5h18v-5"/>',
+    book:'<path d="M12 5c-3-3-7-3-10-2v16c4-1 7-1 10 2 3-3 6-3 10-2V3c-3-1-7-1-10 2zm0 0v16"/>',
+    shield:'<path d="m12 2 9 4v6c0 5-5 8-9 10-4-2-9-5-9-10V6z"/><path d="m7 12 3 3 7-7"/>'
+  };
+  const icon = (name, className='') => `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[name] || ICONS.leaf}</svg>`;
+  document.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = icon(el.dataset.icon); });
+  const PALETTE = ['#3298c5','#e77383','#58a967','#a87ace','#e1b139'];
+  const SKINS = ['#f6caa5','#e4ae80','#be865e','#885f45'];
+  const HAIR = ['#603d2b','#35322b','#a75b31','#d7a345'];
+  const ROLES = [
+    {id:'ranger',label:'Ranger',emoji:'🏹',power:'Super spotting',description:'You notice tiny details. Help the team spot shapes and colours.'},
+    {id:'guardian',label:'Guardian',emoji:'🛡️',power:'Team togetherness',description:'You help everyone feel brave. Keep your explorer team together.'},
+    {id:'whisperer',label:'Animal Whisperer',emoji:'🦊',power:'Quiet listening',description:'Your quiet ears discover forest sounds. Watch animals from far away.'},
+    {id:'wizard',label:'Nature Wizard',emoji:'🧙',power:'Wonder magic',description:'You turn ordinary discoveries into extraordinary stories.'},
+    {id:'hunter',label:'Treasure Hunter',emoji:'💎',power:'Colour finding',description:'You find nature’s colourful clues. The crystals are pretend treasure!'}
+  ];
+  const ROLE = value => ROLES.find(r => r.id === value || String(value).includes(r.label)) || ROLES[0];
+  const MISSIONS = [
+    {id:'emerald',title:'The Emerald Crystal',short:'Forest colours',icon:'leaf',colour:'#36b879',light:'#8ff2ac',dark:'#117459',xp:60,gem:'💚 Emerald Crystal',
+      story:'Our first crystal is sleeping! Three forest colours will wake it up. Look with your eyes and point from the path.',
+      tasks:[['Spot something green','Spot a green leaf on a tree','Point to any colour you can see'],['Spot yellow or orange','Look for a yellow or orange leaf','Find something lighter than a tree trunk'],['Spot something brown','Look for a brown tree trunk','Find a darker colour in nature']],
+      symbols:['🍃','🍂','🪵'],celebrate:'Your colour-finding magic woke up the Emerald Crystal!'},
+    {id:'stone',title:'The Ancient Stone Kingdom',short:'Stone shapes',icon:'stone',colour:'#9874d6',light:'#d4b8ff',dark:'#684697',xp:80,gem:'💜 Stone Crystal',
+      story:'A gentle stone giant has a riddle. Find shapes and patterns you can see safely from the path. No picking up rocks or climbing!',
+      tasks:[['Spot a rock with a pattern','Find a patterned tree trunk','Look for something with stripes or spots'],['Find a round-looking stone','Find a round shape in nature','Make a pretend round stone with your hands'],['Point to a rock bigger than your shoe','Find a tree trunk wider than your shoe','Make a big shape with your arms']],
+      symbols:['🪨','⭕','👟'],celebrate:'You solved the stone giant’s riddle. The Stone Crystal is yours!'},
+    {id:'sound',title:'The Whispering Woodland',short:'Forest sounds',icon:'bird',colour:'#eaba31',light:'#fff096',dark:'#a27812',xp:80,gem:'💛 Sound Crystal',
+      story:'Shhh… the forest has a message. Stand safely beside a grown-up, use your listening ears, and keep your eyes open.',
+      tasks:[['Listen for a bird call','Listen for any quiet outdoor sound','Make a tiny pretend bird sound'],['Listen for rustling leaves','Listen to the breeze','Listen to your own gentle footsteps'],['Listen quietly for 10 seconds','Count to five together in whispers','Name one sound you heard today']],
+      symbols:['🐦','🍃','👂'],celebrate:'Your super listening unlocked the shimmering Sound Crystal!'},
+    {id:'sky',title:'The Escarpment Lookout',short:'Treetop wonders',icon:'tree',colour:'#329dcd',light:'#97eaff',dark:'#2469a0',xp:100,gem:'💙 Sky Crystal',
+      story:'Our lookout is right here on the safe path! Look for tall trees and funny branch shapes. No stairs, edges, or climbing needed.',
+      tasks:[['Spot a tree taller than a house','Find the tallest tree you can see','Stretch up tall like a tree'],['Find interesting tree bark','Find a tree with two colours','Look for a bumpy pattern in nature'],['Spot a branch shaped like a letter','Find a branch that makes a Y','Make a Y with your arms']],
+      symbols:['🌳','🔍','🙌'],celebrate:'Your wonderful noticing brought the Sky Crystal back to life!'},
+    {id:'guardian',title:'The Guardian’s Final Spell',short:'Our magic finale',icon:'sparkles',colour:'#ed967b',light:'#ffdf9e',dark:'#b75c8d',xp:120,gem:'🌈 Guardian Crystal',
+      story:'One final crystal needs all five heroes! Share your favourite discoveries and give the forest a friendly thank-you.',
+      tasks:[['Everyone shares a favourite find','Everyone points to something they like','Each explorer chooses a favourite colour'],['Count five trees together','Count five leaves without picking them','Hold up five fingers for your five heroes'],['Give the forest a thank-you wave','Give your team a gentle high-five','Say a quiet thank-you to the forest']],
+      symbols:['💬','🌳','👋'],celebrate:'All five crystals are home! Your family are the new Forest Guardians.'}
+  ];
+  const CATEGORIES = {
+    leaf:{emoji:'🍃',label:'Leaf',idea:'Imagine a tiny forest dragon lives under that leaf. What colour would its wings be?'},
+    bird:{emoji:'🐦',label:'Bird',idea:'Watch from a distance. Can your team make up a whispery name for the bird’s song?'},
+    stone:{emoji:'🪨',label:'Rock',idea:'Leave the rock where it is. Does its shape remind you of a sleeping giant?'},
+    bug:{emoji:'🐞',label:'Bug',idea:'Give the little bug lots of space. Imagine it is a royal messenger—what is its message?'},
+    tree:{emoji:'🌳',label:'Tree',idea:'This could be the Forest Guardian’s home! What friendly name would you give the tree?'},
+    sound:{emoji:'👂',label:'Sound',idea:'Make up a quiet story about that sound. Was it a secret forest hello?'},
+    flower:{emoji:'🌼',label:'Flower',idea:'Leave the flower growing. Imagine it is a tiny lantern. What colour does it glow?'},
+    other:{emoji:'✨',label:'Wonder',idea:'What could this discovery become in our magical story? Share one silly idea each!'}
+  };
+  const freshState = () => ({version:2,index:0,checks:[false,false,false],variants:[0,0,0],xp:0,gems:[],
+    names:['Adult 1','Adult 2','Child 1','Child 2','Child 3'],roles:ROLES.map(r=>r.id),
+    looks:[{skin:1,hair:0,colour:0,long:false},{skin:2,hair:1,colour:1,long:true},{skin:0,hair:0,colour:2,long:false},{skin:2,hair:1,colour:3,long:true},{skin:1,hair:2,colour:4,long:false}],
+    leader:2,park:'Chedoke Radial Recreational Trail',start:'120 Beddoe Dr, Hamilton',journal:[],settings:{sound:false,motion:true}});
+  function normalise(raw) {
+    const d=freshState();
+    if(!raw || typeof raw !== 'object' || Array.isArray(raw)) return d;
+    d.index=clampInt(raw.index,0,5); d.xp=clampInt(raw.xp,0,1000000);
+    d.checks=[0,1,2].map(i=>raw.checks?.[i] === true); if(d.index===5) d.checks=[false,false,false];
+    d.variants=[0,1,2].map(i=>clampInt(raw.variants?.[i],0,2));
+    d.gems=MISSIONS.slice(0,d.index).map(m=>m.gem);
+    d.names=d.names.map((name,i)=>clean(raw.names?.[i],24)||name);
+    d.roles=d.roles.map((role,i)=>raw.roles?.[i] ? ROLE(raw.roles[i]).id : role);
+    d.looks=d.looks.map((look,i)=>{const r=raw.looks?.[i];return r && typeof r==='object'?{skin:clampInt(r.skin,0,3,look.skin),hair:clampInt(r.hair,0,3,look.hair),colour:clampInt(r.colour,0,4,look.colour),long:typeof r.long==='boolean'?r.long:look.long}:look;});
+    d.leader=clampInt(raw.leader,0,4,2);
+    d.park=clean(raw.park,100)||d.park;d.start=clean(raw.start,120)||d.start;
+    d.settings={sound:raw.settings?.sound===true,motion:raw.settings?.motion!==false};
+    if(Array.isArray(raw.journal)) d.journal=raw.journal.slice(-150).filter(e=>e&&typeof e==='object'&&CATEGORIES[e.category]&&clean(e.note,280)).map(e=>({category:e.category,note:clean(e.note,280),at:Number.isFinite(new Date(e.at).getTime())?new Date(e.at).toISOString():new Date().toISOString()}));
+    return d;
+  }
+  let saveIssue='', importedLegacy=false;
+  function loadState(){
+    try{
+      for(const key of [SAVE_KEY,OLD_KEY]){
+        const raw=localStorage.getItem(key);if(!raw)continue;
+        try{const parsed=JSON.parse(raw);if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed)){importedLegacy=key===OLD_KEY;return normalise(parsed);}}catch{/* Try the original save next, without destroying the unreadable copy. */}
+      }
+    }catch{saveIssue='This browser is blocking saved progress. You can play, but use Settings → Export backup before closing.';}
+    return freshState();
+  }
+  let state=loadState();
+  function showSaveIssue(){const el=$('save-warning');el.textContent=saveIssue;el.hidden=!saveIssue;}
+  function save(){
+    try{
+      localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+      // Mirror only the fields the original release understands.
+      localStorage.setItem(OLD_KEY,JSON.stringify({index:state.index,checks:state.checks,xp:state.xp,gems:state.gems,names:state.names,roles:state.roles.map(r=>ROLE(r).emoji+' '+ROLE(r).label),park:state.park,start:state.start}));
+      saveIssue='';
+    }catch{saveIssue='Progress could not be saved on this device. Use Settings → Export backup before closing the game.';}
+    showSaveIssue();
+  }
+  let activeTab='home', treasureTab='crystals', toastTimer=null, audioContext=null, sheetReturn=null, draftHero=null, speechActive=false;
+  let locationFix=null,gpsBusy=false,gpsError='',gpsRequestId=0,swRegistration=null;
+  let uid=0;
+  const currentMission=()=>MISSIONS[Math.min(state.index,4)];
+  const taskText=i=>currentMission().tasks[i][state.variants[i]||0];
+  const isChedoke=()=>/chedoke/i.test(state.park);
+  const storyTitle=()=>isChedoke()?'THE LOST CRYSTALS OF CHEDOKE':'THE LOST FOREST CRYSTALS';
+  const fox = () => `<svg class="fox" viewBox="0 0 100 108" aria-hidden="true"><path d="M15 66 7 11l31 19c12-5 21-5 31 0l24-19-6 55c3 24-18 34-37 38C25 99 9 88 15 66Z" fill="#e9974c" stroke="#a86737" stroke-width="3" stroke-linejoin="round"/><path d="m15 22 7 31 15-17Zm69 0-6 31-14-17Z" fill="#753f31"/><path d="M15 66c9-10 26-3 35 8 12-14 27-16 36-8 3 17-17 31-36 37C27 97 13 84 15 66" fill="#fff4d7"/><ellipse cx="31" cy="58" rx="5" ry="6" fill="#324333"/><ellipse cx="68" cy="58" rx="5" ry="6" fill="#324333"/><circle cx="32" cy="56" r="1.5" fill="white"/><circle cx="69" cy="56" r="1.5" fill="white"/><path d="M43 75q7-6 14 0l-7 8Z" fill="#364535"/><path d="M50 81v7m-8-1q8 8 16 0" fill="none" stroke="#694b35" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="26" cy="70" rx="6" ry="3" fill="#eeb187"/><ellipse cx="74" cy="70" rx="6" ry="3" fill="#eeb187"/></svg>`;
+  function gem(m,className=''){
+    const id='gem-'+(++uid);return `<svg class="${className}" viewBox="0 0 80 128" role="img" aria-label="${esc(m.gem.replace(/^[^A-Za-z]+/,''))}"><defs><linearGradient id="${id}" x2="1" y2="1"><stop stop-color="${m.light}"/><stop offset=".55" stop-color="${m.colour}"/><stop offset="1" stop-color="${m.dark}"/></linearGradient></defs><path d="M40 4 68 33 65 88 40 123 15 88 12 33Z" fill="url(#${id})" stroke="${m.dark}" stroke-width="3" stroke-linejoin="round"/><path d="M40 4 29 37 40 123 51 37Z" fill="${m.light}" opacity=".65"/><path d="m12 33 17 4 11 86-25-35Z" fill="${m.dark}" opacity=".45"/><path d="m51 37 17-4-3 55-25 35Z" fill="${m.dark}" opacity=".75"/><path d="m40 4 11 33 17-4Z" fill="${m.light}" opacity=".5"/><path d="m12 33 17 4 22 0 17-4M29 37l11-33M51 37 40 123" fill="none" stroke="white" stroke-opacity=".35" stroke-width="1.5"/><path d="m25 29 9-13-4 20Z" fill="white" opacity=".9"/></svg>`;
+  }
+  function avatar(index,look=state.looks[index]){
+    const adult=index<2, colour=PALETTE[look.colour],skin=SKINS[look.skin],hair=HAIR[look.hair];
+    const id='hero-'+(++uid),stroke='#3e5141';
+    const bodyY=adult?144:150, footY=adult?237:230;
+    return `<svg viewBox="0 0 180 264" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${id}-shirt" x2="0" y2="1"><stop stop-color="${colour}"/><stop offset="1" stop-color="${colour}" stop-opacity=".78"/></linearGradient><linearGradient id="${id}-skin" x2="0" y2="1"><stop stop-color="${skin}"/><stop offset="1" stop-color="${skin}"/></linearGradient></defs><g transform="${adult?'translate(0 0)':'translate(9 24) scale(.9)'}">
+    <ellipse cx="90" cy="251" rx="51" ry="7" fill="#5a744b" opacity=".16"/>
+    <path d="M56 147q-15-2-15 14v36q1 8 13 7m70-57q16-2 16 14v36q-1 8-13 7" fill="#c48c49" stroke="${stroke}" stroke-width="3"/>
+    ${look.long?`<path d="M37 86q-5 30 0 58l-9 12q15 16 34 1h57q15 16 33-2l-9-16q9-41-5-66Z" fill="${hair}" stroke="${stroke}" stroke-width="3"/>`:''}
+    <path d="M59 ${bodyY+10} 37 ${bodyY+44}q-10 3-12-4l19-41q5-8 15 0m62 1 19 20q7 2 11-7l4-13q1-9 8-9t5 14l-4 18q-5 14-20 14l-24-19" fill="${skin}" stroke="${stroke}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M62 197 60 ${footY}h25l6-29 5 29h25l-4-40Z" fill="#627e68" stroke="${stroke}" stroke-width="3"/>
+    <path d="M60 ${footY-3}h25v13q-19 9-35 1 0-8 10-14Zm36 0h25q12 3 13 13-17 9-38 1Z" fill="#68543d" stroke="${stroke}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="m53 ${bodyY} 21-10h32l22 10-1 58q-35 14-73 0Z" fill="url(#${id}-shirt)" stroke="${stroke}" stroke-width="3"/>
+    <path d="m57 ${bodyY+1} 12 12-3 44m57-56-12 12 3 44" fill="none" stroke="#f5e7ac" stroke-width="6"/>
+    <path d="m74 134 16 16 16-16v-16H74Z" fill="${skin}" stroke="${stroke}" stroke-width="3"/><path d="m69 137 21 19 21-19-8 26-13-7-13 7Z" fill="#f4d178" stroke="${stroke}" stroke-width="2"/>
+    <path d="m89 157-3 19 7 3 2-22" fill="#e9b652" stroke="${stroke}" stroke-width="1.8"/>
+    <rect x="103" y="176" width="15" height="14" rx="3" fill="#fff0be" stroke="${stroke}" stroke-width="2"/><path d="m107 183 3 2 4-5" fill="none" stroke="#6c9154" stroke-width="2"/>
+    <ellipse cx="38" cy="96" rx="12" ry="15" fill="${skin}" stroke="${stroke}" stroke-width="3"/><ellipse cx="142" cy="96" rx="12" ry="15" fill="${skin}" stroke="${stroke}" stroke-width="3"/>
+    <path d="M39 73q2-40 51-40t51 40v33q-1 37-51 39-49-2-51-39Z" fill="url(#${id}-skin)" stroke="${stroke}" stroke-width="3"/>
+    <path d="M38 85Q23 37 65 31q59-17 79 27l-2 31-10-26q-10 0-22-17-23 32-49 21l-19 27Z" fill="${hair}" stroke="${stroke}" stroke-width="2.5"/>
+    <path d="M57 83q9-6 18-1m30 0q10-5 18 1" fill="none" stroke="${hair}" stroke-width="3.5" stroke-linecap="round"/>
+    <ellipse cx="66" cy="99" rx="12" ry="14" fill="#fffdf0"/><ellipse cx="114" cy="99" rx="12" ry="14" fill="#fffdf0"/>
+    <ellipse cx="68" cy="100" rx="7.2" ry="9" fill="#46665c"/><ellipse cx="112" cy="100" rx="7.2" ry="9" fill="#46665c"/><ellipse cx="69" cy="101" rx="4.5" ry="6.5" fill="#263c37"/><ellipse cx="111" cy="101" rx="4.5" ry="6.5" fill="#263c37"/><circle cx="70" cy="96" r="3" fill="white"/><circle cx="113" cy="96" r="3" fill="white"/>
+    <ellipse cx="50" cy="117" rx="9" ry="4.5" fill="#e88f7d" opacity=".45"/><ellipse cx="130" cy="117" rx="9" ry="4.5" fill="#e88f7d" opacity=".45"/>
+    <path d="m89 109-3 6q5 4 10 0" fill="none" stroke="#a46d4d" stroke-opacity=".65" stroke-width="2" stroke-linecap="round"/>
+    <path d="M74 122q16 6 32 0-5 17-16 17-10 0-16-17Z" fill="#864936" stroke="#684a36" stroke-width="2"/><path d="M77 123q13 4 26 0l-3 6H80Z" fill="#fffcef"/><path d="M84 135q6-5 12 0" fill="#eb9585"/>
+    ${adult&&index===0?`<path d="M44 114q13 36 45 36 35-1 48-36-5 41-47 39-43 1-46-39" fill="${hair}" opacity=".17"/>`:''}
+    <path d="M43 52 49 24q9-10 25-9l15 4 14-4q23-2 29 11l8 30Z" fill="${colour}" stroke="${stroke}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="m44 45 95 2 1 12-99-2Z" fill="#455b3d"/>
+    <path d="M25 54q-8 11 11 14 60 8 112-1 16-4 8-13-7-9-30-3-37 9-74 0-17-4-27 3Z" fill="${colour}" stroke="${stroke}" stroke-width="3"/>
+    <path d="M32 56q57 20 115 0" fill="none" stroke="#fffce2" stroke-opacity=".35" stroke-width="3"/>
+    <path d="m91 23-10 11 6-1-8 9h24l-9-9 7 1Z" fill="#fbe389" stroke="${stroke}" stroke-width="1.5"/>
+    <path d="m156 ${bodyY-18} 1 10m8-12-2 11" stroke="#ae7a53" stroke-width="1.5" stroke-linecap="round"/></g>
+    </svg>`;
+  }
+  const motionAllowed=()=>state.settings.motion&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function toast(message){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').hidden=false;toastTimer=setTimeout(()=>$('toast').hidden=true,3200);}
+  function playSound(win=false){
+    if(!state.settings.sound)return;
+    try{
+      const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;
+      audioContext ||= new Audio();
+      const play=()=>{const notes=win?[523.25,659.25,783.99,1046.5]:[659.25];const base=audioContext.currentTime;notes.forEach((freq,i)=>{const o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(0,base+i*.12);g.gain.linearRampToValueAtTime(.045,base+i*.12+.015);g.gain.exponentialRampToValueAtTime(.001,base+i*.12+.24);o.connect(g);g.connect(audioContext.destination);o.start(base+i*.12);o.stop(base+i*.12+.27);});};
+      if(audioContext.state==='suspended')audioContext.resume().then(play).catch(()=>{});else play();
+    }catch{/* Sound is optional; no game action depends on it. */}
+  }
+  function confetti(){if(!motionAllowed())return;const box=$('confetti');box.replaceChildren();['#efbf4c','#6bb765','#75bed0','#c999d4','#ed9d82'].forEach((c,k)=>{for(let i=0;i<6;i++){const el=document.createElement('i');el.style.setProperty('--piece',c);el.style.setProperty('--left',`${Math.random()*100}%`);el.style.setProperty('--delay',`${Math.random()*.35}s`);box.append(el);}});setTimeout(()=>box.replaceChildren(),2800);}
+  function readQuest(){
+    if(!('speechSynthesis'in window)){toast('Read-aloud is not available in this browser. A grown-up can read the clues.');return;}
+    if(speechActive){speechSynthesis.cancel();speechActive=false;toast('Narration stopped.');return;}
+    speechSynthesis.cancel();const m=currentMission(),say=new SpeechSynthesisUtterance(m.title+'. '+m.story+' '+[0,1,2].map(taskText).join('. ')+'. Stay with your grown-ups and leave nature as you found it.');
+    say.lang='en-CA';say.rate=.85;say.pitch=1.06;say.volume=.85;speechActive=true;
+    say.onend=()=>{speechActive=false;};say.onerror=()=>{speechActive=false;};
+    const voices=speechSynthesis.getVoices(),voice=voices.find(v=>v.lang==='en-CA')||voices.find(v=>/^en/.test(v.lang));if(voice)say.voice=voice;
+    speechSynthesis.speak(say);toast('The Guardian is reading your quest. Tap the speaker again to stop.');
+  }
+  const safetyTip=()=>`<div class="guardian-tip">${fox()}<p><b>The Guardian’s golden rule</b>Stay together on marked paths. Look, don’t pick. Grown-ups choose where to walk.</p></div>`;
+  function renderStatus(){
+    $('level-text').textContent='Family level '+(1+Math.floor(state.xp/100));$('xp-text').textContent=state.xp+' XP';
+    const percent=state.xp%100;$('xp-fill').style.width=percent+'%';$('xp-meter').setAttribute('aria-valuenow',String(percent));$('xp-meter').setAttribute('aria-valuetext',`${percent} of 100 XP towards the next level`);
+    $('gem-count').textContent=state.index+'/5';$('tiny-gem').innerHTML=gem(MISSIONS[0]);
+    document.body.classList.toggle('motion-off',!state.settings.motion);
+    showSaveIssue();
+  }
+  function partyRow(){return `<div class="party-row">${state.names.map((name,i)=>`<button class="party-member ${i===state.leader?'chosen':''}" data-action="hero" data-value="${i}" aria-label="Choose or customise ${esc(name)}, ${i<2?'adult':'child'}, ${esc(ROLE(state.roles[i]).label)}">${i===state.leader?'<span class="leader-dot" aria-label="Current leader">★</span>':''}<div class="avatar">${avatar(i)}</div><b>${esc(name)}</b></button>`).join('')}</div>`;}
+  function renderHome(){
+    const complete=state.index===5;
+    $('home-screen').innerHTML=`<div class="storybook"><div class="scene-heading"><span class="eyebrow">A LITTLE QUEST. A BIG ADVENTURE.</span><h1>${complete?'You did it,<br>forest heroes!':'Adventure is<br>calling!'}</h1></div><img class="cover-art" src="./assets/forest-friends-v2.webp" width="803" height="298" alt="Cheerful storybook forest friends in explorer hats with their playful dog"><div class="story-label">${esc(storyTitle())}</div></div>
+      <div class="location-pill">${icon('pin')}<span>${esc(state.park)}</span></div>
+      <button class="btn full" data-action="tab" data-value="${complete?'treasure':'quest'}">${icon(complete?'chest':'play')} ${complete?'See our treasure':state.index===0&&!state.checks.some(Boolean)?'Let’s explore!':'Continue our quest'} ${icon('arrow')}</button>
+      <div class="section-heading"><h2>Your little adventure team</h2><span>2 adults · 3 kids</span></div>${partyRow()}
+      <p class="muted-note">Tap a hero to choose a name, outfit, and special power.</p>
+      <div class="mini-progress" aria-label="${state.index} of 5 missions complete">${MISSIONS.map((m,i)=>`<span class="${i<state.index?'won':i===state.index?'now':''}"></span>`).join('')}</div>
+      <div class="section-heading"><h2>${complete?'All five crystals found!':'Next: '+esc(currentMission().short)}</h2><span>${complete?'Forest Guardians':'Quest '+(state.index+1)+' of 5'}</span></div>
+      ${safetyTip()}`;
+  }
+  function renderQuest(){
+    const el=$('quest-screen');
+    if(state.index>=5){el.innerHTML=`<span class="eyebrow">OUR ADVENTURE COMPLETE</span><div class="complete-scene"><div class="trophy" aria-hidden="true">🏆</div><h2>You saved the<br>enchanted forest!</h2><p>Five explorers. Five magical crystals.<br>One extraordinary family adventure.</p><div class="complete-gems">${MISSIONS.map(m=>gem(m)).join('')}</div><b>${state.xp} family XP · Forest Guardians</b></div>${partyRow()}<button class="btn gold full" data-action="tab" data-value="treasure" style="margin-top:20px">${icon('chest')} Open our treasure chest</button><button class="subtle-button wide" data-action="new-adventure">Start another adventure</button>${safetyTip()}`;return;}
+    const m=currentMission(),done=state.checks.filter(Boolean).length;
+    el.innerHTML=`<div class="quest-head"><span class="eyebrow">QUEST ${state.index+1} OF 5 · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read the quest aloud, or stop narration">${icon('sound')}</button></div><h1 class="page-title">${esc(m.title)}</h1>
+      <div class="quest-scene">${icon(m.icon,'large-symbol')}<div class="scene-hero">${avatar(state.leader)}</div><span class="reward-pill">${icon('star')} ${m.xp} XP</span></div>
+      <div class="guardian-speech">${fox()}<div class="speech"><b>The Forest Guardian</b>${esc(m.story)}</div></div>
+      <div class="task-heading">Find your three clues<span id="clue-counter">${done}/3 found</span></div><div id="quest-tasks">${[0,1,2].map(i=>`<div class="task-row ${state.checks[i]?'done':''}"><button class="task-check" data-action="check" data-value="${i}" aria-pressed="${state.checks[i]}"><span class="clue-icon" aria-hidden="true">${m.symbols[i]}</span><span class="clue-text">${esc(taskText(i))}</span><span class="tickbox" aria-hidden="true">✓</span></button><button class="swap" data-action="swap" data-value="${i}">Can’t find it? Try a different clue</button></div>`).join('')}</div>
+      <button id="claim-button" class="btn gold full quest-claim" data-action="claim" ${done!==3?'disabled':''}>${icon('sparkles')} ${done===3?'Claim crystal · +'+m.xp+' XP':'Find all 3 to unlock the crystal'}</button><p class="muted-note">Point to a discovery, then tap its clue. The whole family shares the reward!</p>
+      <button class="subtle-button wide" data-action="rest">Need a little explorer break?</button>${safetyTip()}`;
+  }
+  function renderHeroes(){
+    $('heroes-screen').innerHTML=`<span class="eyebrow">FIVE HEROES. ONE GREAT TEAM.</span><h1 class="page-title">Meet your explorers</h1><p class="intro">Everyone has a special power. Tap a character to dress them up and choose who leads the next quest.</p><div class="hero-grid">${state.names.map((name,i)=>`<button class="hero-card ${i===state.leader?'selected':''}" data-action="hero" data-value="${i}"><span class="hero-type">${i<2?'GROWN-UP':'LITTLE HERO'}</span>${i===state.leader?'<span class="hero-selected" aria-label="Current leader">★</span>':''}<div class="hero-stage">${avatar(i)}</div><div class="hero-copy"><b>${esc(name)}</b><small>${esc(ROLE(state.roles[i]).label)}</small></div></button>`).join('')}</div><div class="trophy-small"><span aria-hidden="true">🤝</span><p><b>Teamwork is our superpower.</b>All five explorers share ${state.xp} family XP. No racing, no winners and losers—just exploring together.</p></div>${safetyTip()}`;
+  }
+  function renderTreasure(){
+    const journal=treasureTab==='journal';
+    $('treasure-screen').innerHTML=`<span class="eyebrow">LITTLE WONDERS, BIG MEMORIES</span><h1 class="page-title">Our treasure chest</h1><div class="tab-switch" aria-label="Treasure collection"><button data-action="treasure-tab" data-value="crystals" aria-pressed="${!journal}">Crystals · ${state.index}/5</button><button data-action="treasure-tab" data-value="journal" aria-pressed="${journal}">Discoveries · ${state.journal.length}</button></div>
+      ${journal?renderJournal():`<div class="treasure-chest-scene">${icon('chest','big-chest')}<div><b>${state.index} magical ${state.index===1?'crystal':'crystals'}</b><small>${state.xp} family XP collected</small></div></div><div class="gem-grid">${MISSIONS.map((m,i)=>`<button class="gem-card ${i>=state.index?'locked':''}" data-action="gem" data-value="${i}" aria-label="${esc(m.gem.replace(/^[^A-Za-z]+/,''))}, ${i<state.index?'collected':'locked'}">${i<state.index?'<span class="earned" aria-hidden="true">✓</span>':''}${gem(m)}<b>${esc(m.gem.replace(/^[^A-Za-z]+/,''))}</b><small>${i<state.index?'Collected!':'Quest '+(i+1)}</small></button>`).join('')}</div><p class="muted-note">These treasures are pretend. Our real forest treasures stay in the forest.</p><button class="btn full" data-action="tab" data-value="quest">${icon(state.index===5?'star':'compass')} ${state.index===5?'See our celebration':'Back to our quest'}</button>`}`;
+  }
+  function renderJournal(){
+    return `<p class="intro">What did your family discover? Tap a picture and let a grown-up write a tiny memory.</p><div class="discovery-grid">${Object.entries(CATEGORIES).map(([key,c])=>`<button data-action="discovery" data-value="${key}"><span aria-hidden="true">${c.emoji}</span>${c.label}</button>`).join('')}</div>
+      ${state.journal.length?[...state.journal].reverse().map(e=>`<article class="journal-note"><header><span aria-hidden="true">${CATEGORIES[e.category].emoji}</span>${CATEGORIES[e.category].label}<time datetime="${esc(e.at)}">${esc(new Date(e.at).toLocaleDateString('en-CA',{month:'short',day:'numeric'}))}</time></header><p>${esc(e.note)}</p><small>Guardian’s story idea: ${esc(discoveryIdea(e.category,e.note))}</small></article>`).join(''):'<div class="empty-box"><span class="empty-icon" aria-hidden="true">📖</span>Your first forest memory belongs here.<br>Look around—what makes you smile?</div>'}
+      <p class="muted-note">Memories stay on this device. Guardian ideas are playful offline prompts, not AI species identification.</p>`;
+  }
+  function renderTrail(){
+    $('trail-screen').innerHTML=`<span class="eyebrow">OUR FIVE-CRYSTAL JOURNEY</span><h1 class="page-title">The story trail</h1><p class="intro">One magical chapter at a time. This is your <b>story map</b>, not a walking route or a map of real landmarks.</p>
+      <div class="story-map">${icon('leaf','map-leaf')}${MISSIONS.map((m,i)=>`<button class="map-stop ${i<state.index?'completed':i===state.index?'current':'locked'}" data-action="map-stop" data-value="${i}" aria-label="Quest ${i+1}: ${esc(m.short)}, ${i<state.index?'complete':i===state.index?'current':'locked'}"><span class="node">${icon(i<state.index?'check':i===state.index?m.icon:'lock')}</span><span class="map-label"><b>${esc(m.short)}</b><small>${i<state.index?'Crystal collected':i===state.index?'Your next adventure':'Complete the earlier quest to unlock'}</small></span><span class="map-arrow" aria-hidden="true">${i===state.index?'›':''}</span></button>`).join('')}</div>
+      <form id="place-form" class="panel"><h3>${icon('pin')} Our exploring spot</h3><label class="field-label" for="park-name">Park or trail</label><input class="text-field" id="park-name" name="park" value="${esc(state.park)}" maxlength="100" required><label class="field-label" for="start-point">Starting point</label><input class="text-field" id="start-point" name="start" value="${esc(state.start)}" maxlength="120"><button class="btn quiet full" type="submit" style="margin-top:14px">Save this adventure location</button><p class="small">The name personalises your story. The woodland clues are pre-written; this version doesn’t research parks or generate GPS-based quests.</p></form>
+      <section class="panel"><h3>Optional explorer GPS</h3><p class="small">Take one location reading when you ask. There is no background tracking, no stored location history, and no coordinate upload.</p><div class="gps-box" id="gps-display" role="status" aria-live="polite">${gpsDisplay()}</div><div class="gps-actions"><button class="btn blue" data-action="gps" ${gpsBusy?'disabled':''}>${icon('pin')} ${gpsBusy?'Finding you…':locationFix?'Update location':'Use my GPS'}</button><button class="btn quiet" data-action="clear-gps" ${!locationFix&&!gpsBusy?'disabled':''}>Clear</button></div><p class="small">GPS cannot tell you whether a route is safe. Follow posted signs and a grown-up’s judgement. The game works without location permission.</p></section>
+      <div class="safe-note"><b>Safe exploring at Chedoke or any park:</b> stay on marked paths, away from cliff edges, water and wildlife. Do not climb or enter closed trails to finish a mission. Swap a clue instead.</div>`;
+  }
+  function gpsDisplay(){
+    if(gpsBusy)return 'Asking your phone for a location reading…';
+    if(gpsError)return esc(gpsError);
+    if(!locationFix)return 'GPS is off. Your chosen park is all you need to play.';
+    return `<b>Location reading</b><span class="coordinates">${locationFix.lat.toFixed(5)}, ${locationFix.lon.toFixed(5)}</span>Accuracy reported by your phone: ±${Math.round(locationFix.accuracy)} m.<br>Read at ${esc(new Date(locationFix.time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}))}. This is a snapshot, not continuous tracking.`;
+  }
+  function renderAll(){renderStatus();renderHome();renderQuest();renderHeroes();renderTreasure();renderTrail();}
+  function setTab(tab){
+    if(!['home','quest','heroes','treasure','trail'].includes(tab))return;
+    if('speechSynthesis'in window)speechSynthesis.cancel();speechActive=false;
+    activeTab=tab;renderAll();
+    document.querySelectorAll('[data-screen]').forEach(el=>el.hidden=el.dataset.screen!==tab);
+    document.querySelectorAll('.bottom-nav [data-action="tab"]').forEach(el=>{if(el.dataset.value===tab)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  function openSheet(content){
+    const dialog=$('sheet');if(!dialog.open)sheetReturn=document.activeElement;
+    $('sheet-content').innerHTML=content;
+    if(!dialog.open)dialog.showModal();
+    dialog.scrollTop=0;
+  }
+  const sheetHeader=title=>`<div class="sheet-top"><h2 id="sheet-title">${esc(title)}</h2><button data-action="close-sheet" aria-label="Close">${icon('close')}</button></div>`;
+  function closeSheet(){const dialog=$('sheet');if(dialog.open)dialog.close();}
+  $('sheet').addEventListener('close',()=>{draftHero=null;const target=sheetReturn;if(target?.isConnected)target.focus({preventScroll:true});else $('settings-button').focus({preventScroll:true});});
+  $('sheet').addEventListener('click',e=>{if(e.target===$('sheet')){const r=$('sheet').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeSheet();}});
+  function openHero(index){
+    index=clampInt(index,0,4);
+    draftHero={index,name:state.names[index],role:state.roles[index],look:{...state.looks[index]}};
+    const r=ROLE(draftHero.role);
+    openSheet(sheetHeader('Choose your explorer')+`<form class="sheet-body" id="hero-form"><div class="hero-preview"><div id="avatar-preview">${avatar(index,draftHero.look)}</div><div class="power"><span class="eyebrow">${index<2?'GROWN-UP HERO':'LITTLE HERO'}</span><b id="hero-power">${esc(r.power)}</b><p id="hero-power-desc">${esc(r.description)}</p></div></div>
+      <label class="field-label" for="hero-name">Explorer name</label><input class="text-field" id="hero-name" name="name" value="${esc(draftHero.name)}" maxlength="24" autocomplete="off" required>
+      <label class="field-label" for="hero-role">Special role</label><select class="text-field" id="hero-role" name="role">${ROLES.map(role=>`<option value="${role.id}" ${draftHero.role===role.id?'selected':''}>${role.emoji} ${role.label}</option>`).join('')}</select>
+      <label class="field-label">Outfit colour</label><div class="swatch-row" id="outfit-swatches">${PALETTE.map((c,i)=>`<button type="button" data-action="swatch" data-kind="colour" data-value="${i}" style="--swatch:${c}" aria-label="${['Sky blue','Berry pink','Leaf green','Violet purple','Sunshine yellow'][i]} outfit" aria-pressed="${i===draftHero.look.colour}">${i===draftHero.look.colour?'✓':''}</button>`).join('')}</div>
+      <label class="field-label">Skin tone</label><div class="swatch-row" id="skin-swatches">${SKINS.map((c,i)=>`<button type="button" data-action="swatch" data-kind="skin" data-value="${i}" style="--swatch:${c}" aria-label="Skin tone ${i+1}" aria-pressed="${i===draftHero.look.skin}">${i===draftHero.look.skin?'✓':''}</button>`).join('')}</div>
+      <label class="field-label">Hair colour</label><div class="swatch-row" id="hair-swatches">${HAIR.map((c,i)=>`<button type="button" data-action="swatch" data-kind="hair" data-value="${i}" style="--swatch:${c}" aria-label="${['Brown','Dark brown','Auburn','Golden'][i]} hair" aria-pressed="${i===draftHero.look.hair}">${i===draftHero.look.hair?'✓':''}</button>`).join('')}</div>
+      <div class="settings-row"><div><b>Longer hair</b><small>Change your character’s look</small></div><button type="button" class="switch" role="switch" aria-label="Longer hair" aria-checked="${draftHero.look.long}" data-action="long-hair"></button></div>
+      <button class="btn full" type="submit">${icon('star')} Save & make me the leader</button><p class="helper">A grown-up still leads the real walk. Names and character choices are saved only on this device.</p></form>`);
+  }
+  function updateHeroPreview(){if(!draftHero)return;$('avatar-preview').innerHTML=avatar(draftHero.index,draftHero.look);const r=ROLE(draftHero.role);$('hero-power').textContent=r.power;$('hero-power-desc').textContent=r.description;}
+  function claimCrystal(){
+    if(state.index>=5||state.checks.length!==3||!state.checks.every(v=>v===true))return;
+    const m=MISSIONS[state.index];state.xp+=m.xp;state.gems.push(m.gem);state.index++;state.checks=[false,false,false];state.variants=[0,0,0];
+    save();renderAll();playSound(true);confetti();
+    openSheet(`<div class="sheet-top"><span class="eyebrow">CRYSTAL UNLOCKED!</span><button data-action="close-sheet" aria-label="Close reward">${icon('close')}</button></div><div class="reward-body">${gem(m,'reward-crystal')}<h2 id="sheet-title">${esc(m.gem.replace(/^[^A-Za-z]+/,''))}<br>is yours!</h2><p>${esc(m.celebrate)}</p><div class="xp-reward">${icon('star')} +${m.xp} family XP</div><button class="btn full" data-action="next-quest">${state.index===5?'Celebrate with our team':'On to our next quest'} ${icon('arrow')}</button><button class="subtle-button wide" data-action="reward-bag">Peek in our treasure chest</button></div>`);
+  }
+  function openGem(index){const m=MISSIONS[index];if(!m)return;if(index>=state.index){toast(`Finish quest ${index+1} to unlock this crystal.`);return;}openSheet(sheetHeader('A treasure you earned')+`<div class="reward-body">${gem(m,'reward-crystal')}<h2>${esc(m.gem.replace(/^[^A-Za-z]+/,''))}</h2><p>${esc(m.celebrate)}</p><span class="badge">Earned together · ${m.xp} XP</span><button class="btn quiet full" data-action="close-sheet">Back to our treasures</button></div>`);}
+  function discoveryIdea(category,note){if(/mushroom|fungus|berry|berries|poison|snake|cliff|edge|waterfall/i.test(note))return 'A wonderful thing to notice from a safe distance. Stay on the path, don’t touch or taste it, and ask a grown-up before getting closer. What name would you give it in a pretend story?';return CATEGORIES[category].idea;}
+  function openDiscovery(category){if(!CATEGORIES[category])return;const c=CATEGORIES[category];openSheet(sheetHeader(c.emoji+' A forest discovery')+`<form class="sheet-body" id="discovery-form" data-category="${category}"><p>Tell us about your ${c.label.toLowerCase()}. A word, a colour, or a little story is perfect.</p><label class="field-label" for="discovery-note">What did your family notice?</label><textarea class="text-field" id="discovery-note" name="note" rows="3" maxlength="280" placeholder="We spotted…" required></textarea><div class="bonus-idea"><b>The Guardian’s story idea</b><br>${esc(c.idea)}</div><button class="btn full" type="submit">${icon('book')} Save our discovery</button><p class="helper">This is a memory, not a species identification. Do not taste or handle unknown plants or animals.</p></form>`);}
+  function requestGPS(){
+    if(!window.isSecureContext){gpsError='Location needs the HTTPS Netlify site. The rest of the adventure works without GPS.';renderTrail();return;}
+    if(!navigator.geolocation){gpsError='Your browser does not offer GPS. Choose a park name instead.';renderTrail();return;}
+    const id=++gpsRequestId;gpsBusy=true;gpsError='';locationFix=null;renderTrail();
+    navigator.geolocation.getCurrentPosition(p=>{
+      if(id!==gpsRequestId)return;gpsBusy=false;
+      const {latitude:lat,longitude:lon,accuracy}=p.coords;
+      if(!Number.isFinite(lat)||!Number.isFinite(lon)||!Number.isFinite(accuracy)||Math.abs(lat)>90||Math.abs(lon)>180){gpsError='The phone returned an invalid location. You can keep playing without GPS.';renderTrail();return;}
+      locationFix={lat,lon,accuracy:Math.max(0,accuracy),time:p.timestamp||Date.now()};renderTrail();
+    },error=>{if(id!==gpsRequestId)return;gpsBusy=false;locationFix=null;gpsError=error.code===1?'Location permission was not granted. No problem—use your park name and keep exploring.':error.code===3?'The location request timed out. Try again outdoors when it is safe, or play without GPS.':'Your phone could not find a location. The adventure still works without GPS.';renderTrail();},{enableHighAccuracy:true,timeout:12000,maximumAge:30000});
+  }
+  function openSettings(){
+    openSheet(sheetHeader('Grown-up corner')+`<div class="sheet-body"><div class="settings-row"><div><b>Celebration sounds</b><small>Short, gentle game sounds</small></div><button class="switch" role="switch" aria-label="Celebration sounds" aria-checked="${state.settings.sound}" data-action="setting" data-value="sound"></button></div><div class="settings-row"><div><b>Animations</b><small>Bouncing crystals and confetti</small></div><button class="switch" role="switch" aria-label="Animations" aria-checked="${state.settings.motion}" data-action="setting" data-value="motion"></button></div><button class="btn quiet full" data-action="install">${icon('home')} Play from your Home Screen</button><button class="btn quiet full" data-action="export">${icon('download')} Export progress backup</button><button class="btn quiet full" data-action="import">${icon('refresh')} Restore a progress backup</button><button class="btn quiet full" data-action="check-update">${icon('refresh')} Check for a game update</button><button class="subtle-button wide" data-action="new-adventure">Start a fresh adventure</button>
+      <p class="backup-note"><b>Saved on this device:</b> names, outfits, XP, crystals and journal. No account, ads, camera, microphone or analytics. GPS is optional, never saved, and never uploaded. Backups contain your chosen names, park and memories—but no GPS readings.</p><p class="helper">Clearing website data or changing browsers can remove progress. Export a backup first. Safari and a Home Screen web app may have separate saved data; use export/restore to transfer it.</p><p class="helper">Guardian stories are offline prompts. There is no live AI service, plant recognition, researched trail map, or automatic location-based mission generation in this version.</p><span class="badge">Version ${VERSION} · ${navigator.onLine?'Online':'Offline'}</span><span class="badge" id="offline-status">${swRegistration?.active?'Offline game cache installed':'Offline cache not yet confirmed'}</span></div>`);
+  }
+  function openInstall(){openSheet(sheetHeader('A little app of your own')+`<div class="sheet-body"><p>Open your published Netlify address in <b>Safari</b>, then:</p><ol class="install-steps"><li>Open the Safari <b>Share</b> menu.</li><li>Choose <b>Add to Home Screen</b>.</li><li>Turn on <b>Open as Web App</b> when shown, then tap <b>Add</b>.</li><li>Launch <b>Wild Explorer</b> from its new leaf icon.</li></ol><p class="helper">The Home Screen version removes Safari’s browser bars. This button cannot install it automatically on iPhone.</p><p class="helper">Open the app once with internet and wait for its offline cache to finish before your hike. Device storage settings can still remove cached data.</p><button class="btn full" data-action="close-sheet">Got it!</button></div>`);}
+  function exportSave(){
+    const content=JSON.stringify({app:'operation-wild-explorer',version:2,exportedAt:new Date().toISOString(),state},null,2);
+    const blob=new Blob([content],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`wild-explorer-progress-${new Date().toISOString().slice(0,10)}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);toast('Progress backup prepared. Keep the JSON file somewhere safe.');
+  }
+  function newAdventurePrompt(){openSheet(sheetHeader('A fresh forest adventure?')+`<div class="sheet-body"><p>This resets this hike’s <b>XP, crystals and mission progress</b>. Your five heroes, outfits, park and journal will stay.</p><p class="helper">Export a backup first to keep a copy of this adventure.</p><button class="btn quiet full" data-action="export">Export a backup first</button><button class="btn full" data-action="reset-confirmed">Start a fresh adventure</button><button class="subtle-button wide" data-action="close-sheet">Keep our current adventure</button></div>`);}
+  async function checkForUpdate(){
+    if(!swRegistration){toast('Open the HTTPS Netlify site online to enable game updates and offline play.');return;}
+    try{await swRegistration.update();if(swRegistration.waiting){$('update-banner').hidden=false;closeSheet();toast('A new version is ready. Tap Update game.');}else toast('Update check complete. New versions appear in the update banner when ready.');}catch{toast('Could not check for updates. Your saved adventure is unchanged.');}
+  }
+  document.addEventListener('click',e=>{
+    const button=e.target.closest('button[data-action]');if(!button||button.disabled)return;
+    const a=button.dataset.action,v=button.dataset.value;
+    switch(a){
+      case 'tab':setTab(v);break;
+      case 'settings':openSettings();break;
+      case 'close-sheet':closeSheet();break;
+      case 'hero':openHero(Number(v));break;
+      case 'swatch':{if(!draftHero)return;const kind=button.dataset.kind;if(!['skin','colour','hair'].includes(kind))return;draftHero.look[kind]=clampInt(v,0,kind==='colour'?4:3);button.parentElement.querySelectorAll('button').forEach(b=>{const picked=b===button;b.setAttribute('aria-pressed',String(picked));b.textContent=picked?'✓':'';});updateHeroPreview();break;}
+      case 'long-hair':if(draftHero){draftHero.look.long=!draftHero.look.long;button.setAttribute('aria-checked',String(draftHero.look.long));updateHeroPreview();}break;
+      case 'check':{const i=Number(v);if(state.index>=5||![0,1,2].includes(i))return;state.checks[i]=!state.checks[i];save();renderQuest();renderStatus();renderHome();const newButton=$('quest-screen').querySelector(`[data-action="check"][data-value="${i}"]`);newButton?.focus({preventScroll:true});if(state.checks[i]){playSound();if(state.checks.every(Boolean))toast('All three clues found! Your crystal is ready.');}break;}
+      case 'swap':{const i=Number(v);if(state.index>=5||![0,1,2].includes(i)||state.checks[i])return;state.variants[i]=(state.variants[i]+1)%3;save();renderQuest();$('quest-screen').querySelector(`[data-action="swap"][data-value="${i}"]`)?.focus({preventScroll:true});toast('A new clue! Stay right on your safe path.');break;}
+      case 'claim':claimCrystal();break;
+      case 'next-quest':closeSheet();setTab('quest');break;
+      case 'reward-bag':closeSheet();treasureTab='crystals';setTab('treasure');break;
+      case 'gem':openGem(Number(v));break;
+      case 'treasure-tab':treasureTab=v==='journal'?'journal':'crystals';renderTreasure();break;
+      case 'discovery':openDiscovery(v);break;
+      case 'read':readQuest();break;
+      case 'rest':openSheet(sheetHeader('Little explorer pause')+`<div class="reward-body">${fox()}<p>Find a safe spot with your grown-ups. Have a sip of water, take a rest, and decide together whether to keep exploring.</p><p><b>${saveIssue?'Use Export backup to keep your adventure.':'Your adventure is saved.'}</b> You can finish another day. There’s no timer to beat!</p><button class="btn full" data-action="close-sheet">Ready when we are</button></div>`);break;
+      case 'map-stop':{const i=Number(v);if(i<state.index)openGem(i);else if(i===state.index)setTab('quest');else toast('Finish your current quest to open the next chapter.');break;}
+      case 'gps':requestGPS();break;
+      case 'clear-gps':gpsRequestId++;locationFix=null;gpsBusy=false;gpsError='';renderTrail();toast('Location reading cleared.');break;
+      case 'setting':if(v==='sound'||v==='motion'){state.settings[v]=!state.settings[v];save();renderStatus();button.setAttribute('aria-checked',String(state.settings[v]));if(v==='sound'&&state.settings.sound)playSound();}break;
+      case 'install':openInstall();break;
+      case 'export':exportSave();break;
+      case 'import':$('import-file').click();break;
+      case 'restore-confirmed':if(pendingRestore){state=pendingRestore;pendingRestore=null;save();closeSheet();renderAll();toast('Your saved family adventure is restored.');}break;
+      case 'new-adventure':newAdventurePrompt();break;
+      case 'reset-confirmed':state.index=0;state.xp=0;state.gems=[];state.checks=[false,false,false];state.variants=[0,0,0];save();closeSheet();setTab('home');toast('A fresh adventure is waiting!');break;
+      case 'check-update':void checkForUpdate();break;
+      case 'update':if(swRegistration?.waiting)swRegistration.waiting.postMessage({type:'SKIP_WAITING'});else{toast('Checking for an update…');void checkForUpdate();}break;
+    }
+  });
+  document.addEventListener('change',e=>{if(e.target.id==='hero-role'&&draftHero){draftHero.role=ROLE(e.target.value).id;updateHeroPreview();}});
+  document.addEventListener('submit',e=>{
+    const form=e.target;
+    if(form.id==='hero-form'){
+      e.preventDefault();if(!draftHero)return;const i=draftHero.index;state.names[i]=clean($('hero-name').value,24)||freshState().names[i];state.roles[i]=ROLE($('hero-role').value).id;state.looks[i]={...draftHero.look};state.leader=i;save();closeSheet();renderAll();toast(`${state.names[i]} is ready to lead the pretend quest!`);
+    }else if(form.id==='place-form'){
+      e.preventDefault();state.park=clean($('park-name').value,100)||freshState().park;state.start=clean($('start-point').value,120);save();renderAll();toast('Your adventure location is saved.');
+    }else if(form.id==='discovery-form'){
+      e.preventDefault();const note=clean($('discovery-note').value,280),category=form.dataset.category;if(!note||!CATEGORIES[category])return;
+      if(state.journal.length>=150)state.journal.shift();state.journal.push({category,note,at:new Date().toISOString()});save();closeSheet();treasureTab='journal';setTab('treasure');toast('A little forest memory, saved!');
+    }
+  });
+  let pendingRestore=null;
+  $('import-file').addEventListener('change',async e=>{
+    const file=e.target.files?.[0];e.target.value='';if(!file)return;if(file.size>2000000){toast('That file is too large. Choose a Wild Explorer JSON progress backup.');return;}
+    try{
+      const data=JSON.parse(await file.text());const raw=data?.app==='operation-wild-explorer'?data.state:data;
+      if(!raw||typeof raw!=='object'||!Array.isArray(raw.names)||raw.names.length!==5||!Array.isArray(raw.checks)||!Number.isInteger(raw.index)||raw.index<0||raw.index>5||typeof raw.xp!=='number'||!Number.isFinite(raw.xp))throw new Error('Invalid save');
+      pendingRestore=normalise(raw);
+      openSheet(sheetHeader('Restore this adventure?')+`<div class="sheet-body"><p>This backup has <b>${pendingRestore.xp} XP</b>, <b>${pendingRestore.index} crystals</b> and <b>${pendingRestore.journal.length} memories</b>.</p><p>Restoring replaces the current progress, heroes and journal on this device. Export your current adventure first to keep both.</p><button class="btn quiet full" data-action="export">Export current progress first</button><button class="btn full" data-action="restore-confirmed">Restore this backup</button><button class="subtle-button wide" data-action="close-sheet">Keep current progress</button></div>`);
+    }catch{pendingRestore=null;toast('That isn’t a valid Wild Explorer progress backup. Nothing was changed.');}
+  });
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){if('speechSynthesis'in window)speechSynthesis.cancel();speechActive=false;save();}});
+  window.addEventListener('pagehide',save);
+  // First-launch migration is non-destructive; the original save fields remain usable.
+  if(importedLegacy)save();
+  renderAll();
+  if(importedLegacy)setTimeout(()=>toast('Your original heroes, XP and crystals are back. Welcome to the new forest!'),700);
+  if('serviceWorker'in navigator && window.isSecureContext){
+    let hadController=!!navigator.serviceWorker.controller,reloading=false;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadController&&!reloading){reloading=true;window.location.reload();}hadController=true;});
+    window.addEventListener('load',async()=>{
+      try{
+        swRegistration=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});
+        if(swRegistration.waiting)$('update-banner').hidden=false;
+        swRegistration.addEventListener('updatefound',()=>{const worker=swRegistration.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller)$('update-banner').hidden=false;});});
+        await navigator.serviceWorker.ready;
+      }catch{/* An unavailable offline cache must never prevent online gameplay. */}
+    });
+  }
+})();
