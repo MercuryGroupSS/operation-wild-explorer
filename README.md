@@ -1,50 +1,52 @@
 # Operation Wild Explorer
 
-Mobile-first, camera-free family hiking RPG. This repository imports the previously delivered **Mobile v2 / 2.0.0** game unchanged. The user reported enjoying the deployed game. The current live site's file bytes were not independently verified during this repository preparation.
+A bright, mobile-first family nature RPG for two adults and three young children. Five customizable heroes share lifetime XP, five story chapters and a family base camp. Deterministic, bundled content runs without accounts, APIs, telemetry or runtime dependencies.
 
-## One-time GitHub → Netlify setup
+Production: https://operation-wild-explorer.netlify.app
+Netlify project: `142205d8-6800-49d7-996f-5e0ee5094ee7`
 
-1. Create a **private** repository named `operation-wild-explorer` under `MercuryGroupSS`.
-2. Upload **the contents of this folder**, not the ZIP and not an additional enclosing folder. The repository root must contain `netlify.toml`, `public/`, and `scripts/`.
-3. In the **existing** Netlify project `operation-wild-explorer`, open **Project configuration → Developer settings → Continuous deployment → Repository → Link repository**. Choose GitHub, authorize Netlify for this repository, and select it. Do not create a new Netlify project.
-4. Use production branch `main`, base directory blank, build command `node scripts/check.mjs`, publish directory `public`. These build/publish values are included in `netlify.toml`.
-5. Wait for the initial Git-backed production deploy to be ready. Verify the existing address and your Home Screen app, then test a separate pull request preview before relying on the update workflow.
-6. Grant the ChatGPT GitHub connection access to this new repository if that connection is restricted to selected repositories. Read access alone is not code-write access; a write-capable tool or authorized development environment is needed to publish code changes.
+## Release 3.0.2
 
-Existing address: https://operation-wild-explorer.netlify.app
-Existing Netlify project ID: 142205d8-6800-49d7-996f-5e0ee5094ee7
-The account connection was confirmed as MercuryGroupSS during preparation. **This package does not create a remote repository or link Netlify automatically.**
+- A varied Find / Listen / Move / Imagine / Solve deck; adjacent categories differ and recent cards are avoided when possible.
+- Safe alternatives for every card, swaps, breaks and a shorter ending without losing earned progress.
+- Five linked map pieces and a final ordering puzzle using the family's discoveries.
+- Scout / Listener / Detective specialties, rotating pretend lead and shared-phone play.
+- Persistent camp crystals, tents, flags, a wearable leaf cape and pretend animal companions.
+- Habitat, season, length and challenge-style builder with 5 / 10 / 15 challenges.
+- Private text postcards with favourite moments, badges and optional device-local photos. Explicit HTML download embeds available photos; nothing is posted online.
+- Offline-ready cache verification, automatic save after each challenge, optional browser read-aloud and one large mobile challenge at a time.
 
-## Structure
+## Local development and checks
 
-- `public/` — the unchanged playable site, assets, PWA files and security headers.
-- `scripts/check.mjs` — dependency-free static release checks, run before Netlify publishes.
-- `docs/` — original usage and testing notes, plus the initial file-hash baseline.
-- `AGENTS.md` — requirements for future AI-assisted changes.
-- `.github/PULL_REQUEST_TEMPLATE.md` — review checklist.
+Serve `public/` with any local static server, such as `python3 -m http.server 8080 --directory public`.
 
-Only `public/` is deployed. No database, app API key, Node package dependency or server runtime is needed for gameplay. Node is used only for the build checks.
+Run:
 
-## Clean update workflow
+```
+node scripts/check.mjs
+node scripts/check-hunt.mjs
+node --test scripts/engine.test.cjs scripts/postcards.test.cjs
+node scripts/qa-engine.mjs
+node scripts/qa-runtime.mjs
+node scripts/qa-worker.mjs
+```
 
-Create `feature/<short-description>` from `main`; make the smallest useful change; run `node scripts/check.mjs`; open a pull request; check its Netlify Deploy Preview on a phone; merge approved changes into `main` to trigger production deployment. Configure any desired branch-protection rules in GitHub; this package does not enforce server-side review policies.
+Only `public/` is deployed. Netlify runs these checks and serves that folder. Source is unpacked at repository root. This release reconciles the concurrently published 2.1.0 hunt: all ten original chapters and seventeen added activities remain playable alongside the new varied adventures.
 
-Increment the application VERSION, service-worker VERSION, and the versioned JS/CSS URLs in `index.html` and `sw.js` together for an actual game release. The source import itself stays at 2.0.0 because game bytes are unchanged. An incorrectly published change should be corrected in a new commit and redeployed.
+## Saved progress and privacy
 
-After linking, future commits to the production branch supersede manual uploads. Use the repo for subsequent releases rather than mixing untracked drag-and-drop versions with Git deploys.
+The application keeps the original `wildExplorerSaveV2` and `wildExplorerSave` keys. Version 2/legacy and 2.1 names, customization, XP, completed crystals, journal and unfinished checked clues migrate without resetting progress. All ten 2.1 crystals and five-part Rainbow progress are retained. Each existing completed crystal funds one spendable camp crystal once. Camp spending does not remove collectible trophies. New outings retain lifetime XP, camp, heroes, journal and previous postcards.
 
-## Preserve family progress
+Progress is stored only in this browser/device. The same HTTPS origin is required to retain access; previews have separate storage. JSON backups contain text, progress and photo references, not photo pixels. Optional JPEG/PNG/WebP selections are resized and re-encoded locally, removing source metadata, then stored in IndexedDB. Photos are never sent to Netlify. Download individual HTML postcards to retain their embedded photos. Clearing site data, browser eviction or changing browsers can remove local data. Photos from another browser's backup need to be added again.
 
-The game uses `wildExplorerSaveV2` and the legacy `wildExplorerSave` local-storage keys. Keep these and the existing HTTPS origin; do not reset saves on deployment. Moving files into the repository's `public/` directory does not change their served URL paths. Saves remain local to the browser/device; they do not become GitHub or Netlify data. Preview subdomains have separate browser storage, so an empty preview is not a lost production save. Export a backup through the game's settings before larger upgrades.
+GPS is opt-in, one-shot and not persisted or uploaded. No camera or microphone APIs, remote scripts, analytics, advertising, accounts or recurring AI calls are used. Read-aloud depends on available browser/device voices and may be unavailable offline.
 
-Never commit real exported family saves, journals, GPS data, tokens or passwords. The included `.gitignore` excludes `.netlify/`, environment files and common exported save filenames.
+## Offline and updates
 
-## Validation
+Open online and choose **Download adventure for offline play**. The app confirms every required game/artwork file is present in the current service-worker cache. It cannot prevent the operating system or browser from later clearing storage. An installed release keeps serving its matching cached HTML until the user accepts **Update game**; progress survives the reload. Update app, worker and every JS/CSS query version together.
 
-`node scripts/check.mjs` verifies JavaScript syntax, referenced local assets, the manifest, save-key constants and synchronized cache versions. It is not a full gameplay or security test. Refer to `docs/TESTING.txt` and the pull request checklist for phone checks.
+## Release workflow
 
-## Official setup references
+Use a feature branch, draft pull request and Netlify Deploy Preview. Test before merging the user-approved release to `main`; production deploys are Git-backed. Never replace this project or deploy real saved-family fixtures. Keep `.netlify`, secrets and private exports out of Git. Fix production mistakes forward with another commit. Physical iPhone/Safari verification must be reported separately from automated Chromium or source tests.
 
-- https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository
-- https://docs.netlify.com/build/git-workflows/repo-permissions-linking/
-- https://docs.netlify.com/deploy/deploy-types/deploy-previews/
+See `docs/QA-3.0.md` for final release evidence and limitations.

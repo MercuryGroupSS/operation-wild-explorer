@@ -1,43 +1,42 @@
-/** Dependency-free regressions for the 2.1 family hunt and existing saves. */
+/** Classic 2.1 hunt compatibility, pure rewards, and safe activity alternatives. */
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {runInNewContext} from 'node:vm';
-const source=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
-const marker="  let saveIssue='', importedLegacy=false;";
-assert(source.includes(marker),'Save boundary missing; update the regression harness.');
-const context={document:{querySelectorAll:()=>[]},console};
-runInNewContext(source.slice(0,source.indexOf(marker))+`\nthis.huntTest={MISSIONS,freshState,normalise};\n})();`,context);
-const {MISSIONS,freshState,normalise}=context.huntTest;
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url), C=require('../public/classic.js');
+const {MISSIONS}=C;
 assert.equal(MISSIONS.length,10);
 assert.equal(MISSIONS.slice(5).reduce((n,m)=>n+m.tasks.length,0),17);
 assert.equal(MISSIONS.slice(0,5).reduce((n,m)=>n+m.xp,0),440);
 assert.equal(MISSIONS.reduce((n,m)=>n+m.xp,0),780);
-assert.equal(new Set(MISSIONS.map(m=>m.id)).size,MISSIONS.length);
-for(const m of MISSIONS){
- assert.equal(m.symbols.length,m.tasks.length,m.id);
- assert(m.tasks.length>0);
- assert(m.tasks.every(choices=>choices.length===3&&choices.every(t=>typeof t==='string'&&t.length)));
-}
-for(let index=0;index<5;index++){
- const raw={...freshState(),version:2,index,xp:127,checks:[true,false,true],variants:[1,2,0],names:['A','B','C','D','E']};
- const restored=normalise(raw);
- assert.equal(restored.version,3);assert.equal(restored.index,index);assert.equal(restored.xp,127);
- assert.equal(JSON.stringify(restored.checks),'[true,false,true]');
- assert.equal(JSON.stringify(restored.variants),'[1,2,0]');
- assert.equal(restored.names[4],'E');assert.equal(restored.gems.length,index);
-}
+assert.equal(new Set(MISSIONS.map(m=>m.id)).size,10);
+for(const m of MISSIONS){assert.equal(m.symbols.length,m.tasks.length);assert(m.tasks.every(c=>c.length===3&&c.every(t=>typeof t==='string'&&t.length)));}
 for(const version of [undefined,1,2]){
- const old=normalise({version,index:5,xp:440,checks:[true,true,true],variants:[2,2,2],names:['A','B','C','D','E'],journal:[{category:'leaf',note:'Test memory',at:'2026-10-18T12:00:00Z'}]});
- assert.equal(old.index,5);assert.equal(old.xp,440);assert.equal(old.gems.length,5);
- assert.equal(JSON.stringify(old.checks),'[false,false,false,false,false]');
- assert.equal(JSON.stringify(old.variants),'[0,0,0,0,0]');assert.equal(old.journal[0].note,'Test memory');
+ for(let index=0;index<=5;index++){
+  const c=C.normalise(null,{version,index,checks:[true,false,true],variants:[1,2,0]});
+  assert.equal(c.index,index);assert.deepEqual(c.checks,index===5?[false,false,false,false,false]:[true,false,true]);
+  assert.deepEqual(c.variants,index===5?[0,0,0,0,0]:[1,2,0]);
+ }
 }
-const current=normalise({...freshState(),version:3,index:5,xp:440,checks:[true,false,true,true,true],variants:[0,1,2,1,2]});
-assert.equal(JSON.stringify(current.checks),'[true,false,true,true,true]');
-assert.equal(JSON.stringify(normalise(JSON.parse(JSON.stringify(current)))),JSON.stringify(current));
-const complete=normalise({...freshState(),version:3,index:10,xp:780});
-assert.equal(complete.gems.length,10);assert.equal(complete.checks.length,0);
-assert.equal(normalise({index:-9,xp:-1}).index,0);
-assert.equal(normalise({index:999,xp:NaN}).xp,0);
-assert(!/getUserMedia|watchPosition\s*\(/.test(source));
-console.log('PASS: 17 new activities, 10 quests, 780 XP, original/2.0 save migration and schema-3 round trips.');
+for(let index=0;index<=10;index++){
+ const count=MISSIONS[index]?.tasks.length||0,checks=Array.from({length:count},(_,i)=>i%2===0),variants=checks.map((_,i)=>i%3);
+ const c=C.normalise(null,{version:3,index,checks,variants});
+ assert.deepEqual(c.checks,checks);assert.deepEqual(c.variants,variants);assert.equal(c.claimed.filter(Boolean).length,index);
+ assert.deepEqual(C.normalise(JSON.parse(JSON.stringify(c))),c);
+}
+const interim=C.normalise(null,{version:3,index:5,checks:[true,true,true],expedition:{active:{claimedChapters:[0,1,2,3,4]}}});
+assert.deepEqual(interim.checks,[false,false,false,false,false]);
+let c=C.normalise(null,{}),xp=0,crystals=0,tasks=0;
+for(let chapter=0;chapter<10;chapter++){
+ assert.equal(C.claim(c,chapter).changed,false);
+ for(let i=0;i<c.checks.length;i++){
+  const before=JSON.stringify(c),swapped=C.swap(c,i,chapter);assert.equal(JSON.stringify(c),before);assert.equal(swapped.changed,true);c=swapped.state;
+  assert.equal(C.mark(c,i,chapter+1).changed,false);
+  const r=C.mark(c,i,chapter);assert(r.changed);c=r.state;tasks++;
+  assert.equal(C.mark(c,i,chapter).changed,false);assert.equal(C.swap(c,i,chapter).changed,false);
+ }
+ const r=C.claim(c,chapter);assert(r.changed);xp+=r.xp;crystals+=r.crystals;c=r.state;
+ assert.equal(C.claim(c,chapter).changed,false);
+}
+assert.equal(tasks,32);assert.equal(xp,780);assert.equal(crystals,10);assert.equal(c.index,10);assert.equal(C.claim(c,10).changed,false);
+const photos=MISSIONS.find(m=>m.id==='photos');assert(photos.hints.every(h=>/ground|bench/.test(h)));assert(photos.hints[2].includes('No jumping'));
+assert(MISSIONS.find(m=>m.id==='wildlife').hints.join(' ').includes('Do not feed, call, follow or chase'));
+console.log('PASS: classic 10 chapters, 17 bonus activities, 32 clues, 780 XP, all legacy/version-3 positions, stale-action and duplicate-reward guards.');

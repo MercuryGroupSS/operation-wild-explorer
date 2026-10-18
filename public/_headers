@@ -18,3 +18,11 @@
   Cache-Control: no-cache
 /styles.css
   Cache-Control: no-cache
+
+/engine.js
+  Cache-Control: no-cache
+/postcards.js
+  Cache-Control: no-cache
+
+/classic.js
+  Cache-Control: no-cache

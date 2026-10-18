@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#edf5dc">
-  <meta name="description" content="A little quest. A big adventure. A playful, camera-free nature quest for your family.">
+  <meta name="description" content="A little quest. A big adventure. A private, offline-ready nature adventure for your family. Photos are optional.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Wild Explorer">
@@ -13,8 +13,11 @@
   <link rel="icon" type="image/svg+xml" href="./assets/icon.svg">
   <link rel="apple-touch-icon" href="./assets/icon-180.png">
   <link rel="preload" as="image" href="./assets/forest-friends-v2.webp">
-  <link rel="stylesheet" href="./styles.css?v=2.1.0">
-  <script src="./app.js?v=2.1.0" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=3.0.2">
+  <script src="./classic.js?v=3.0.2" defer></script>
+  <script src="./engine.js?v=3.0.2" defer></script>
+  <script src="./postcards.js?v=3.0.2" defer></script>
+  <script src="./app.js?v=3.0.2" defer></script>
   <title>Operation Wild Explorer</title>
 </head>
 <body>
@@ -32,7 +35,7 @@
     <section class="family-status" aria-label="Family progress">
       <div class="level-star" aria-hidden="true"><span data-icon="star"></span></div>
       <div class="status-main"><div class="status-line"><b id="level-text">Family level 1</b><span id="xp-text">0 XP</span></div><div class="xp-track" id="xp-meter" role="progressbar" aria-label="Experience towards next level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="xp-fill"></span></div></div>
-      <button class="crystal-count" data-action="tab" data-value="treasure" aria-label="View collected crystals"><span id="tiny-gem"></span><b id="gem-count">0/10</b></button>
+      <button class="crystal-count" data-action="tab" data-value="treasure" aria-label="View collected crystals"><span id="tiny-gem"></span><b id="gem-count">0/5</b></button>
     </section>
     <main id="main" tabindex="-1">
       <section id="home-screen" data-screen="home" aria-label="Adventure home"></section>
@@ -53,6 +56,7 @@
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <div id="confetti" class="confetti" aria-hidden="true"></div>
   <dialog id="sheet" aria-labelledby="sheet-title"><div id="sheet-content"></div></dialog>
+  <input id="postcard-photo" type="file" accept="image/jpeg,image/png,image/webp" hidden>
   <input id="import-file" type="file" accept=".json,application/json" hidden>
   <noscript><div class="noscript">Please enable JavaScript to play. You can still enjoy a family colour hunt: find green, yellow, and brown from a safe path.</div></noscript>
 </body>
