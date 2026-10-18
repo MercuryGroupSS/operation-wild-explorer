@@ -2,7 +2,9 @@
 
 Read README.md and docs/TESTING.txt before changing the game.
 
-Preserve the approved bright illustrated children's RPG and mobile-first interaction. The family has two adults and three children aged 3–5. Keep five visible customizable heroes, one mission at a time, shared family XP, crystals, journal and optional GPS. No camera APIs or AR. A grown-up may optionally choose an existing local image for a private postcard; this never affects rewards and never uploads it.
+Preserve the approved bright illustrated children's RPG and mobile-first interaction. The family has two adults and three children aged 3–5. Keep the five default customizable heroes, support added players without losing existing identities or progress, and keep one mission at a time, shared family XP, crystals, journal and optional GPS. No camera APIs or AR. A grown-up may optionally choose an existing local image for a private postcard; this never affects rewards and never uploads it.
+
+Halloween outfits apply to every player and stay separate from their saved daytime appearance. Keep hands-on activities grounded in making, observation, experiments or real actions; fantasy remains welcome in the story.
 
 Keep the existing Netlify project and public address. Do not add authentication, a database, telemetry, paid APIs or dependencies without a concrete requirement and user approval. Do not imply static missions are live AI-generated. GPS data stays on-device and is not persisted or uploaded. Mission illustrations are not navigational instructions.
 

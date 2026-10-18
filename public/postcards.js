@@ -276,7 +276,7 @@
       date: clean(source.date, 80),
       park: clean(source.park, 160) || 'Our outdoor adventure',
       favorite: clean(source.favorite, 2000),
-      heroes: strings(source.heroes, 5, 80),
+      heroes: strings(source.heroes, Array.isArray(source.heroes) ? source.heroes.length : 0, 80),
       badges: strings(source.badges, 48, 160),
       discoveries: (Array.isArray(source.discoveries) ? source.discoveries : []).slice(0, 100).map(item => ({
         title: clean(item && item.title, 160) || 'A nature discovery',

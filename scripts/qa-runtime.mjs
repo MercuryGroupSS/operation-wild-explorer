@@ -20,15 +20,15 @@ class Element {
   getBoundingClientRect(){return {left:0,top:0,right:390,bottom:844,width:390,height:844};}
 }
 function boot(initial={},options={}){
-  const elements=new Map(),events={},windowEvents={},store=new Map(Object.entries(initial)),downloads=[];
+  const elements=new Map(),events={},windowEvents={},store=options.sharedStore||new Map(Object.entries(initial)),downloads=[];
   let now=Date.now();class ClockDate extends Date{constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
   const el=id=>{if(!elements.has(id))elements.set(id,new Element(id));return elements.get(id);};
   const document={getElementById:el,querySelectorAll:()=>[],querySelector:()=>new Element(),createElement:()=>new Element(),body:new Element('body'),activeElement:new Element(),addEventListener:(type,fn)=>events[type]=fn,hidden:false};
-  const localStorage={getItem:k=>{if(options.blockStorage)throw new Error('blocked');return store.get(k)||null;},setItem:(k,v)=>{if(options.blockStorage)throw new Error('blocked');store.set(k,v);}};
+  const localStorage={getItem:k=>{if(options.blockStorage)throw new Error('blocked');return store.get(k)||null;},setItem:(k,v)=>{if(options.blockStorage)throw new Error('blocked');store.set(k,v);options.writes?.push([k,v]);}};
   const navigator={onLine:true,geolocation:{getCurrentPosition:(success,error)=>{if(options.deferGPS)options.gpsCallback={success,error};else error({code:1});}}};
   const context={console,Date:ClockDate,Math,JSON,Number,String,Object,Array,Set,Map,Boolean,Promise,RegExp,URL:{createObjectURL:b=>{downloads.push(b);return 'blob:synthetic';},revokeObjectURL(){}},Blob,localStorage,navigator,document,setTimeout:()=>1,clearTimeout(){},WildPostcards:{},FormData:class{constructor(form){this.data=form.fields||{};}entries(){return Object.entries(this.data);}}};
   context.window=context;context.WildEngine=E;context.WildClassic=require('../public/classic.js');context.isSecureContext=true;context.matchMedia=()=>({matches:false});context.addEventListener=(type,fn)=>windowEvents[type]=fn;context.scrollTo=()=>{};
-  const hooks=`\nObject.assign(globalThis,{__qa:{getState:()=>state,setState:v=>{state=normalise(v);},save,renderAll,renderQuest,renderTreasure,renderPostcards,openBuilder,openHero,startPlannedOuting,completeChallenge,claimCrystal,openFinishEarly,readQuest,requestGPS,openSettings,exportSave,openPostcard,getLocation:()=>locationFix,normalise}});\n`;
+  const hooks=`\nObject.assign(globalThis,{__qa:{getState:()=>state,setState:v=>{state=normalise(v);},save,renderAll,renderQuest,renderTreasure,renderPostcards,openBuilder,openHero,startPlannedOuting,completeChallenge,claimCrystal,openFinishEarly,readQuest,requestGPS,openSettings,exportSave,openPostcard,getLocation:()=>locationFix,normalise,avatar,removePostcardPhoto}});\n`;
   const code=app.slice(0,app.lastIndexOf('})();'))+hooks+app.slice(app.lastIndexOf('})();'));
   vm.runInNewContext(code,context,{filename:'app.js'});
   const click=(action,value,extra={})=>{const button=new Element();button.parentElement=new Element();button.dataset={action,value,...extra};events.click({target:{closest:()=>button}});return button;};
@@ -145,6 +145,161 @@ await test('Night planner keeps context, lengths and safe alternatives; export/i
   for(let i=0;i<20;i++){q.click('swap-challenge');const c=E.getCurrentCard(q.api.getState().expedition);assert.equal(c.theme,'halloween');assert.ok(c.settings.includes('indoor'));assert.match(q.el('quest-screen').innerHTML,/safe-alternative/);}
   const c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});q.click('daylight-mode');q.api.exportSave();const backup=JSON.parse(await q.downloads.at(-1).text());assert.ok(backup.state.expedition.parkedOutings['halloween:indoor']);assert.ok(!JSON.stringify(backup).includes('data:image'));
   const restored=boot();await restored.el('import-file').listeners.change({target:{files:[{size:20000,text:async()=>JSON.stringify(backup)}],value:'synthetic'}});restored.click('restore-confirmed');assert.deepEqual(copy(restored.api.getState().expedition.parkedOutings),copy(q.api.getState().expedition.parkedOutings));
+});
+
+function addPlayer(q,name,kind='child',costume){
+  q.click('add-player');q.el('hero-name').value=name;q.el('hero-role').value='ranger';q.el('hero-specialty').value='detective';
+  q.events.change({target:{id:'hero-kind',value:kind}});assert.equal(q.el('hero-size-label').textContent,kind==='adult'?'GROWN-UP HERO':'LITTLE HERO');
+  if(costume)q.events.change({target:{id:'hero-costume',value:costume}});
+  q.events.submit({preventDefault(){},target:{id:'hero-form'}});
+}
+function enterNight(q,setting='indoor'){
+  q.click('night-ready',setting);q.el('night-ready-check').checked=true;q.events.submit({target:{id:'night-ready-form',dataset:{setting}},preventDefault(){}});
+}
+await test('Add player stages edits, cancels safely, ignores duplicate submit and preserves existing progress',()=>{
+  const q=boot({wildExplorerSaveV2:JSON.stringify(fixture)}),before=copy(q.api.getState());
+  q.click('add-player');q.click('add-player');q.el('hero-name').value='Never saved';q.click('close-sheet');
+  q.events.submit({preventDefault(){},target:{id:'hero-form'}});assert.deepEqual(copy(q.api.getState()),before);
+  q.click('add-player');q.el('hero-name').value='  ';q.events.submit({preventDefault(){},target:{id:'hero-form'}});assert.deepEqual(copy(q.api.getState()),before);assert.match(q.el('toast').textContent,/name first/);
+  addPlayer(q,'QA New grown-up','adult','ghost');const added=copy(q.api.getState());
+  assert.equal(added.names.length,6);assert.deepEqual(added.names.slice(0,5),before.names);assert.equal(added.leader,before.leader);assert.equal(added.heroKinds[5],'adult');assert.equal(added.costumes[5],'ghost');assert.equal(added.specialties[5],'detective');
+  for(const key of ['xp','classic','expedition','journal'])assert.deepEqual(added[key],before[key],key);
+  q.events.submit({preventDefault(){},target:{id:'hero-form'}});assert.deepEqual(copy(q.api.getState()),added);
+  q.api.openHero(5);q.el('hero-name').value='QA Sixth edited';q.el('hero-role').value='wizard';q.el('hero-specialty').value='listener';q.click('swatch','3',{kind:'skin'});q.events.submit({preventDefault(){},target:{id:'hero-form'}});
+  const saved=q.api.getState();assert.equal(saved.names[5],'QA Sixth edited');assert.equal(saved.roles[5],'wizard');assert.equal(saved.looks[5].skin,3);assert.equal(saved.leader,5);assert.equal(saved.heroIds[5],added.heroIds[5]);assert.deepEqual(copy(boot(Object.fromEntries(q.store)).api.getState()),copy(saved));
+});
+await test('24-player creation guard is explicit and larger imported rosters are never truncated',async()=>{
+  const q=boot();for(let i=5;i<24;i++)addPlayer(q,`QA Hero ${i+1}`,i%2?'adult':'child');
+  const s=copy(q.api.getState());assert.equal(s.names.length,24);assert.equal(new Set(s.heroIds).size,24);assert.match(q.el('heroes-screen').innerHTML,/Add up to 24/);
+  q.click('add-player');assert.deepEqual(copy(q.api.getState()),s);assert.match(q.el('toast').textContent,/up to 24/);
+  const large={...s,names:Array.from({length:30},(_,i)=>`QA Imported ${i+1}`),leader:29};
+  const p=boot({wildExplorerSaveV2:JSON.stringify(large)});assert.equal(p.api.getState().names.length,30);assert.equal(p.api.getState().leader,29);assert.equal(p.api.getState().looks.length,30);assert.equal(new Set(p.api.getState().heroIds).size,30);assert.match(p.el('heroes-screen').innerHTML,/larger saved team is kept/);
+  p.api.exportSave();const backup=JSON.parse(await p.downloads.at(-1).text());const restored=boot();await restored.el('import-file').listeners.change({target:{files:[{size:30000,text:async()=>JSON.stringify(backup)}],value:'synthetic'}});restored.click('restore-confirmed');assert.deepEqual(copy(restored.api.getState()),copy(p.api.getState()));assert.deepEqual(copy(boot(Object.fromEntries(p.store)).api.getState()),copy(p.api.getState()));
+});
+await test('Legacy roster migration repairs duplicate or unsafe IDs without changing valid identities',()=>{
+  const raw={...fixture,names:[...fixture.names,'QA F','QA G','QA H'],heroIds:['player-2','player-2','player-1','safe-custom','<unsafe>','player-8',null,'safe-tail'],costumes:['ghost','__proto__','bat'],heroKinds:['adult','child','adult']};
+  const q=boot({wildExplorerSaveV2:JSON.stringify(raw)}),s=copy(q.api.getState());assert.equal(s.heroIds.length,8);assert.equal(new Set(s.heroIds).size,8);assert.equal(s.heroIds[0],'player-2');assert.equal(s.heroIds[2],'player-1');assert.equal(s.heroIds[3],'safe-custom');assert.equal(s.heroIds[5],'player-8');assert.equal(s.heroIds[7],'safe-tail');assert.ok(s.heroIds.every(id=>/^[A-Za-z0-9_-]{1,64}$/.test(id)));assert.equal(s.costumes[0],'ghost');assert.equal(s.costumes[1],'ghost');assert.equal(s.costumes[2],'bat');
+  assert.deepEqual(copy(q.api.normalise(s)),s);assert.deepEqual(copy(boot(Object.fromEntries(q.store)).api.getState()),s);
+  const fallback=boot({wildExplorerSaveV2:'{bad',wildExplorerSave:q.store.get('wildExplorerSave')}).api.getState();
+  for(const key of ['names','heroIds','heroKinds','costumes','looks','specialties','leader'])assert.deepEqual(copy(fallback[key]),s[key],key);
+});
+await test('Manual, varied and classic leadership rotate through every added player',()=>{
+  const q=boot();for(let i=5;i<8;i++)addPlayer(q,`QA Extra ${i}`);
+  const start=q.api.getState().leader,seen=new Set();for(let i=0;i<8;i++){seen.add(q.api.getState().leader);q.click('pass-lead');}assert.equal(seen.size,8);assert.equal(q.api.getState().leader,start);
+  const checkRotation=()=>{const s=q.api.getState(),c=E.getCurrentCard(s.expedition),lead=s.leader;q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});assert.equal(q.api.getState().leader,(lead+1)%8);q.advance();};
+  q.api.getState().leader=7;checkRotation();q.api.getState().leader=5;checkRotation();
+  q.click('classic-mode');q.api.getState().leader=7;q.click('classic-check','0',{chapter:'0'});assert.equal(q.api.getState().leader,0);q.advance();q.api.getState().leader=5;q.click('classic-check','1',{chapter:'0'});assert.equal(q.api.getState().leader,6);
+});
+await test('Every avatar wears a Halloween costume including new players; daytime looks return unchanged',()=>{
+  const q=boot({wildExplorerSaveV2:JSON.stringify(fixture)});addPlayer(q,'QA Sixth','adult','ghost');addPlayer(q,'QA Seventh','child','wizard');
+  const day=copy(q.api.getState()),dayArtwork=day.names.map((_,i)=>q.api.avatar(i).replace(/hero-\d+/g,'hero-ID'));
+  for(const setting of E.NIGHT_SETTINGS){
+    enterNight(q,setting);const s=q.api.getState();
+    assert.equal((q.el('heroes-screen').innerHTML.match(/data-costume="(wizard|ghost|pumpkin|bat)"/g)||[]).length,7);
+    assert.equal((q.el('home-screen').innerHTML.match(/data-costume="(wizard|ghost|pumpkin|bat)"/g)||[]).length,7);
+    assert.match(q.el('quest-screen').innerHTML,/data-costume="(wizard|ghost|pumpkin|bat)"/);
+    for(let i=0;i<7;i++){q.api.openHero(i);assert.ok(q.el('sheet-content').innerHTML.includes(`data-costume="${s.costumes[i]}"`));q.click('close-sheet');}
+    for(const key of ['names','heroIds','heroKinds','looks','roles','xp','journal'])assert.deepEqual(copy(s[key]),day[key],key);
+    q.click('daylight-mode');assert.deepEqual(day.names.map((_,i)=>q.api.avatar(i).replace(/hero-\d+/g,'hero-ID')),dayArtwork);
+  }
+  enterNight(q);addPlayer(q,'QA Added at night','child','bat');assert.match(q.el('heroes-screen').innerHTML,/QA Added at night/);assert.equal(q.api.getState().costumes[7],'bat');assert.equal((q.el('home-screen').innerHTML.match(/data-costume="(wizard|ghost|pumpkin|bat)"/g)||[]).length,8);
+  q.api.openHero(7);q.events.change({target:{id:'hero-costume',value:'ghost'}});assert.match(q.el('avatar-preview').innerHTML,/data-costume="ghost"/);q.el('hero-name').value='QA Added at night';q.el('hero-role').value='ranger';q.el('hero-specialty').value='scout';q.events.submit({target:{id:'hero-form'},preventDefault(){}});assert.equal(q.api.getState().costumes[7],'ghost');
+  q.click('classic-mode');assert.equal((q.el('heroes-screen').innerHTML.match(/data-costume="daylight"/g)||[]).length,8);assert.deepEqual(copy(q.api.getState().looks.slice(0,7)),day.looks);
+});
+await test('Completed postcards keep every roster name through save, reload and HTML export',async()=>{
+  const q=boot();for(let i=5;i<12;i++)addPlayer(q,`QA Postcard ${i+1}`);
+  const c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});q.click('finish-confirmed');
+  const s=q.api.getState();assert.equal(s.expedition.postcards[0].heroes.length,12);
+  const reloaded=boot(Object.fromEntries(q.store)).api.getState();assert.deepEqual(copy(reloaded.expedition.postcards[0].heroes),copy(s.names));
+  vm.runInNewContext(readFileSync(new URL('../public/postcards.js',import.meta.url),'utf8'),q.context,{filename:'postcards.js'});
+  const result=await q.context.WildPostcards.exportPostcard(reloaded.expedition.postcards[0],{photoIds:[]});assert.equal(result.downloadRequested,true);const html=await q.downloads.at(-1).text();for(const name of s.names)assert.ok(html.includes(name),name);assert.match(html,/<!doctype html>/);assert.ok(!/https?:\/\//.test(html));
+});
+
+function firstCrystal(q){
+  while(E.getCurrentCard(q.api.getState().expedition)){const c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});q.advance();}
+  q.click('claim',undefined,{chapter:'0'});assert.equal(q.api.getState().xp,60);
+}
+async function offerBackup(q,raw){await q.el('import-file').listeners.change({target:{files:[{size:10000,text:async()=>JSON.stringify(raw)}],value:'synthetic'}});}
+await test('A stale window hiding or reloading cannot overwrite another window’s earned XP',()=>{
+  const sharedStore=new Map(),writes=[];const stale=boot({}, {sharedStore,writes}),newer=boot({}, {sharedStore});firstCrystal(newer);
+  const saved=sharedStore.get('wildExplorerSaveV2'),count=writes.length;assert.equal(stale.api.getState().xp,0);
+  stale.context.document.hidden=true;stale.events.visibilitychange();stale.windowEvents.pagehide?.();assert.equal(sharedStore.get('wildExplorerSaveV2'),saved);assert.equal(writes.length,count);
+  const reload=boot({}, {sharedStore});assert.equal(reload.api.getState().xp,60);assert.equal(reload.api.getState().expedition.wallet,1);
+});
+await test('Storage/focus/resume read the newest value without writing or trusting delayed events',()=>{
+  const sharedStore=new Map(),writes=[];const a=boot({}, {sharedStore,writes}),b=boot({}, {sharedStore});const old=sharedStore.get('wildExplorerSaveV2');firstCrystal(b);const latest=sharedStore.get('wildExplorerSaveV2'),count=writes.length;
+  a.api.openHero(2);a.windowEvents.storage({key:'unrelated-key',newValue:latest});assert.equal(a.api.getState().xp,0);
+  a.windowEvents.storage({key:'wildExplorerSaveV2',newValue:old,storageArea:{}});assert.equal(a.api.getState().xp,0);
+  a.windowEvents.storage({key:'wildExplorerSaveV2',newValue:old,storageArea:a.context.localStorage});assert.equal(a.api.getState().xp,60);assert.equal(a.el('sheet').open,false);assert.equal(a.el('sheet-content').innerHTML,'');
+  a.windowEvents.storage({key:'wildExplorerSaveV2',newValue:'{stale bad event'});a.windowEvents.focus();a.windowEvents.pageshow();a.context.document.hidden=false;a.events.visibilitychange();assert.equal(sharedStore.get('wildExplorerSaveV2'),latest);assert.equal(writes.length,count);assert.equal(a.api.getState().xp,60);
+  b.click('close-sheet');addPlayer(b,'QA Other window');a.windowEvents.pageshow();assert.equal(a.api.getState().names.length,6);assert.equal(writes.length,count);
+});
+await test('Stale actions and hero dialogs refresh first, then require a deliberate retry',()=>{
+  const sharedStore=new Map(),a=boot({}, {sharedStore}),b=boot({}, {sharedStore});a.api.openHero(2);a.el('hero-name').value='Stale overwrite';a.el('hero-role').value='wizard';a.el('hero-specialty').value='listener';firstCrystal(b);const latest=sharedStore.get('wildExplorerSaveV2');
+  a.events.submit({target:{id:'hero-form'},preventDefault(){}});assert.equal(sharedStore.get('wildExplorerSaveV2'),latest);assert.equal(a.api.getState().names[2],'Child 1');assert.equal(a.el('sheet').open,false);assert.match(a.el('toast').textContent,/updated in another window/);
+  a.events.submit({target:{id:'hero-form'},preventDefault(){}});assert.equal(sharedStore.get('wildExplorerSaveV2'),latest);
+  b.click('close-sheet');addPlayer(b,'QA Extra');const current=sharedStore.get('wildExplorerSaveV2'),leader=b.api.getState().leader;a.click('pass-lead');assert.equal(sharedStore.get('wildExplorerSaveV2'),current);assert.equal(a.api.getState().leader,leader);a.click('pass-lead');assert.equal(a.api.getState().leader,(leader+1)%6);assert.equal(a.api.getState().xp,60);
+  b.api.getState().names[0]='Unsaved stale mutation';assert.equal(b.api.save(),false);assert.deepEqual(copy(b.api.getState()),copy(a.api.getState()));
+});
+await test('Cross-window changes invalidate pending restores; a fresh intentional restore can lower XP',async()=>{
+  const sharedStore=new Map(),a=boot({}, {sharedStore}),b=boot({}, {sharedStore}),backup=copy(a.api.getState());await offerBackup(a,backup);firstCrystal(b);const latest=sharedStore.get('wildExplorerSaveV2');
+  a.click('restore-confirmed');assert.equal(sharedStore.get('wildExplorerSaveV2'),latest);assert.equal(a.api.getState().xp,60);assert.equal(a.el('sheet').open,false);
+  a.click('restore-confirmed');assert.equal(sharedStore.get('wildExplorerSaveV2'),latest);
+  await offerBackup(a,backup);a.click('close-sheet');a.click('restore-confirmed');assert.equal(sharedStore.get('wildExplorerSaveV2'),latest);
+  await offerBackup(a,backup);a.click('restore-confirmed');assert.equal(a.api.getState().xp,0);assert.equal(JSON.parse(sharedStore.get('wildExplorerSaveV2')).xp,0);b.windowEvents.storage({key:'wildExplorerSaveV2',newValue:latest});assert.equal(b.api.getState().xp,0);
+});
+await test('An in-flight backup read cannot reopen stale confirmation after another window advances',async()=>{
+  const sharedStore=new Map(),a=boot({}, {sharedStore}),b=boot({}, {sharedStore}),backup=copy(a.api.getState());let finish;
+  const task=a.el('import-file').listeners.change({target:{files:[{size:10000,text:()=>new Promise(resolve=>finish=resolve)}],value:'synthetic'}});firstCrystal(b);const latest=sharedStore.get('wildExplorerSaveV2');a.windowEvents.storage({key:'wildExplorerSaveV2'});finish(JSON.stringify(backup));await task;
+  assert.ok(!a.el('sheet').open);a.click('restore-confirmed');assert.equal(sharedStore.get('wildExplorerSaveV2'),latest);assert.equal(a.api.getState().xp,60);
+});
+await test('An in-flight photo cannot attach to changed/restored state or overwrite newer progress',async()=>{
+  const sharedStore=new Map(),a=boot({}, {sharedStore});const c=E.getCurrentCard(a.api.getState().expedition);a.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});a.click('finish-confirmed');const id=a.api.getState().expedition.postcards[0].id;
+  const b=boot({}, {sharedStore});await a.api.openPostcard(id);let finish;const deleted=[];
+  a.context.WildPostcards={storePhoto:()=>new Promise(resolve=>finish=resolve),deletePhoto:async photo=>deleted.push(photo)};
+  const task=a.el('postcard-photo').listeners.change({target:{files:[{}],value:'synthetic'}});addPlayer(b,'QA Added elsewhere');const latest=sharedStore.get('wildExplorerSaveV2');finish('photo-synthetic-delayed');await task;
+  assert.deepEqual(deleted,['photo-synthetic-delayed']);assert.equal(sharedStore.get('wildExplorerSaveV2'),latest);assert.deepEqual(copy(a.api.getState().expedition.postcards[0].photoIds),[]);assert.equal(a.api.getState().names.length,6);assert.equal(a.el('sheet').open,false);
+});
+
+await test('Structurally invalid newer storage never replaces earned progress and fallback still works',async()=>{
+  const q=boot();firstCrystal(q);const earned=copy(q.api.getState());
+  for(const malformed of [{},{names:[],checks:[],index:0,xp:0},{names:['QA'],checks:[],index:0,xp:-1},{names:['QA'],checks:[],index:0,xp:'60'}]){
+    const raw=JSON.stringify(malformed);q.store.set('wildExplorerSaveV2',raw);q.windowEvents.storage({key:'wildExplorerSaveV2'});assert.deepEqual(copy(q.api.getState()),earned);assert.equal(q.api.save(),false);assert.equal(q.store.get('wildExplorerSaveV2'),raw);assert.match(q.el('save-warning').textContent,/could not be read/);
+  }
+  q.click('settings');q.click('export');const backup=JSON.parse(await q.downloads.at(-1).text());assert.equal(backup.state.xp,60);
+  const reload=boot(Object.fromEntries(q.store));assert.equal(reload.api.getState().xp,60);assert.equal(reload.api.getState().names[0],earned.names[0]);
+});
+await test('Dismissed or replaced backup reads stay dismissed, including out-of-order file choices',async()=>{
+  for(const dismiss of ['close','replace']){
+    const q=boot(),original=copy(q.api.getState());q.click('settings');let finish;
+    const task=q.el('import-file').listeners.change({target:{files:[{size:1000,text:()=>new Promise(resolve=>finish=resolve)}],value:'synthetic'}});
+    if(dismiss==='close')q.click('close-sheet');else q.api.openHero(0);
+    const content=q.el('sheet-content').innerHTML;finish(JSON.stringify({...original,xp:20}));await task;
+    assert.equal(q.el('sheet-content').innerHTML,content);if(dismiss==='close')assert.equal(q.el('sheet').open,false);else assert.match(content,/Choose your explorer/);
+    q.click('restore-confirmed');assert.deepEqual(copy(q.api.getState()),original);
+  }
+  const q=boot(),backup=copy(q.api.getState());q.click('settings');let first,second;
+  const a=q.el('import-file').listeners.change({target:{files:[{size:1000,text:()=>new Promise(resolve=>first=resolve)}],value:'one'}});
+  const b=q.el('import-file').listeners.change({target:{files:[{size:1000,text:()=>new Promise(resolve=>second=resolve)}],value:'two'}});
+  first(JSON.stringify(backup));await a;assert.match(q.el('sheet-content').innerHTML,/Grown-up corner/);
+  second(JSON.stringify(backup));await b;assert.match(q.el('sheet-content').innerHTML,/Restore this adventure/);
+});
+await test('Delayed photo removal finishes without reopening a dismissed or replaced postcard',async()=>{
+  for(const dismiss of ['close','replace']){
+    const q=boot(),c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});q.click('finish-confirmed');
+    const p=q.api.getState().expedition.postcards[0];p.photoIds=['photo-synthetic-remove'];q.api.save();let finish;
+    q.context.WildPostcards={loadPhoto:async()=>null,deletePhoto:()=>new Promise(resolve=>finish=resolve)};await q.api.openPostcard(p.id);
+    const task=q.api.removePostcardPhoto(p.id,p.photoIds[0]);if(dismiss==='close')q.click('close-sheet');else q.api.openHero(0);const content=q.el('sheet-content').innerHTML;
+    finish();await task;assert.deepEqual(copy(q.api.getState().expedition.postcards[0].photoIds),[]);assert.equal(q.el('sheet-content').innerHTML,content);
+    if(dismiss==='close')assert.equal(q.el('sheet').open,false);else assert.match(content,/Choose your explorer/);
+    assert.deepEqual(JSON.parse(q.store.get('wildExplorerSaveV2')).expedition.postcards[0].photoIds,[]);
+  }
+});
+
+await test('A queued old dialog-close event cannot erase a newly opened hero draft',()=>{
+  const q=boot(),queued=[],sheet=q.el('sheet');sheet.close=function(){this.open=false;queued.push(()=>this.listeners.close?.());};
+  q.click('settings');q.click('close-sheet');q.click('hero','0');q.el('hero-name').value='QA Reopened hero';q.el('hero-role').value='wizard';q.el('hero-specialty').value='listener';
+  queued.shift()();assert.equal(sheet.open,true);q.events.submit({target:{id:'hero-form'},preventDefault(){}});assert.equal(q.api.getState().names[0],'QA Reopened hero');assert.equal(q.api.getState().roles[0],'wizard');
 });
 console.log(`\nRuntime integration: ${passed} passed, ${failed} failed. DOM stubs do not validate visual layout, browser events, IndexedDB or real service workers.`);
 if(failed)process.exitCode=1;
