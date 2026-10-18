@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "Operation Wild Explorer",
+  "short_name": "Wild Explorer",
+  "description": "A little quest. A big adventure. An offline-ready family nature game with optional private postcards.",
+  "lang": "en-CA",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#edf5dc",
+  "theme_color": "#edf5dc",
+  "icons": [
+    {"src": "./assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "./assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

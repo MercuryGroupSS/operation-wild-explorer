@@ -1,0 +1,12 @@
+.netlify/
+node_modules/
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+playwright-report/
+test-results/
+# Do not commit exported family progress or personal journals.
+*backup*.json
+*save*.json

@@ -1,0 +1,5 @@
+# Link this repository to the EXISTING operation-wild-explorer Netlify project.
+# Repository root is the base directory. Only public/ is served to visitors.
+[build]
+  command = "node scripts/check.mjs && node --test scripts/engine.test.cjs scripts/postcards.test.cjs"
+  publish = "public"
