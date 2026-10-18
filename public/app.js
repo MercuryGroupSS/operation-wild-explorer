@@ -3,8 +3,9 @@
    New saves migrate from and mirror the original wildExplorerSave key. */
 'use strict';
 (() => {
-  const VERSION = '3.0.1';
+  const VERSION = '3.0.2';
   const E = window.WildEngine;
+  const C = window.WildClassic;
   const SPECIALTIES = {scout:{label:'Scout',emoji:'🔎',hint:'Point out a colour, shape or tiny detail.'},listener:{label:'Listener',emoji:'👂',hint:'Invite everyone to pause and notice a quiet sound.'},detective:{label:'Detective',emoji:'🧩',hint:'Ask a curious question and connect two discoveries.'}};
   const DEFAULT_SPECIALTIES = ['scout','listener','detective','scout','listener'];
   const SAVE_KEY = 'wildExplorerSaveV2';
@@ -83,7 +84,7 @@
     flower:{emoji:'🌼',label:'Flower',idea:'Leave the flower growing. Imagine it is a tiny lantern. What colour does it glow?'},
     other:{emoji:'✨',label:'Wonder',idea:'What could this discovery become in our magical story? Share one silly idea each!'}
   };
-  const freshState = () => ({version:3,expedition:null,specialties:[...DEFAULT_SPECIALTIES],index:0,checks:[false,false,false],variants:[0,0,0],xp:0,gems:[],
+  const freshState = () => ({version:3,classic:null,mode:'expedition',expedition:null,specialties:[...DEFAULT_SPECIALTIES],index:0,checks:[false,false,false],variants:[0,0,0],xp:0,gems:[],
     names:['Adult 1','Adult 2','Child 1','Child 2','Child 3'],roles:ROLES.map(r=>r.id),
     looks:[{skin:1,hair:0,colour:0,long:false},{skin:2,hair:1,colour:1,long:true},{skin:0,hair:0,colour:2,long:false},{skin:2,hair:1,colour:3,long:true},{skin:1,hair:2,colour:4,long:false}],
     leader:2,park:'Chedoke Radial Recreational Trail',start:'120 Beddoe Dr, Hamilton',journal:[],settings:{sound:false,motion:true}});
@@ -102,7 +103,10 @@
     d.settings={sound:raw.settings?.sound===true,motion:raw.settings?.motion!==false};
     if(Array.isArray(raw.journal)) d.journal=raw.journal.slice(-150).filter(e=>e&&typeof e==='object'&&CATEGORIES[e.category]&&clean(e.note,280)).map(e=>({category:e.category,note:clean(e.note,280),at:Number.isFinite(new Date(e.at).getTime())?new Date(e.at).toISOString():new Date().toISOString()}));
     d.specialties=DEFAULT_SPECIALTIES.map((x,i)=>SPECIALTIES[raw.specialties?.[i]]?raw.specialties[i]:x);
+    d.classic=C.normalise(raw.classic,raw);
+    d.mode=raw.mode==='classic'||(!raw.expedition&&raw.version===3)?'classic':'expedition';
     d.expedition=E.normaliseExpansion(raw.expedition,d);
+    if(!raw.expedition){d.expedition.wallet=d.classic.index;d.expedition.lifetime.crystals=d.classic.index;}
     d.index=d.expedition.active.claimedChapters.length;
     d.gems=MISSIONS.slice(0,d.index).map(m=>m.gem);
     d.xp=d.expedition.lifetime.xp;
@@ -120,6 +124,7 @@
     return freshState();
   }
   let state=loadState();
+  state.classic=C.normalise(state.classic,state);
   state.expedition=E.normaliseExpansion(state.expedition,state);
   function showSaveIssue(){const el=$('save-warning');el.textContent=saveIssue;el.hidden=!saveIssue;}
   function save(){
@@ -197,8 +202,8 @@
   function readQuest(){
     if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){toast('Read-aloud is unavailable here. A grown-up can read the card.');return;}
     if(speechActive){speechSynthesis.cancel();speechActive=false;toast('Narration stopped.');return;}
-    const card=currentCard();
-    const text=card?`${card.type}. ${card.title}. ${card.prompt}. Safe alternative: ${card.alternative}`:'Your discoveries brought the map together. Share your favourite memory.';
+    const card=currentCard(),cm=C.MISSIONS[state.classic.index],ci=state.classic.checks.findIndex(x=>!x);
+    const text=state.mode==='classic'?(cm?cm.title+'. '+cm.story+'. '+(ci>=0?cm.tasks[ci][state.classic.variants[ci]||0]+'. '+(cm.hints?.[ci]||''):'Your crystal is ready.'):'Your classic hunt is complete.'):card?`${card.type}. ${card.title}. ${card.prompt}. Safe alternative: ${card.alternative}`:'Your discoveries brought the map together. Share your favourite memory.';
     try{speechSynthesis.cancel();const say=new SpeechSynthesisUtterance(text+' Stay together on the safe path.');say.lang='en-CA';say.rate=.85;say.pitch=1.04;
       const voices=speechSynthesis.getVoices(),voice=voices.find(v=>v.localService&&/^en/.test(v.lang));if(voice)say.voice=voice;
       say.onend=()=>{speechActive=false;};say.onerror=()=>{speechActive=false;toast('That voice is unavailable. A grown-up can read the card.');};speechActive=true;speechSynthesis.speak(say);
@@ -208,7 +213,7 @@
   function renderStatus(){
     $('level-text').textContent='Family level '+(1+Math.floor(state.xp/100));$('xp-text').textContent=state.xp+' XP';
     const percent=state.xp%100;$('xp-fill').style.width=percent+'%';$('xp-meter').setAttribute('aria-valuenow',String(percent));$('xp-meter').setAttribute('aria-valuetext',`${percent} of 100 XP towards the next level`);
-    $('gem-count').textContent=state.index+'/5';$('tiny-gem').innerHTML=gem(MISSIONS[0]);
+    $('gem-count').textContent=state.mode==='classic'?state.classic.index+'/10':state.index+'/5';$('tiny-gem').innerHTML=gem(MISSIONS[0]);
     document.body.classList.toggle('motion-off',!state.settings.motion);
     showSaveIssue();
   }
@@ -217,16 +222,31 @@
     const a=active(),complete=a.ended,started=a.done.length>0||a.chapter>0;
     $('home-screen').innerHTML=`<div class="storybook"><div class="scene-heading"><span class="eyebrow">A LITTLE QUEST. A BIG ADVENTURE.</span><h1>${complete?'Home with<br>new stories!':'Adventure is<br>calling!'}</h1></div><img class="cover-art" src="./assets/forest-friends-v2.webp" width="803" height="298" alt="Cheerful storybook forest friends in explorer hats with their playful dog"><div class="story-label">${esc(storyTitle())}</div></div>
       <div class="location-pill">${icon('pin')}<span>${esc(state.park)}</span></div>
-      <button class="btn full" data-action="${complete?'postcards':'tab'}" ${complete?'':'data-value="quest"'}>${icon(complete?'book':'play')} ${complete?'Our adventure postcard':started?'Continue our adventure':'Let’s explore!'} ${icon('arrow')}</button>
+      <button class="btn full" data-action="${state.mode==='classic'?'classic-mode':complete?'postcards':'tab'}" ${state.mode==='classic'||complete?'':'data-value="quest"'}>${icon(complete?'book':'play')} ${state.mode==='classic'?'Continue our classic hunt':complete?'Our adventure postcard':started?'Continue our adventure':'Let’s explore!'} ${icon('arrow')}</button>
       <div class="quick-actions"><button class="btn quiet" data-action="builder">${icon('compass')} ${complete?'Plan our next outing':'Plan this outing'}</button><button class="btn quiet" data-action="camp">⛺ Base camp</button></div>
-      <p class="muted-note">${esc(optionLabel(a.options.habitat))} · ${esc(optionLabel(a.options.season))} · ${esc(optionLabel(a.options.duration))} · ${esc(optionLabel(a.options.difficulty))}</p>
+      <button class="subtle-button wide" data-action="classic-mode">Original 10-crystal hunt · ${state.classic.index}/10 collected</button><p class="muted-note">${esc(optionLabel(a.options.habitat))} · ${esc(optionLabel(a.options.season))} · ${esc(optionLabel(a.options.duration))} · ${esc(optionLabel(a.options.difficulty))}</p>
       <div class="section-heading"><h2>Your little adventure team</h2><span>2 adults · 3 kids</span></div>${partyRow()}
       <p class="muted-note">Pass the pretend lead after each challenge. A grown-up guides the real walk.</p>
       <div class="mini-progress" aria-label="${a.claimedChapters.length} of 5 map pieces">${MISSIONS.map((m,i)=>`<span class="${a.claimedChapters.includes(i)?'won':i===a.chapter?'now':''}"></span>`).join('')}</div>
       <button class="btn quiet full" data-action="download-adventure">${icon('download')} ${offlineReady?'Adventure ready offline':'Download adventure for offline play'}</button>
       <p class="muted-note" id="home-offline-note">${offlineReady?'Game and artwork checked on this device. Keep this browser’s site data.':'Do this online before leaving. Progress saves after every challenge.'}</p>${safetyTip()}`;
   }
+  function renderClassicQuest(){
+    const c=state.classic,m=C.MISSIONS[c.index],i=c.checks.findIndex(x=>!x),el=$('quest-screen');
+    if(!m){el.innerHTML=`<span class="eyebrow">THE ORIGINAL TEN-CRYSTAL HUNT</span><div class="complete-scene"><div class="trophy">🏆</div><h2>Ten crystals,<br>one wonderful family!</h2><p>Your original story, all seventeen bonus activities, and every earned reward are safe.</p></div>${classicCollection()}<button class="btn full" data-action="expedition-mode">Explore our varied adventures</button><button class="btn quiet full" data-action="builder">Plan a new outing</button>${safetyTip()}`;return;}
+    el.innerHTML=`<div class="quest-head"><span class="eyebrow">CLASSIC CHAPTER ${c.index+1} OF 10 · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read this classic clue aloud">${icon('sound')}</button></div><h1 class="page-title">${esc(m.title)}</h1><p class="intro">${esc(m.story)}</p><div class="challenge-card"><div class="card-meta"><span class="type-chip">Classic hunt</span><span>${c.checks.filter(Boolean).length}/${m.tasks.length} explored</span></div>${i<0?`<span class="challenge-symbol">${m.symbols[0]}</span><h2>Our crystal is ready!</h2><button class="btn gold full" data-action="classic-claim" data-chapter="${c.index}">Claim crystal + ${m.xp} XP</button>`:`<span class="challenge-symbol">${m.symbols[i]}</span><h2>${esc(m.tasks[i][c.variants[i]||0])}</h2>${m.hints?.[i]?`<p class="challenge-prompt">${esc(m.hints[i])}</p>`:''}<button class="btn full" data-action="classic-check" data-value="${i}" data-chapter="${c.index}">We explored it!</button><button class="subtle-button wide" data-action="classic-swap" data-value="${i}" data-chapter="${c.index}">Try a safe alternative</button>`}</div><p class="helper">Your original ten-chapter progress is saved separately, with shared family XP and camp crystals. You can pause at any time.</p><div class="quick-actions"><button class="btn quiet" data-action="rest">Take a break</button><button class="btn quiet" data-action="expedition-mode">Varied adventures</button></div>${safetyTip()}`;
+  }
+  function classicCollection(){return `<section class="panel"><h3>Original crystal collection · ${state.classic.index}/10</h3><div class="classic-gems">${C.MISSIONS.map((m,i)=>`<span class="badge" title="${esc(m.gem)}">${i<state.classic.index?esc(m.gem):'🔒 '+esc(m.short)}</span>`).join('')}</div><button class="subtle-button wide" data-action="classic-mode">${state.classic.index===10?'See our classic celebration':'Continue the original hunt'}</button></section>`;}
+  function classicCheck(button){
+    if(Date.now()<challengeTapUntil)return;const r=C.mark(state.classic,Number(button.dataset.value),Number(button.dataset.chapter));if(!r.changed)return;state.classic=r.state;challengeTapUntil=Date.now()+500;state.leader=(state.leader+1)%5;save();renderAll();playSound();toast(`${state.names[state.leader]} leads the next clue.`);
+  }
+  function classicClaim(expected){
+    const m=C.MISSIONS[expected],r=C.claim(state.classic,expected);if(!r.changed)return;state.classic=r.state;state.xp+=r.xp;state.expedition.lifetime.xp+=r.xp;state.expedition.wallet+=r.crystals;state.expedition.lifetime.crystals+=r.crystals;save();renderAll();confetti();playSound(true);
+    openSheet(sheetHeader('An original crystal is yours!')+`<div class="reward-body">${gem(m,'reward-crystal')}<h2>${esc(m.gem)}</h2><p>${esc(m.celebrate)}</p><div class="xp-reward">+${r.xp} family XP · +1 camp crystal</div><button class="btn full" data-action="next-quest">Continue the classic story</button></div>`);
+  }
+
   function renderQuest(){
+    if(state.mode==='classic'){renderClassicQuest();return;}
     const el=$('quest-screen'),a=active(),m=MISSIONS[Math.min(a.chapter,4)],card=currentCard();
     if(a.ended){el.innerHTML=`<span class="eyebrow">${a.claimedChapters.length===5?'FIVE PIECES. ONE FAMILY STORY.':'A LITTLE ADVENTURE COUNTS.'}</span><div class="complete-scene"><div class="trophy" aria-hidden="true">${a.claimedChapters.length===5?'🏆':'🌿'}</div><h2>${a.claimedChapters.length===5?'The forest is full<br>of your discoveries!':'A lovely place<br>to pause.'}</h2><p>${a.done.length} challenges explored together.<br>Your XP, crystals and base camp stay with you.</p></div>${a.claimedChapters.length===5&&!a.puzzleSolved?`<button class="btn gold full" data-action="puzzle">${icon('map')} Solve our discovery map</button>`:''}<button class="btn full" data-action="postcards">${icon('book')} Make our private postcard</button><button class="btn quiet full" data-action="builder">Plan another adventure</button>${safetyTip()}`;return;}
     const ready=E.isChapterReady(state.expedition),lead=specialty(state.leader),length=a.deck[a.chapter].length;
@@ -245,7 +265,7 @@
   }
   function renderTreasure(){
     const modes=[['crystals','Crystals'],['journal','Journal'],['camp','Base camp'],['postcards','Postcards']];
-    $('treasure-screen').innerHTML=`<span class="eyebrow">LITTLE WONDERS, BIG MEMORIES</span><h1 class="page-title">Our treasure chest</h1><div class="tab-switch treasure-switch">${modes.map(([id,label])=>`<button data-action="treasure-tab" data-value="${id}" aria-pressed="${treasureTab===id}">${label}</button>`).join('')}</div>${treasureTab==='journal'?renderJournal():treasureTab==='camp'?renderCamp():treasureTab==='postcards'?renderPostcards():`<div class="treasure-chest-scene">${icon('chest','big-chest')}<div><b>${state.index} crystals this outing</b><small>${state.xp} lifetime family XP</small></div></div><div class="gem-grid">${MISSIONS.map((m,i)=>`<button class="gem-card ${i>=state.index?'locked':''}" data-action="gem" data-value="${i}" aria-label="${esc(m.gem.replace(/^[^A-Za-z]+/,''))}, ${i<state.index?'collected':'locked'}">${gem(m)}<b>${esc(m.gem.replace(/^[^A-Za-z]+/,''))}</b><small>${i<state.index?'Collected together':'Chapter '+(i+1)}</small></button>`).join('')}</div><p class="muted-note">Collected crystals also give one spendable camp crystal each. Your crystal trophies always stay in the collection.</p><button class="btn full" data-action="camp">⛺ Visit our family base camp · ${state.expedition.wallet} to spend</button>`}`;
+    $('treasure-screen').innerHTML=`<span class="eyebrow">LITTLE WONDERS, BIG MEMORIES</span><h1 class="page-title">Our treasure chest</h1><div class="tab-switch treasure-switch">${modes.map(([id,label])=>`<button data-action="treasure-tab" data-value="${id}" aria-pressed="${treasureTab===id}">${label}</button>`).join('')}</div>${treasureTab==='journal'?renderJournal():treasureTab==='camp'?renderCamp():treasureTab==='postcards'?renderPostcards():`<div class="treasure-chest-scene">${icon('chest','big-chest')}<div><b>${state.index} crystals this outing</b><small>${state.xp} lifetime family XP</small></div></div><div class="gem-grid">${MISSIONS.map((m,i)=>`<button class="gem-card ${i>=state.index?'locked':''}" data-action="gem" data-value="${i}" aria-label="${esc(m.gem.replace(/^[^A-Za-z]+/,''))}, ${i<state.index?'collected':'locked'}">${gem(m)}<b>${esc(m.gem.replace(/^[^A-Za-z]+/,''))}</b><small>${i<state.index?'Collected together':'Chapter '+(i+1)}</small></button>`).join('')}</div><p class="muted-note">Collected crystals also give one spendable camp crystal each. Your crystal trophies always stay in the collection.</p><button class="btn full" data-action="camp">⛺ Visit our family base camp · ${state.expedition.wallet} to spend</button>${classicCollection()}`}`;
   }
   function renderJournal(){
     return `<p class="intro">What did your family discover? Tap a picture and let a grown-up write a tiny memory.</p><div class="discovery-grid">${Object.entries(CATEGORIES).map(([key,c])=>`<button data-action="discovery" data-value="${key}"><span aria-hidden="true">${c.emoji}</span>${c.label}</button>`).join('')}</div>
@@ -353,7 +373,7 @@
     const o=Object.fromEntries(new FormData(form).entries());let exp=state.expedition;
     if(active().ended){const r=E.startNext(exp,o,Date.now());if(!r.changed){toast('Finish the current outing first.');return;}exp=r.expansion;}
     else{if(active().done.length||active().claimedChapters.length){toast('Finish your current outing before planning another.');return;}exp={...exp,options:E.normaliseOptions(o),active:E.createOuting(o,exp.recentIds,Date.now())};}
-    state.expedition=exp;state.index=0;state.gems=[];state.checks=[false,false,false];state.variants=[0,0,0];save();closeSheet();setTab('quest');toast('Your next five-chapter story is ready.');
+    state.mode='expedition';state.expedition=exp;state.index=0;state.gems=[];state.checks=[false,false,false];state.variants=[0,0,0];save();closeSheet();setTab('quest');toast('Your next five-chapter story is ready.');
   }
   function renderCamp(){
     const e=state.expedition,owned=e.owned||[],equipped=Object.values(e.equipped||{}),items=E.SHOP;
@@ -367,8 +387,8 @@
   function equipCampItem(id){const r=E.equipItem(state.expedition,id);if(r.changed){state.expedition=r.expansion;save();renderTreasure();toast('Your camp has a new look.');}}
   function enrichLatestPostcard(){
     const p=state.expedition.postcards.find(x=>x.id===active().id)||state.expedition.postcards.at(-1);if(!p)return;
-    p.park=p.park||state.park;p.date=p.date||p.createdAt||new Date().toISOString();p.heroes=p.heroes?.length?p.heroes:[...state.names];p.favorite=p.favorite||'';p.photoIds=p.photoIds||[];
-    p.discoveries=p.done.map(d=>{const c=E.CARD_BY_ID[d.cardId];return {id:d.cardId,title:c?.title||'A little wonder',note:d.note||'',type:c?.type||'Find',emoji:c?.emoji||'🌿'};});
+    p.park=p.park||state.park;p.date=p.date||p.createdAt||new Date().toISOString();p.createdAt=p.createdAt||p.date;p.heroes=p.heroes?.length?p.heroes:[...state.names];p.favorite=p.favorite||'';p.photoIds=p.photoIds||[];
+    p.discoveries=p.done.map(d=>{const c=E.CARD_BY_ID[d.cardId];return {...d,id:d.cardId,title:c?.title||'A little wonder',note:d.note||'',type:c?.type||'Find',emoji:c?.emoji||'🌿'};});
     p.badges=[p.endedEarly?'Little Adventure':'Five-piece Explorer',...new Set(p.done.map(d=>E.CARD_BY_ID[d.cardId]?.type).filter(Boolean)),...(p.puzzleSolved?['Map Storyteller']:[])];
   }
   function renderPostcards(){
@@ -430,6 +450,11 @@
       case 'tab':setTab(v);break;
       case 'settings':openSettings();break;
       case 'builder':openBuilder();break;
+      case 'classic-mode':state.mode='classic';save();closeSheet();setTab('quest');break;
+      case 'expedition-mode':state.mode='expedition';save();closeSheet();setTab('quest');break;
+      case 'classic-check':classicCheck(button);break;
+      case 'classic-swap':{const r=C.swap(state.classic,Number(v),Number(button.dataset.chapter));if(r.changed){state.classic=r.state;save();renderQuest();}break;}
+      case 'classic-claim':classicClaim(Number(button.dataset.chapter));break;
       case 'complete-challenge':completeChallenge(button);break;
       case 'swap-challenge':{const r=E.swapChallenge(state.expedition);if(r.changed){state.expedition=r.expansion;save();renderQuest();toast('An easier way, with the same reward.');}break;}
       case 'pass-lead':state.leader=(state.leader+1)%5;save();renderQuest();renderHome();break;
@@ -497,9 +522,9 @@
     const file=e.target.files?.[0];e.target.value='';if(!file)return;if(file.size>10000000){toast('That file is too large. Choose a Wild Explorer JSON progress backup.');return;}
     try{
       const data=JSON.parse(await file.text());const raw=data?.app==='operation-wild-explorer'?data.state:data;
-      if(!raw||typeof raw!=='object'||!Array.isArray(raw.names)||raw.names.length!==5||!Array.isArray(raw.checks)||!Number.isInteger(raw.index)||raw.index<0||raw.index>5||typeof raw.xp!=='number'||!Number.isFinite(raw.xp))throw new Error('Invalid save');
+      if(!raw||typeof raw!=='object'||!Array.isArray(raw.names)||raw.names.length!==5||!Array.isArray(raw.checks)||!Number.isInteger(raw.index)||raw.index<0||raw.index>10||typeof raw.xp!=='number'||!Number.isFinite(raw.xp))throw new Error('Invalid save');
       pendingRestore=normalise(raw);
-      openSheet(sheetHeader('Restore this adventure?')+`<div class="sheet-body"><p>This backup has <b>${pendingRestore.xp} XP</b>, <b>${pendingRestore.index} crystals</b> and <b>${pendingRestore.journal.length} memories</b>.</p><p>Restoring replaces the current progress, heroes and journal on this device. Export your current adventure first to keep both.</p><button class="btn quiet full" data-action="export">Export current progress first</button><button class="btn full" data-action="restore-confirmed">Restore this backup</button><button class="subtle-button wide" data-action="close-sheet">Keep current progress</button></div>`);
+      openSheet(sheetHeader('Restore this adventure?')+`<div class="sheet-body"><p>This backup has <b>${pendingRestore.xp} XP</b>, <b>${pendingRestore.classic.index}/10 original crystals</b> and <b>${pendingRestore.index}/5 outing crystals</b> and <b>${pendingRestore.journal.length} memories</b>.</p><p>Restoring replaces the current progress, heroes and journal on this device. Export your current adventure first to keep both.</p><button class="btn quiet full" data-action="export">Export current progress first</button><button class="btn full" data-action="restore-confirmed">Restore this backup</button><button class="subtle-button wide" data-action="close-sheet">Keep current progress</button></div>`);
     }catch{pendingRestore=null;toast('That isn’t a valid Wild Explorer progress backup. Nothing was changed.');}
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden){if('speechSynthesis'in window)speechSynthesis.cancel();speechActive=false;save();}});

@@ -1,8 +1,8 @@
 /* Increment VERSION and CSS/JS query versions together for every update. */
 'use strict';
-const VERSION = '3.0.1';
+const VERSION = '3.0.2';
 const CACHE = 'wild-explorer-' + VERSION;
-const CORE = ['./', './index.html', './styles.css?v=3.0.1', './app.js?v=3.0.1', './engine.js?v=3.0.1', './postcards.js?v=3.0.1',
+const CORE = ['./', './index.html', './styles.css?v=3.0.2', './app.js?v=3.0.2', './engine.js?v=3.0.2', './postcards.js?v=3.0.2', './classic.js?v=3.0.2',
   './manifest.webmanifest', './assets/icon.svg', './assets/icon-180.png',
   './assets/icon-192.png', './assets/icon-512.png', './assets/forest-friends-v2.webp'];
 self.addEventListener('install', event => {

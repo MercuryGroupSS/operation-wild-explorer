@@ -27,7 +27,7 @@ function boot(initial={},options={}){
   const localStorage={getItem:k=>{if(options.blockStorage)throw new Error('blocked');return store.get(k)||null;},setItem:(k,v)=>{if(options.blockStorage)throw new Error('blocked');store.set(k,v);}};
   const navigator={onLine:true,geolocation:{getCurrentPosition:(success,error)=>{if(options.deferGPS)options.gpsCallback={success,error};else error({code:1});}}};
   const context={console,Date:ClockDate,Math,JSON,Number,String,Object,Array,Set,Map,Boolean,Promise,RegExp,URL:{createObjectURL:b=>{downloads.push(b);return 'blob:synthetic';},revokeObjectURL(){}},Blob,localStorage,navigator,document,setTimeout:()=>1,clearTimeout(){},WildPostcards:{},FormData:class{constructor(form){this.data=form.fields||{};}entries(){return Object.entries(this.data);}}};
-  context.window=context;context.WildEngine=E;context.isSecureContext=true;context.matchMedia=()=>({matches:false});context.addEventListener=(type,fn)=>windowEvents[type]=fn;context.scrollTo=()=>{};
+  context.window=context;context.WildEngine=E;context.WildClassic=require('../public/classic.js');context.isSecureContext=true;context.matchMedia=()=>({matches:false});context.addEventListener=(type,fn)=>windowEvents[type]=fn;context.scrollTo=()=>{};
   const hooks=`\nObject.assign(globalThis,{__qa:{getState:()=>state,setState:v=>{state=normalise(v);},save,renderAll,renderQuest,renderTreasure,renderPostcards,openBuilder,openHero,startPlannedOuting,completeChallenge,claimCrystal,openFinishEarly,readQuest,requestGPS,openSettings,exportSave,openPostcard,getLocation:()=>locationFix,normalise}});\n`;
   const code=app.slice(0,app.lastIndexOf('})();'))+hooks+app.slice(app.lastIndexOf('})();'));
   vm.runInNewContext(code,context,{filename:'app.js'});
@@ -84,6 +84,32 @@ await test('Journal HTML is escaped and hazardous finds get safe-distance langua
 });
 await test('Completed v2 migration produces a usable postcard date and park',()=>{
   const q=boot({wildExplorerSaveV2:JSON.stringify({...fixture,index:5,xp:440})});const p=q.api.getState().expedition.postcards[0];assert.ok(p.date || p.createdAt,'completed legacy postcard has no date');assert.equal(p.park,'Synthetic QA Park');
+});
+await test('2.1 saves at all eleven positions preserve every classic check, crystal and XP through reload',()=>{
+  for(let index=0;index<=10;index++){
+    const count=index===10?0:index===5?5:3, checks=Array.from({length:count},(_,i)=>i%2===0),variants=checks.map((_,i)=>i%3);
+    const q=boot({wildExplorerSaveV2:JSON.stringify({...fixture,version:3,index,xp:780,checks,variants})}),s=q.api.getState();
+    assert.equal(s.mode,'classic');assert.equal(s.classic.index,index);assert.deepEqual(copy(s.classic.checks),checks);assert.deepEqual(copy(s.classic.variants),variants);assert.equal(s.xp,780);assert.equal(s.expedition.wallet,index);assert.equal(s.expedition.lifetime.crystals,index);
+    const r=boot(Object.fromEntries(q.store));assert.deepEqual(copy(r.api.getState()),copy(s));assert.equal(r.api.getState().expedition.wallet,index);
+  }
+});
+await test('Classic remaining 17 clues share rewards exactly once and keep both modes and camp independent',()=>{
+  const q=boot({wildExplorerSaveV2:JSON.stringify({...fixture,version:3,index:5,xp:440,checks:[false,false,false,false,false],variants:[0,0,0,0,0]})});
+  q.click('confirm-camp','leaf-cape');assert.equal(q.api.getState().expedition.wallet,2);
+  let count=0;
+  while(q.api.getState().classic.index<10){
+    const c=q.api.getState().classic,i=c.checks.findIndex(x=>!x),chapter=String(c.index);
+    if(i>=0){q.click('classic-check',String(i),{chapter});const after=copy(q.api.getState());q.click('classic-check',String(i),{chapter});assert.deepEqual(copy(q.api.getState()),after);q.advance();count++;}
+    else{q.click('classic-claim',undefined,{chapter});const after=copy(q.api.getState());q.click('classic-claim',undefined,{chapter});assert.deepEqual(copy(q.api.getState()),after);}
+  }
+  let s=q.api.getState();assert.equal(count,17);assert.equal(s.xp,780);assert.equal(s.expedition.wallet,7);assert.equal(s.expedition.lifetime.crystals,10);assert.equal(s.classic.index,10);assert.equal(s.expedition.equipped.gear,'leaf-cape');
+  q.click('expedition-mode');assert.equal(q.api.getState().mode,'expedition');q.api.startPlannedOuting({fields:{duration:'short'}});assert.equal(q.api.getState().classic.index,10);assert.equal(q.api.getState().xp,780);q.click('classic-mode');assert.match(q.el('quest-screen').innerHTML,/Ten crystals/);
+  s=q.api.getState();assert.deepEqual(copy(boot(Object.fromEntries(q.store)).api.getState()),copy(s));
+});
+await test('2.1 complete backup restores all ten classic crystals only after confirmation',async()=>{
+  const q=boot(),before=copy(q.api.getState()),raw={...fixture,version:3,index:10,xp:780,checks:[]};
+  await q.el('import-file').listeners.change({target:{files:[{size:600,text:async()=>JSON.stringify(raw)}],value:'synthetic'}});
+  assert.deepEqual(copy(q.api.getState()),before);q.click('restore-confirmed');assert.equal(q.api.getState().classic.index,10);assert.equal(q.api.getState().expedition.wallet,10);assert.equal(q.api.getState().xp,780);
 });
 console.log(`\nRuntime integration: ${passed} passed, ${failed} failed. DOM stubs do not validate visual layout, browser events, IndexedDB or real service workers.`);
 if(failed)process.exitCode=1;

@@ -5,7 +5,7 @@ A bright, mobile-first family nature RPG for two adults and three young children
 Production: https://operation-wild-explorer.netlify.app
 Netlify project: `142205d8-6800-49d7-996f-5e0ee5094ee7`
 
-## Release 3.0.1
+## Release 3.0.2
 
 - A varied Find / Listen / Move / Imagine / Solve deck; adjacent categories differ and recent cards are avoided when possible.
 - Safe alternatives for every card, swaps, breaks and a shorter ending without losing earned progress.
@@ -24,14 +24,18 @@ Run:
 
 ```
 node scripts/check.mjs
+node scripts/check-hunt.mjs
 node --test scripts/engine.test.cjs scripts/postcards.test.cjs
+node scripts/qa-engine.mjs
+node scripts/qa-runtime.mjs
+node scripts/qa-worker.mjs
 ```
 
-Only `public/` is deployed. Netlify runs these checks and serves that folder. The original ZIP is retained as a source baseline; its contents are now correctly unpacked at repository root. Production previously pointed at a ZIP-only commit and returned 404.
+Only `public/` is deployed. Netlify runs these checks and serves that folder. Source is unpacked at repository root. This release reconciles the concurrently published 2.1.0 hunt: all ten original chapters and seventeen added activities remain playable alongside the new varied adventures.
 
 ## Saved progress and privacy
 
-The application keeps the original `wildExplorerSaveV2` and `wildExplorerSave` keys. Version 2/legacy names, customization, XP, completed crystals, journal and unfinished checked clues migrate without resetting progress. Each existing completed crystal funds one spendable camp crystal once. Camp spending does not remove collectible trophies. New outings retain lifetime XP, camp, heroes, journal and previous postcards.
+The application keeps the original `wildExplorerSaveV2` and `wildExplorerSave` keys. Version 2/legacy and 2.1 names, customization, XP, completed crystals, journal and unfinished checked clues migrate without resetting progress. All ten 2.1 crystals and five-part Rainbow progress are retained. Each existing completed crystal funds one spendable camp crystal once. Camp spending does not remove collectible trophies. New outings retain lifetime XP, camp, heroes, journal and previous postcards.
 
 Progress is stored only in this browser/device. The same HTTPS origin is required to retain access; previews have separate storage. JSON backups contain text, progress and photo references, not photo pixels. Optional JPEG/PNG/WebP selections are resized and re-encoded locally, removing source metadata, then stored in IndexedDB. Photos are never sent to Netlify. Download individual HTML postcards to retain their embedded photos. Clearing site data, browser eviction or changing browsers can remove local data. Photos from another browser's backup need to be added again.
 

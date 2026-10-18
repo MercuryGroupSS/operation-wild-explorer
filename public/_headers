@@ -23,3 +23,6 @@
   Cache-Control: no-cache
 /postcards.js
   Cache-Control: no-cache
+
+/classic.js
+  Cache-Control: no-cache
