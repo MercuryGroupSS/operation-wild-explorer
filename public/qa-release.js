@@ -1,6 +1,6 @@
 'use strict';
 (() => {
- const allowed=/^deploy-preview-/.test(location.hostname)||['localhost','127.0.0.1'].includes(location.hostname);
+ const allowed=/^(deploy-preview-|[a-f0-9]{24}--operation-wild-explorer)/.test(location.hostname)||['localhost','127.0.0.1'].includes(location.hostname);
  let game;
  const report=document.getElementById('report');
  function seed(owned){
