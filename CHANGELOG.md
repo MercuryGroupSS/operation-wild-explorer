@@ -12,10 +12,18 @@ Release review: retain all postcard history, protect shared photo references and
 
 Unpack the existing source package into a working Git-backed Netlify layout; retain original artwork and five-hero design. Add varied challenge cards, safe swaps and shorter endings, linked story map and discovery puzzle, rotating hero specialties, persistent base camp, outing builder, private postcards with optional local photos, and verified offline download. Preserve legacy saves and add pure-engine and postcard tests.
 
-## 2.1.0
+## 2.1.0 — Family scavenger hunt
 
-Published the expanded ten-crystal classic hunt with seventeen bonus activities and version-3 save migration.
+- Append five ordered chapters with all 17 requested activities: rainbow colours, nature treasures, tiny-world clues, wildlife and photo poses.
+- Preserve the first five mission IDs, tasks, earned XP, heroes and journal. Old completed adventures resume at the first new chapter; unfinished adventures keep their current clue progress.
+- Support variable-length quests (the rainbow chapter has five clues), ten crystals, narration of safety hints, and safe alternate clues with equal rewards.
+- Keep the app camera-free. Optional photos use a grown-up's normal camera; no image is required or uploaded. Climbing and jumping can always be replaced by grounded poses.
+- Upgrade the saved data to schema 3 in the existing storage key, preserve the legacy mirror, and update the offline cache to 2.1.0.
 
-## 2.0.0
+## Repository import — game version 2.0.0
 
-Original mobile family adventure with five quests, customizable heroes, shared XP/crystals, journal, optional GPS, read-aloud and offline service worker.
+- Preserved every game runtime file from Operation_Wild_Explorer_Mobile_v2.zip byte-for-byte.
+- Separated served files in public/ from documentation and development tooling.
+- Added Netlify pre-deploy static checks and repository contribution guidance.
+- No gameplay, artwork, saving, GPS or public URL changes.
+- Remote GitHub creation and Netlify repository linking remain pending.
