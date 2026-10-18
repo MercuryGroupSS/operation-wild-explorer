@@ -149,7 +149,7 @@ await test('Night planner keeps context, lengths and safe alternatives; export/i
 
 function addPlayer(q,name,kind='child',costume){
   q.click('add-player');q.el('hero-name').value=name;q.el('hero-role').value='ranger';q.el('hero-specialty').value='detective';
-  q.events.change({target:{id:'hero-kind',value:kind}});
+  q.events.change({target:{id:'hero-kind',value:kind}});assert.equal(q.el('hero-size-label').textContent,kind==='adult'?'GROWN-UP HERO':'LITTLE HERO');
   if(costume)q.events.change({target:{id:'hero-costume',value:costume}});
   q.events.submit({preventDefault(){},target:{id:'hero-form'}});
 }
@@ -206,12 +206,13 @@ await test('Every avatar wears a Halloween costume including new players; daytim
   q.api.openHero(7);q.events.change({target:{id:'hero-costume',value:'ghost'}});assert.match(q.el('avatar-preview').innerHTML,/data-costume="ghost"/);q.el('hero-name').value='QA Added at night';q.el('hero-role').value='ranger';q.el('hero-specialty').value='scout';q.events.submit({target:{id:'hero-form'},preventDefault(){}});assert.equal(q.api.getState().costumes[7],'ghost');
   q.click('classic-mode');assert.equal((q.el('heroes-screen').innerHTML.match(/data-costume="daylight"/g)||[]).length,8);assert.deepEqual(copy(q.api.getState().looks.slice(0,7)),day.looks);
 });
-await test('Completed postcards keep every roster name through save, reload and HTML export',()=>{
+await test('Completed postcards keep every roster name through save, reload and HTML export',async()=>{
   const q=boot();for(let i=5;i<12;i++)addPlayer(q,`QA Postcard ${i+1}`);
   const c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});q.click('finish-confirmed');
   const s=q.api.getState();assert.equal(s.expedition.postcards[0].heroes.length,12);
   const reloaded=boot(Object.fromEntries(q.store)).api.getState();assert.deepEqual(copy(reloaded.expedition.postcards[0].heroes),copy(s.names));
-  const html=require('../public/postcards.js').renderPreview(reloaded.expedition.postcards[0],[]);for(const name of s.names)assert.ok(html.includes(name),name);
+  vm.runInNewContext(readFileSync(new URL('../public/postcards.js',import.meta.url),'utf8'),q.context,{filename:'postcards.js'});
+  const result=await q.context.WildPostcards.exportPostcard(reloaded.expedition.postcards[0],{photoIds:[]});assert.equal(result.downloadRequested,true);const html=await q.downloads.at(-1).text();for(const name of s.names)assert.ok(html.includes(name),name);assert.match(html,/<!doctype html>/);assert.ok(!/https?:\/\//.test(html));
 });
 console.log(`\nRuntime integration: ${passed} passed, ${failed} failed. DOM stubs do not validate visual layout, browser events, IndexedDB or real service workers.`);
 if(failed)process.exitCode=1;
