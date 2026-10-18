@@ -25,3 +25,13 @@ Independent additional checks passed with 1–128 normalized players, stable/ded
 ## Limits
 
 DOM-stub checks do not prove layout or device behavior. No physical iPhone/Safari, disconnected-network startup, installed PWA update acceptance or real photo/GPS permission test is claimed for this content release unless specifically recorded below.
+
+## Browser preview observations
+
+Real cloud Chromium pop-up windows were measured at 320 × 740 and 390 × 844 portrait, and 844 × 390 landscape. These are browser viewports, not physical phones. Synthetic teams only.
+
+- Five default heroes, add/cancel, required-name validation, adult/child preview, extra-player customization and automatic costumes were exercised with up to eight players. All five main sections fit without horizontal overflow at the ordinary text size in all three viewports.
+- Halloween entry correctly required the grown-up readiness check. Every player received the selected wizard, ghost, pumpkin or bat outfit. Daytime and classic modes restored the saved daylight appearance for all eight players.
+- A real challenge completion and claim awarded 60 XP and one crystal, advanced the story and rotated the eighth leader back to the first. The next wizard-hat card and expanded hands-on alternatives displayed correctly.
+- The browser reported the game and artwork cache checked on the preview origin. This is not a disconnected-network or installed-PWA test.
+- Enlarged text and simultaneous-window save regression checks are recorded below after the preview fixes.
