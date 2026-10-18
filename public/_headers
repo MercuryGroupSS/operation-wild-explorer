@@ -26,3 +26,11 @@
 
 /classic.js
   Cache-Control: no-cache
+
+/gear.js
+  Cache-Control: no-cache
+
+/quest-magic.js
+  Cache-Control: no-cache
+/quest-magic.css
+  Cache-Control: no-cache

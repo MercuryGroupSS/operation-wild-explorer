@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.3.0 — Playable crystal gear and a treasure quest
+
+- Give all existing purchases direct reusable play controls with duplicate-charge prevention.
+- Add an opt-in device compass with honest practice fallback and strict invalid/stale/lifecycle handling.
+- Add adjustable, steady orange screen lanterns that persist across gameplay without hardware flashlight access.
+- Add cape, companion, flag, pattern and storytelling activities without extra reward grants.
+- Preserve all saves, players, costumes, story contexts, collected rewards and offline update behavior.
+
 ## 3.2.0 — More players, Halloween costumes and hands-on adventures
 
 - Add players with persistent identities, adult/child choice and expandable mobile roster.

@@ -21,18 +21,19 @@ class Element {
 }
 function boot(initial={},options={}){
   const elements=new Map(),events={},windowEvents={},store=options.sharedStore||new Map(Object.entries(initial)),downloads=[];
+  const timers=new Map();let timerId=0;
   let now=Date.now();class ClockDate extends Date{constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
   const el=id=>{if(!elements.has(id))elements.set(id,new Element(id));return elements.get(id);};
   const document={getElementById:el,querySelectorAll:()=>[],querySelector:()=>new Element(),createElement:()=>new Element(),body:new Element('body'),activeElement:new Element(),addEventListener:(type,fn)=>events[type]=fn,hidden:false};
   const localStorage={getItem:k=>{if(options.blockStorage)throw new Error('blocked');return store.get(k)||null;},setItem:(k,v)=>{if(options.blockStorage)throw new Error('blocked');store.set(k,v);options.writes?.push([k,v]);}};
   const navigator={onLine:true,geolocation:{getCurrentPosition:(success,error)=>{if(options.deferGPS)options.gpsCallback={success,error};else error({code:1});}}};
-  const context={console,Date:ClockDate,Math,JSON,Number,String,Object,Array,Set,Map,Boolean,Promise,RegExp,URL:{createObjectURL:b=>{downloads.push(b);return 'blob:synthetic';},revokeObjectURL(){}},Blob,localStorage,navigator,document,setTimeout:()=>1,clearTimeout(){},WildPostcards:{},FormData:class{constructor(form){this.data=form.fields||{};}entries(){return Object.entries(this.data);}}};
-  context.window=context;context.WildEngine=E;context.WildClassic=require('../public/classic.js');context.isSecureContext=true;context.matchMedia=()=>({matches:false});context.addEventListener=(type,fn)=>windowEvents[type]=fn;context.scrollTo=()=>{};
+  const context={console,Date:ClockDate,Math,JSON,Number,String,Object,Array,Set,Map,Boolean,Promise,RegExp,URL:{createObjectURL:b=>{downloads.push(b);return 'blob:synthetic';},revokeObjectURL(){}},Blob,localStorage,navigator,document,setTimeout:(fn,ms)=>{const id=++timerId;if(options.captureTimers)timers.set(id,{fn,ms});return id;},clearTimeout(id){timers.delete(id);},WildPostcards:{},FormData:class{constructor(form){this.data=form.fields||{};}entries(){return Object.entries(this.data);}}};
+  context.window=context;context.WildEngine=E;context.WildGear=require('../public/gear.js');context.WildQuestMagic=require('../public/quest-magic.js');context.WildClassic=require('../public/classic.js');context.DeviceOrientationEvent=options.orientation;context.innerWidth=390;context.innerHeight=844;context.screen={orientation:{angle:0,type:"portrait-primary"}};context.isSecureContext=options.secure!==false;context.matchMedia=()=>({matches:false});context.addEventListener=(type,fn)=>windowEvents[type]=fn;context.scrollTo=()=>{};context.removeEventListener=(type,fn)=>{if(windowEvents[type]===fn)delete windowEvents[type];};
   const hooks=`\nObject.assign(globalThis,{__qa:{getState:()=>state,setState:v=>{state=normalise(v);},save,renderAll,renderQuest,renderTreasure,renderPostcards,openBuilder,openHero,startPlannedOuting,completeChallenge,claimCrystal,openFinishEarly,readQuest,requestGPS,openSettings,exportSave,openPostcard,getLocation:()=>locationFix,normalise,avatar,removePostcardPhoto}});\n`;
   const code=app.slice(0,app.lastIndexOf('})();'))+hooks+app.slice(app.lastIndexOf('})();'));
   vm.runInNewContext(code,context,{filename:'app.js'});
   const click=(action,value,extra={})=>{const button=new Element();button.parentElement=new Element();button.dataset={action,value,...extra};events.click({target:{closest:()=>button}});return button;};
-  return {api:context.__qa,el,store,events,windowEvents,click,downloads,context,advance:(ms=600)=>now+=ms};
+  return {api:context.__qa,el,store,events,windowEvents,click,downloads,context,advance:(ms=600)=>now+=ms,runTimers:ms=>{for(const [id,t]of [...timers])if(t.ms===ms){timers.delete(id);t.fn();}}};
 }
 let passed=0,failed=0;
 async function test(name,fn){try{await fn();passed++;console.log('PASS:',name);}catch(e){failed++;console.error('FAIL:',name,e.stack);}}
@@ -301,5 +302,78 @@ await test('A queued old dialog-close event cannot erase a newly opened hero dra
   q.click('settings');q.click('close-sheet');q.click('hero','0');q.el('hero-name').value='QA Reopened hero';q.el('hero-role').value='wizard';q.el('hero-specialty').value='listener';
   queued.shift()();assert.equal(sheet.open,true);q.events.submit({target:{id:'hero-form'},preventDefault(){}});assert.equal(q.api.getState().names[0],'QA Reopened hero');assert.equal(q.api.getState().roles[0],'wizard');
 });
+
+const gearFixture=()=>{const q=boot();const s=copy(q.api.getState());s.expedition.wallet=30;s.expedition.owned=E.SHOP.map(x=>x.id);return {wildExplorerSaveV2:JSON.stringify(s)};};
+await test('Owned purchases are directly playable forever; buying twice never charges twice',()=>{
+  const q=boot(),s=copy(q.api.getState());s.expedition.wallet=E.SHOP.reduce((n,x)=>n+x.cost,0);q.api.setState(s);q.api.save();
+  for(const item of E.SHOP){q.click('confirm-camp',item.id);const before=copy(q.api.getState());q.click('confirm-camp',item.id);assert.deepEqual(copy(q.api.getState()),before);q.click('use-gear',item.id);q.click('gear-next');assert.equal(q.api.getState().expedition.wallet,before.expedition.wallet);assert.equal(q.api.getState().xp,before.xp);q.click('close-sheet');}
+  assert.equal(q.api.getState().expedition.wallet,0);assert.equal(q.api.getState().expedition.owned.length,10);
+});
+await test('Lantern glow is visible state, persists across tabs/reload/export, and needs an owned lantern',async()=>{
+  const q=boot(gearFixture());q.click('use-gear','explorer-lantern');q.click('lantern-toggle','explorer-lantern');
+  assert.ok(q.context.document.body.classes.has('lantern-lit'));q.events.input({target:{id:'lantern-strength',value:'80'}});q.click('close-sheet');q.click('tab','quest');
+  assert.equal(q.api.getState().tools.lanternLevel,80);assert.match(q.el('equipment-bar').innerHTML,/Turn glow off/);
+  q.api.exportSave();const backup=JSON.parse(await q.downloads[0].text());assert.equal(backup.state.tools.lanternOn,true);
+  const r=boot(Object.fromEntries(q.store));assert.ok(r.context.document.body.classes.has('lantern-lit'));r.click('lantern-off');assert.ok(!r.context.document.body.classes.has('lantern-lit'));
+  const f=boot();f.click('lantern-toggle','explorer-lantern');assert.equal(f.api.getState().tools.lanternOn,false);
+  const invalid=copy(q.api.getState());invalid.expedition.owned=[];invalid.tools.lanternOn=true;const bad=boot({wildExplorerSaveV2:JSON.stringify(invalid)});assert.equal(bad.api.getState().tools.lanternOn,false);
+});
+await test('Compass starts as clearly labeled manual practice and unsupported/denied sensors keep it usable',async()=>{
+  const q=boot(gearFixture());q.click('use-gear','compass');assert.match(q.el('compass-mode').textContent,/PRACTICE/);q.click('compass-turn','90');assert.match(q.el('compass-reading').textContent,/90° · E/);
+  q.click('compass-enable');assert.match(q.el('compass-message').textContent,/cannot provide/);assert.match(q.el('compass-mode').textContent,/PRACTICE/);
+  let requests=0;const d=boot(gearFixture(),{orientation:{requestPermission:absolute=>{requests++;assert.equal(absolute,true);return Promise.resolve('denied');}}});d.click('use-gear','compass');assert.equal(requests,0);d.click('compass-enable');await new Promise(setImmediate);assert.equal(requests,1);assert.match(d.el('compass-message').textContent,/not granted/);assert.equal(d.windowEvents.deviceorientation,undefined);
+});
+await test('Compass accepts zero north only from absolute/valid sensors; relative, landscape and tilted data never display as live',async()=>{
+  const q=boot(gearFixture(),{orientation:{},captureTimers:true});q.click('use-gear','compass');q.click('compass-enable');
+  const heading=q.windowEvents.deviceorientation;heading({alpha:90,beta:0,gamma:0,absolute:false});assert.match(q.el('compass-reading').textContent,/Waiting/);
+  heading({alpha:0,beta:0,gamma:0,absolute:true});assert.match(q.el('compass-reading').textContent,/0° · N/);
+  heading({alpha:270,beta:0,gamma:0,absolute:false});assert.match(q.el('compass-reading').textContent,/0° · N/);
+  q.context.screen.orientation.type='landscape-primary';heading({alpha:90,beta:0,gamma:0,absolute:true});assert.match(q.el('compass-reading').textContent,/Waiting/);
+  q.context.screen.orientation.type='portrait-primary';heading({alpha:90,beta:80,gamma:0,absolute:true});assert.match(q.el('compass-reading').textContent,/Waiting/);
+  heading({webkitCompassHeading:123,webkitCompassAccuracy:5,beta:0,gamma:0});assert.match(q.el('compass-reading').textContent,/123°/);assert.match(q.el('compass-message').textContent,/±5°/);
+  q.api.save();q.api.exportSave();assert.ok(!q.store.get('wildExplorerSaveV2').includes('webkitCompass'));assert.ok(!q.store.get('wildExplorerSaveV2').includes('123'));
+});
+await test('Compass timeout/stale reading, manual mode, close, hidden page and pending permission clean up safely',async()=>{
+  const q=boot(gearFixture(),{orientation:{},captureTimers:true});q.click('use-gear','compass');q.click('compass-enable');q.runTimers(7000);assert.match(q.el('compass-message').textContent,/No reliable compass reading arrived/);assert.equal(q.windowEvents.deviceorientation,undefined);
+  q.click('compass-enable');q.windowEvents.deviceorientation({alpha:90,beta:0,gamma:0,absolute:true});q.runTimers(3500);assert.match(q.el('compass-message').textContent,/stopped updating/);assert.match(q.el('compass-mode').textContent,/PRACTICE/);
+  q.click('compass-enable');q.click('compass-practice');assert.equal(q.windowEvents.deviceorientation,undefined);
+  q.click('compass-enable');q.click('close-sheet');assert.equal(q.windowEvents.deviceorientation,undefined);
+  q.click('use-gear','compass');q.click('compass-enable');q.context.document.hidden=true;q.events.visibilitychange();assert.equal(q.windowEvents.deviceorientation,undefined);assert.match(q.el('compass-message').textContent,/paused/);
+  q.context.document.hidden=false;q.click('compass-enable');q.windowEvents.deviceorientation({alpha:123,beta:0,gamma:0,absolute:true});q.windowEvents.pagehide();q.windowEvents.pageshow();assert.equal(q.windowEvents.deviceorientation,undefined);assert.match(q.el('compass-message').textContent,/paused/);assert.match(q.el('compass-reading').textContent,/Waiting/);assert.equal(q.el('compass-enable').disabled,false);q.click('compass-enable');assert.equal(typeof q.windowEvents.deviceorientation,'function');q.click('close-sheet');
+  let finish;const d=boot(gearFixture(),{orientation:{requestPermission:()=>new Promise(r=>finish=r)}});d.click('use-gear','compass');d.click('compass-enable');d.click('close-sheet');d.click('settings');finish('granted');await new Promise(setImmediate);assert.equal(d.windowEvents.deviceorientation,undefined);assert.match(d.el('sheet-content').innerHTML,/Grown-up/);
+});
+await test('All old savings, roster, identities and stories survive additive gear settings; gear use never resets outing',()=>{
+  const q=boot(gearFixture()),before=copy(q.api.getState());for(const id of E.SHOP.map(x=>x.id)){q.click('use-gear',id);q.click('gear-next');q.click('close-sheet');}
+  const after=q.api.getState();for(const k of ['names','heroIds','looks','costumes','classic','journal'])assert.deepEqual(copy(after[k]),before[k]);assert.deepEqual(copy(after.expedition.active),before.expedition.active);assert.equal(after.xp,before.xp);
+});
+
+await test('Treasure map follows classic versus expedition progress and inspecting nodes never changes rewards',()=>{
+ const q=boot({wildExplorerSaveV2:JSON.stringify(fixture)}),before=copy(q.api.getState());q.click('tab','trail');assert.match(q.el('trail-screen').innerHTML,/qm-map/);assert.match(q.el('trail-screen').innerHTML,/2 \/ 5 crystals/);
+ q.click('quest-map-node','0');assert.match(q.el('sheet-content').innerHTML,/DISCOVERED/);assert.match(q.el('sheet-content').innerHTML,/Already earned/);q.click('close-sheet');q.click('quest-map-node','4');assert.match(q.el('sheet-content').innerHTML,/STILL HIDDEN/);assert.ok(!q.el('sheet-content').innerHTML.includes('data-action="claim"'));q.click('close-sheet');q.click('quest-map-finale');assert.match(q.el('sheet-content').innerHTML,/3 more crystals/);assert.deepEqual(copy(q.api.getState()),before);
+ q.click('close-sheet');q.click('classic-mode');q.click('tab','trail');assert.match(q.el('trail-screen').innerHTML,/ten-crystal treasure map/);assert.equal((q.el('trail-screen').innerHTML.match(/data-action="quest-map-node"/g)||[]).length,10);q.click('quest-map-node','2');assert.match(q.el('sheet-content').innerHTML,/YOUR CURRENT QUEST/);q.click('quest-map-continue');assert.ok(q.el('sheet').open===false);assert.match(q.el('quest-screen').innerHTML,/classic-check/);
+});
+await test('Map labels and stored discovery notes remain escaped inside inspection sheets',()=>{
+ const q=boot();const s=copy(q.api.getState());s.expedition.active.claimedChapters=[0];s.expedition.active.chapter=1;s.expedition.active.done=[{chapter:0,step:0,cardId:s.expedition.active.deck[0][0],note:'<img src=x onerror=bad>',migrated:true}];q.api.setState(s);q.api.save();q.api.renderAll();q.click('quest-map-node','0');assert.ok(!q.el('sheet-content').innerHTML.includes('<img'));assert.match(q.el('sheet-content').innerHTML,/&lt;img/);
+});
+await test('Paused and full-completion maps never award another crystal through inspection or finale',()=>{
+ const q=boot({wildExplorerSaveV2:JSON.stringify(fixture)});q.click('finish-confirmed');q.click('tab','trail');const paused=copy(q.api.getState());assert.match(q.el('trail-screen').innerHTML,/A lovely place to pause/);assert.ok(!q.el('trail-screen').innerHTML.includes('aria-current="step"'));q.click('quest-map-node','2');assert.match(q.el('sheet-content').innerHTML,/outing has ended/);q.click('close-sheet');q.click('quest-map-finale');assert.deepEqual(copy(q.api.getState()),paused);
+ const p=boot({wildExplorerSaveV2:JSON.stringify({...fixture,index:5,xp:440})});p.click('tab','trail');const completed=copy(p.api.getState());assert.match(p.el('trail-screen').innerHTML,/qm-finale-open/);p.click('quest-map-finale');assert.match(p.el('sheet-content').innerHTML,/discovery map/);p.click('close-sheet');p.click('quest-map-finale');assert.deepEqual(copy(p.api.getState()),completed);
+});
+await test('All night maps switch with their saved setting and restore daytime without touching classics',()=>{
+ const q=boot({wildExplorerSaveV2:JSON.stringify(fixture)}),day=copy(q.api.getState().expedition.active),classic=copy(q.api.getState().classic);
+ for(const setting of E.NIGHT_SETTINGS){enterNight(q,setting);q.click('tab','trail');assert.match(q.el('trail-screen').innerHTML,/qm-map-night/);assert.match(q.el('trail-screen').innerHTML,/0 \/ 5 crystals/);assert.ok(!q.el('trail-screen').innerHTML.includes('id="place-form"'));q.click('quest-map-node','0');assert.match(q.el('sheet-content').innerHTML,/Pumpkin Hollow/);q.click('close-sheet');q.click('daylight-mode');q.click('tab','trail');assert.ok(!q.el('trail-screen').innerHTML.includes('qm-map-night'));assert.deepEqual(copy(q.api.getState().expedition.active),day);assert.deepEqual(copy(q.api.getState().classic),classic);}
+});
+await test('Faceted crystal scenes track challenges and awaken without unlocking rewards early',()=>{
+ const q=boot();assert.match(q.el('quest-screen').innerHTML,/qm-crystal-prism/);assert.match(q.el('quest-screen').innerHTML,/0 of 3 discoveries gathered/);const c=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:c.id,key:c.challengeKey,chapter:String(c.chapter),step:String(c.step)});assert.match(q.el('quest-screen').innerHTML,/1 of 3 discoveries gathered/);assert.equal(q.api.getState().xp,0);q.advance();
+ while(E.getCurrentCard(q.api.getState().expedition)){const n=E.getCurrentCard(q.api.getState().expedition);q.click('complete-challenge',undefined,{card:n.id,key:n.challengeKey,chapter:String(n.chapter),step:String(n.step)});q.advance();}assert.match(q.el('quest-screen').innerHTML,/THE CRYSTAL IS AWAKE/);assert.equal(q.api.getState().xp,0);q.click('claim',undefined,{chapter:'0'});const after=copy(q.api.getState());assert.match(q.el('sheet-content').innerHTML,/qm-crystal reward-crystal/);q.click('claim',undefined,{chapter:'0'});assert.deepEqual(copy(q.api.getState()),after);q.click('close-sheet');q.click('tab','trail');assert.match(q.el('trail-screen').innerHTML,/1 \/ 5 crystals/);assert.match(q.el('trail-screen').innerHTML,/data-value="1"[^>]*aria-current="step"/);
+});
+await test('Sound volume migrates additively, clamps safely, saves and restores with motion preferences',()=>{
+ const q=boot({wildExplorerSaveV2:JSON.stringify(fixture)});assert.equal(q.api.getState().settings.volume,55);const before=copy(q.api.getState());q.click('settings');q.click('setting','sound');q.events.input({target:{id:'magic-volume',value:'35'}});assert.equal(q.api.getState().settings.volume,35);assert.equal(q.el('magic-volume-label').textContent,'35%');q.click('setting','motion');assert.equal(q.api.getState().settings.motion,true);const s=q.api.getState();for(const key of ['xp','names','heroIds','classic','expedition','journal'])assert.deepEqual(copy(s[key]),before[key]);assert.deepEqual(copy(boot(Object.fromEntries(q.store)).api.getState().settings),copy(s.settings));q.events.input({target:{id:'magic-volume',value:'900'}});assert.equal(q.api.getState().settings.volume,100);q.events.input({target:{id:'magic-volume',value:'-15'}});assert.equal(q.api.getState().settings.volume,0);
+});
+await test('Audio rendering stays silent; explicit sound-off, hide, navigation, and newer save stop effect tails',()=>{
+ const Q=require('../public/quest-magic.js'),original=Q.createSoundEngine,events=[];Q.createSoundEngine=()=>({play:(...args)=>events.push(['play',...args]),stop:()=>events.push(['stop'])});
+ try{const q=boot();assert.equal(events.filter(x=>x[0]==='play').length,0);q.api.renderAll();assert.equal(events.filter(x=>x[0]==='play').length,0);q.click('settings');q.click('setting','sound');assert.equal(events.filter(x=>x[0]==='play').length,1);q.click('setting','sound');assert.equal(events.at(-1)[0],'stop');q.context.document.hidden=true;q.events.visibilitychange();assert.ok(q.context.document.body.classes.has('qm-effects-paused'));assert.equal(events.at(-1)[0],'stop');q.context.document.hidden=false;q.events.visibilitychange();assert.ok(!q.context.document.body.classes.has('qm-effects-paused'));q.click('tab','trail');assert.equal(events.at(-1)[0],'stop');q.windowEvents.pagehide();assert.equal(events.at(-1)[0],'stop');}finally{Q.createSoundEngine=original;}
+});
+
 console.log(`\nRuntime integration: ${passed} passed, ${failed} failed. DOM stubs do not validate visual layout, browser events, IndexedDB or real service workers.`);
 if(failed)process.exitCode=1;

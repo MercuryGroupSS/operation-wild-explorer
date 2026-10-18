@@ -1,0 +1,19 @@
+'use strict';
+(() => {
+ const allowed=/^deploy-preview-/.test(location.hostname)||['localhost','127.0.0.1'].includes(location.hostname);
+ let game;
+ const report=document.getElementById('report');
+ function seed(owned){
+  if(!allowed){report.textContent='Disabled outside the Deploy Preview.';return;}
+  const names=['QA Adult A','QA Adult B','QA Child A','QA Child B','QA Child C','QA Extra'];
+  const s={version:3,names,roles:['ranger','guardian','whisperer','wizard','hunter','ranger'],heroIds:names.map((_,i)=>'player-'+(i+1)),heroKinds:['adult','adult','child','child','child','adult'],costumes:['wizard','ghost','pumpkin','bat','wizard','ghost'],looks:names.map((_,i)=>({skin:i%4,hair:i%4,colour:i%5,long:i%2===0})),mode:'expedition',index:0,checks:[false,false,false],variants:[0,0,0],xp:0,journal:[],leader:2,park:'Synthetic QA Park',start:'Synthetic QA start',settings:{sound:false,motion:true}};
+  s.classic=WildClassic.normalise(null,s);s.expedition=WildEngine.normaliseExpansion(null,s);s.expedition.wallet=12;if(owned)s.expedition.owned=WildEngine.SHOP.map(x=>x.id);
+  localStorage.setItem('wildExplorerSaveV2',JSON.stringify(s));report.textContent=owned?'Prepared all ten owned items, six synthetic explorers and 12 crystals.':'Prepared 12 crystals and no owned items.';
+ }
+ function open(w,h){if(!allowed)return;game=window.open('./','wild-qa','popup,width='+w+',height='+h);report.textContent='Opened requested '+w+' × '+h+' viewport. Inspect reports actual dimensions.';}
+ document.getElementById('gear-fixture').onclick=()=>seed(true);document.getElementById('shop-fixture').onclick=()=>seed(false);
+ document.getElementById('open320').onclick=()=>open(320,740);document.getElementById('open390').onclick=()=>open(390,844);document.getElementById('landscape').onclick=()=>open(844,390);
+ document.getElementById('reload').onclick=()=>game?.location.reload();
+ document.getElementById('large').onclick=()=>{if(!game)return;const d=game.document;for(const el of d.querySelectorAll('body *')){if(!el.closest('svg'))el.dataset.qaFont=game.getComputedStyle(el).fontSize;}for(const el of d.querySelectorAll('[data-qa-font]'))el.style.fontSize=(parseFloat(el.dataset.qaFont)*2)+'px';report.textContent='Doubled computed text sizes in the currently rendered DOM.';};
+ document.getElementById('inspect').onclick=()=>{if(!game)return;const d=game.document,v=game.innerWidth;const over=[...d.querySelectorAll('body *')].filter(e=>{const r=e.getBoundingClientRect(),s=game.getComputedStyle(e);return r.width&&r.height&&s.visibility!=='hidden'&&s.display!=='none'&&(r.right>v+1||r.left < -1)&&!e.closest('[hidden]')&&!e.closest('svg')&&!e.classList.contains('skip')}).map(e=>({tag:e.tagName,id:e.id,cls:e.className,text:e.textContent.slice(0,70),left:Math.round(e.getBoundingClientRect().left),right:Math.round(e.getBoundingClientRect().right)}));const s=JSON.parse(localStorage.getItem('wildExplorerSaveV2'));report.textContent=JSON.stringify({viewport:[game.innerWidth,game.innerHeight],documentWidth:d.documentElement.scrollWidth,overflow:over,version:d.querySelector('script[src*="app.js"]').getAttribute('src'),names:s.names,xp:s.xp,wallet:s.expedition.wallet,owned:s.expedition.owned,tools:s.tools,heading:d.getElementById('compass-reading')?.textContent,mode:d.getElementById('compass-mode')?.textContent,bodyClasses:d.body.className,serviceWorker:!!game.navigator.serviceWorker?.controller},null,2);};
+})();

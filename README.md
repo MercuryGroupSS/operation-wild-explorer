@@ -5,6 +5,16 @@ A bright, mobile-first family nature RPG for two adults and three young children
 Production: https://operation-wild-explorer.netlify.app
 Netlify project: `142205d8-6800-49d7-996f-5e0ee5094ee7`
 
+## Release 3.3.0: playable gear and a treasure quest
+
+Buy crystal gear once, then use it whenever you like. Choose **Use our gear** above any game screen, or open **Treasure → Base camp**.
+
+- The **Star compass** opens an interactive practice dial. **Enable phone compass** uses a genuine device reading only when supported and permitted. Hold the phone flat, face up and in portrait. Unsupported or denied sensors leave the explicitly labeled practice dial available. This is a direction-learning toy, never a route or safety tool.
+- The **Firefly lantern** and **Pumpkin lantern** give the game screen a steady orange glow. Adjust the strength, keep playing with it on, or choose **Turn glow off**. This does not control the hardware flashlight or device brightness.
+- Capes dress the team and include hand-shape games. The fox, bat, bunting, tent and flag each have repeatable little activities. Owned items never charge again, and gear play does not inflate rewards.
+- All 3.2.0 progress, extra players, costumes, stories and crystal purchases stay intact. Lantern preferences are saved on-device; compass readings and permissions are not saved or uploaded.
+- See `docs/QA-3.3.md` for verification and physical-device limits.
+
 ## Release 3.2.0: more explorers, real little adventures
 
 Activities across Halloween, daytime and the classic hunt now lead to something children actually make, notice, compare or do. The fantasy stays in the story and rewards. Stable card IDs, clue positions, saved progress and all existing modes are retained.
@@ -47,7 +57,7 @@ Run:
 ```
 node scripts/check.mjs
 node scripts/check-hunt.mjs
-node --test scripts/engine.test.cjs scripts/postcards.test.cjs scripts/night.test.cjs
+node --test scripts/engine.test.cjs scripts/postcards.test.cjs scripts/night.test.cjs scripts/gear.test.cjs
 node scripts/qa-engine.mjs
 node scripts/qa-runtime.mjs
 node scripts/qa-worker.mjs

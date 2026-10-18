@@ -29,10 +29,12 @@ try {
   new Script(text('classic.js'), { filename: 'classic.js' });
   new Script(text('engine.js'), { filename: 'engine.js' });
   new Script(text('postcards.js'), { filename: 'postcards.js' });
+  new Script(text('gear.js'), { filename: 'gear.js' });
+  new Script(text('quest-magic.js'), { filename: 'quest-magic.js' });
   const version = app.match(/const VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1];
   assert(version && /^\d+\.\d+\.\d+$/.test(version), 'Expected semantic release version in app.js');
   assert.equal(sw.match(/const VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1], version, 'Service worker and app versions differ');
-  for (const file of ['app.js', 'styles.css', 'engine.js', 'postcards.js', 'classic.js']) {
+  for (const file of ['app.js', 'styles.css', 'engine.js', 'postcards.js', 'classic.js', 'gear.js', 'quest-magic.js', 'quest-magic.css']) {
     assert(html.includes(`${file}?v=${version}`), `${file}: update index.html query version`);
     assert(sw.includes(`${file}?v=${version}`), `${file}: update service-worker cached URL`);
   }
