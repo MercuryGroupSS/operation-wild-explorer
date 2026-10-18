@@ -7,3 +7,10 @@
 @media(orientation:landscape) and (max-height:520px){.app-shell{max-width:800px;padding-top:4px}.topbar{height:56px}.family-status{margin-bottom:12px}.storybook .scene-heading{padding:10px}.storybook .scene-heading h1{font-size:29px}.storybook .cover-art{max-height:190px;object-fit:cover}.hero-grid{grid-template-columns:repeat(3,1fr)}.hero-card:last-child:nth-child(odd){grid-column:auto;display:block;text-align:center}.hero-card:last-child:nth-child(odd) .hero-stage{width:100%;height:166px}.hero-card:last-child:nth-child(odd) .hero-stage svg{height:158px}.bottom-nav{max-width:800px}}
 .panel h3 svg{display:inline-block;vertical-align:-4px;width:20px;height:20px;margin-right:4px}
 .btn.gold:disabled,.btn.blue:disabled{background:#dce5ce;border-color:#c3d0b3;color:#74836a;text-shadow:none;box-shadow:none}
+
+/* 2.1: the extended hunt keeps clue instructions readable on small phones. */
+.clue-hint{display:block;font-size:12px;line-height:1.5;font-weight:500;margin-top:6px;color:#526e47}
+.task-check{align-items:flex-start}
+.complete-gems{flex-wrap:wrap}
+.complete-gems svg{flex:0 0 35px}
+@media(max-width:350px){.task-heading{flex-wrap:wrap;gap:6px}.clue-hint{font-size:12px}}

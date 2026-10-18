@@ -1,9 +1,9 @@
-/* Operation Wild Explorer 2.0.0 — static, camera-free, mobile-first.
+/* Operation Wild Explorer 2.1.0 — static, camera-free, mobile-first.
    No API keys, analytics, remote scripts, or location uploads.
    New saves migrate from and mirror the original wildExplorerSave key. */
 'use strict';
 (() => {
-  const VERSION = '2.0.0';
+  const VERSION = '2.1.0';
   const SAVE_KEY = 'wildExplorerSaveV2';
   const OLD_KEY = 'wildExplorerSave';
   const $ = id => document.getElementById(id);
@@ -68,7 +68,31 @@
     {id:'guardian',title:'The Guardian’s Final Spell',short:'Our magic finale',icon:'sparkles',colour:'#ed967b',light:'#ffdf9e',dark:'#b75c8d',xp:120,gem:'🌈 Guardian Crystal',
       story:'One final crystal needs all five heroes! Share your favourite discoveries and give the forest a friendly thank-you.',
       tasks:[['Everyone shares a favourite find','Everyone points to something they like','Each explorer chooses a favourite colour'],['Count five trees together','Count five leaves without picking them','Hold up five fingers for your five heroes'],['Give the forest a thank-you wave','Give your team a gentle high-five','Say a quiet thank-you to the forest']],
-      symbols:['💬','🌳','👋'],celebrate:'All five crystals are home! Your family are the new Forest Guardians.'}
+      symbols:['💬','🌳','👋'],celebrate:'Your first five crystals are home! A new rainbow treasure hunt is waiting for your Forest Guardians.'},
+    {id:'rainbow',title:'The Rainbow Leaf Quest',short:'Rainbow leaf hunt',icon:'leaf',colour:'#df729b',light:'#ffd1e7',dark:'#974876',xp:100,gem:'🌈 Rainbow Crystal',
+      story:'The Guardian has a new adventure for you! Find a rainbow from your safe path: green, yellow, orange, red, then white. A missing colour? Swap that clue. Looking and pointing are enough!',
+      tasks:[['Find a green leaf','Find something else green in nature','Name a green thing you remember'],['Find a yellow leaf','Find something else yellow in nature','Make a pretend sunshine with your hands'],['Find an orange leaf','Find something else orange in nature','Pretend to be a little orange fox'],['Find a red leaf','Find something else red in nature','Name a red thing you remember'],['Find something white','Spot a white cloud without looking at the sun','Imagine a tiny white cloud']],
+      symbols:['💚','💛','🧡','❤️','🤍'],celebrate:'Five colours, one wonderful team! You woke up the Rainbow Crystal.'},
+    {id:'treasure',title:'The Forest Treasure Hunt',short:'Nature treasures',icon:'chest',colour:'#bc854b',light:'#ffdf9c',dark:'#865327',xp:60,gem:'🌰 Acorn Crystal',
+      story:'The best treasures are the things that make you smile. Look for little forest wonders, give one a funny face in your imagination, and leave every real treasure where it belongs.',
+      tasks:[['Find a pine cone','Spot a cone on a tree from the path','Make a pretend pine cone shape with your hands'],['Find a nut or an acorn with a face','Imagine a funny face on a nut or acorn','Make your own silly acorn face'],['Find something you think is a treasure','Point to your favourite nature discovery','Tell your family about a pretend treasure']],
+      hints:['Look without picking it up.','Imagine eyes and a smile, or notice a natural pattern. Do not draw on it, pick it up or put nuts in your mouth.','Your treasure stays in nature; the crystal is the treasure you collect in the game.'],
+      symbols:['🌲','🌰','💎'],celebrate:'Your imagination found a priceless treasure: the Acorn Crystal!'},
+    {id:'tiny',title:'The Tiny World Detectives',short:'Tiny forest clues',icon:'compass',colour:'#65afa5',light:'#baf9e2',dark:'#377973',xp:60,gem:'🕸️ Wonder Crystal',
+      story:'Put on your pretend detective hats! Look for a spider web, a little bug, and something hanging in a tree. Tiny homes and creatures need lots of space.',
+      tasks:[['Find a spider web','Find a web-like pattern on bark','Draw a pretend web in the air'],['Find a bug','Look for a tiny leaf or twig instead','Pretend a finger is a bug walking on your other hand'],['Find something hanging in a tree','Spot a dangling leaf or seed from the path','Make your arm a gently swaying branch']],
+      hints:['Look from a distance. Do not touch the web or its spider.','No handling, poking, lifting logs or disturbing insects.','Look only from the path. Do not pull branches, climb, or approach nests or hanging objects.'],
+      symbols:['🕸️','🐞','🌳'],celebrate:'Your careful detective eyes unlocked the Wonder Crystal!'},
+    {id:'wildlife',title:'The Squirrel’s Secret Song',short:'Wildlife & make-believe',icon:'bird',colour:'#db9941',light:'#ffe6aa',dark:'#9a661e',xp:60,gem:'🐿️ Woodland Crystal',
+      story:'Listen first, then watch quietly. Can you hear a bird and spot a squirrel? Now act like an animal you saw, without moving closer to it. No animal today? Make-believe counts too!',
+      tasks:[['Listen for a bird sound','Listen for any gentle outdoor sound','Make one soft pretend bird chirp'],['Find a squirrel','Look at a tree a squirrel might visit','Pretend you spotted a squirrel'],['Act like an animal you see','Act like an animal you remember seeing','Choose a favourite animal and pretend']],
+      hints:['Listen with your ears; no microphone or recording is needed.','Watch from far away. Do not feed, call, follow or chase it.','Use little gestures beside your grown-up. No chasing, running off, climbing, or frightening wildlife.'],
+      symbols:['🐦','🐿️','🦊'],celebrate:'Kind wildlife watching and silly acting earned your Woodland Crystal!'},
+    {id:'photos',title:'The Explorer Photo Party',short:'Our picture-perfect finale',icon:'sparkles',colour:'#7b9ddb',light:'#d2e3ff',dark:'#4d68a1',xp:60,gem:'📸 Memory Crystal',
+      story:'Time for some explorer poses! A grown-up chooses each safe spot and may use the phone’s normal camera. The game never opens a camera or asks for photos. Pointing, pretending and keeping both feet down earn the same reward.',
+      tasks:[['Find something to climb on','Point to a pretend climbing spot and stay on the ground','Reach up like a climber with both feet planted'],['Find a bench and pose for a picture','Pose beside a safe place to rest','Make a seated superhero pose without a photo'],['Take a picture with both feet off the ground','Make a superhero pose with both feet on the ground','Reach up with your arms for a pretend flying picture']],
+      hints:['Finding and pointing counts. Any low, stable step-up needs a grown-up’s approval and close help. No trees, fences, rocks, benches, heights or edges; never climb just to finish.','Sit normally on a bench or stand beside it. A grown-up can take the photo; posing without a photo counts.','Only a tiny jump from flat, dry, open ground, with a grown-up beside you. Never jump from a bench, log or rock. The grounded pose is just as good.'],
+      symbols:['🧗','🪑','📸'],celebrate:'What a team! Your Memory Crystal completes all ten chapters of this family adventure.'}
   ];
   const CATEGORIES = {
     leaf:{emoji:'🍃',label:'Leaf',idea:'Imagine a tiny forest dragon lives under that leaf. What colour would its wings be?'},
@@ -80,16 +104,19 @@
     flower:{emoji:'🌼',label:'Flower',idea:'Leave the flower growing. Imagine it is a tiny lantern. What colour does it glow?'},
     other:{emoji:'✨',label:'Wonder',idea:'What could this discovery become in our magical story? Share one silly idea each!'}
   };
-  const freshState = () => ({version:2,index:0,checks:[false,false,false],variants:[0,0,0],xp:0,gems:[],
+  const freshState = () => ({version:3,index:0,checks:[false,false,false],variants:[0,0,0],xp:0,gems:[],
     names:['Adult 1','Adult 2','Child 1','Child 2','Child 3'],roles:ROLES.map(r=>r.id),
     looks:[{skin:1,hair:0,colour:0,long:false},{skin:2,hair:1,colour:1,long:true},{skin:0,hair:0,colour:2,long:false},{skin:2,hair:1,colour:3,long:true},{skin:1,hair:2,colour:4,long:false}],
     leader:2,park:'Chedoke Radial Recreational Trail',start:'120 Beddoe Dr, Hamilton',journal:[],settings:{sound:false,motion:true}});
   function normalise(raw) {
     const d=freshState();
     if(!raw || typeof raw !== 'object' || Array.isArray(raw)) return d;
-    d.index=clampInt(raw.index,0,5); d.xp=clampInt(raw.xp,0,1000000);
-    d.checks=[0,1,2].map(i=>raw.checks?.[i] === true); if(d.index===5) d.checks=[false,false,false];
-    d.variants=[0,1,2].map(i=>clampInt(raw.variants?.[i],0,2));
+    d.index=clampInt(raw.index,0,MISSIONS.length); d.xp=clampInt(raw.xp,0,1000000);
+    // v1/v2 ended at index 5. Those completion flags must not credit new clues.
+    const continuingOldFinish=raw.version!==3 && d.index>=5;
+    const tasks=MISSIONS[d.index]?.tasks || [];
+    d.checks=tasks.map((_,i)=>!continuingOldFinish && raw.checks?.[i]===true);
+    d.variants=tasks.map((choices,i)=>continuingOldFinish?0:clampInt(raw.variants?.[i],0,choices.length-1));
     d.gems=MISSIONS.slice(0,d.index).map(m=>m.gem);
     d.names=d.names.map((name,i)=>clean(raw.names?.[i],24)||name);
     d.roles=d.roles.map((role,i)=>raw.roles?.[i] ? ROLE(raw.roles[i]).id : role);
@@ -116,7 +143,7 @@
     try{
       localStorage.setItem(SAVE_KEY,JSON.stringify(state));
       // Mirror only the fields the original release understands.
-      localStorage.setItem(OLD_KEY,JSON.stringify({index:state.index,checks:state.checks,xp:state.xp,gems:state.gems,names:state.names,roles:state.roles.map(r=>ROLE(r).emoji+' '+ROLE(r).label),park:state.park,start:state.start}));
+      localStorage.setItem(OLD_KEY,JSON.stringify({index:Math.min(state.index,5),checks:state.index<5?state.checks:[false,false,false],xp:state.xp,gems:state.gems.slice(0,5),names:state.names,roles:state.roles.map(r=>ROLE(r).emoji+' '+ROLE(r).label),park:state.park,start:state.start}));
       saveIssue='';
     }catch{saveIssue='Progress could not be saved on this device. Use Settings → Export backup before closing the game.';}
     showSaveIssue();
@@ -124,7 +151,7 @@
   let activeTab='home', treasureTab='crystals', toastTimer=null, audioContext=null, sheetReturn=null, draftHero=null, speechActive=false;
   let locationFix=null,gpsBusy=false,gpsError='',gpsRequestId=0,swRegistration=null;
   let uid=0;
-  const currentMission=()=>MISSIONS[Math.min(state.index,4)];
+  const currentMission=()=>MISSIONS[Math.min(state.index,MISSIONS.length-1)];
   const taskText=i=>currentMission().tasks[i][state.variants[i]||0];
   const isChedoke=()=>/chedoke/i.test(state.park);
   const storyTitle=()=>isChedoke()?'THE LOST CRYSTALS OF CHEDOKE':'THE LOST FOREST CRYSTALS';
@@ -181,7 +208,7 @@
   function readQuest(){
     if(!('speechSynthesis'in window)){toast('Read-aloud is not available in this browser. A grown-up can read the clues.');return;}
     if(speechActive){speechSynthesis.cancel();speechActive=false;toast('Narration stopped.');return;}
-    speechSynthesis.cancel();const m=currentMission(),say=new SpeechSynthesisUtterance(m.title+'. '+m.story+' '+[0,1,2].map(taskText).join('. ')+'. Stay with your grown-ups and leave nature as you found it.');
+    speechSynthesis.cancel();const m=currentMission(),say=new SpeechSynthesisUtterance(m.title+'. '+m.story+' '+m.tasks.map((_,i)=>taskText(i)+(m.hints?.[i]?'. '+m.hints[i]:'')).join('. ')+'. Stay with your grown-ups and leave nature as you found it.');
     say.lang='en-CA';say.rate=.85;say.pitch=1.06;say.volume=.85;speechActive=true;
     say.onend=()=>{speechActive=false;};say.onerror=()=>{speechActive=false;};
     const voices=speechSynthesis.getVoices(),voice=voices.find(v=>v.lang==='en-CA')||voices.find(v=>/^en/.test(v.lang));if(voice)say.voice=voice;
@@ -191,31 +218,31 @@
   function renderStatus(){
     $('level-text').textContent='Family level '+(1+Math.floor(state.xp/100));$('xp-text').textContent=state.xp+' XP';
     const percent=state.xp%100;$('xp-fill').style.width=percent+'%';$('xp-meter').setAttribute('aria-valuenow',String(percent));$('xp-meter').setAttribute('aria-valuetext',`${percent} of 100 XP towards the next level`);
-    $('gem-count').textContent=state.index+'/5';$('tiny-gem').innerHTML=gem(MISSIONS[0]);
+    $('gem-count').textContent=state.index+'/'+MISSIONS.length;$('tiny-gem').innerHTML=gem(MISSIONS[0]);
     document.body.classList.toggle('motion-off',!state.settings.motion);
     showSaveIssue();
   }
   function partyRow(){return `<div class="party-row">${state.names.map((name,i)=>`<button class="party-member ${i===state.leader?'chosen':''}" data-action="hero" data-value="${i}" aria-label="Choose or customise ${esc(name)}, ${i<2?'adult':'child'}, ${esc(ROLE(state.roles[i]).label)}">${i===state.leader?'<span class="leader-dot" aria-label="Current leader">★</span>':''}<div class="avatar">${avatar(i)}</div><b>${esc(name)}</b></button>`).join('')}</div>`;}
   function renderHome(){
-    const complete=state.index===5;
+    const complete=state.index===MISSIONS.length;
     $('home-screen').innerHTML=`<div class="storybook"><div class="scene-heading"><span class="eyebrow">A LITTLE QUEST. A BIG ADVENTURE.</span><h1>${complete?'You did it,<br>forest heroes!':'Adventure is<br>calling!'}</h1></div><img class="cover-art" src="./assets/forest-friends-v2.webp" width="803" height="298" alt="Cheerful storybook forest friends in explorer hats with their playful dog"><div class="story-label">${esc(storyTitle())}</div></div>
       <div class="location-pill">${icon('pin')}<span>${esc(state.park)}</span></div>
       <button class="btn full" data-action="tab" data-value="${complete?'treasure':'quest'}">${icon(complete?'chest':'play')} ${complete?'See our treasure':state.index===0&&!state.checks.some(Boolean)?'Let’s explore!':'Continue our quest'} ${icon('arrow')}</button>
       <div class="section-heading"><h2>Your little adventure team</h2><span>2 adults · 3 kids</span></div>${partyRow()}
       <p class="muted-note">Tap a hero to choose a name, outfit, and special power.</p>
-      <div class="mini-progress" aria-label="${state.index} of 5 missions complete">${MISSIONS.map((m,i)=>`<span class="${i<state.index?'won':i===state.index?'now':''}"></span>`).join('')}</div>
-      <div class="section-heading"><h2>${complete?'All five crystals found!':'Next: '+esc(currentMission().short)}</h2><span>${complete?'Forest Guardians':'Quest '+(state.index+1)+' of 5'}</span></div>
-      ${safetyTip()}`;
+      <div class="mini-progress" aria-label="${state.index} of ${MISSIONS.length} missions complete">${MISSIONS.map((m,i)=>`<span class="${i<state.index?'won':i===state.index?'now':''}"></span>`).join('')}</div>
+      <div class="section-heading"><h2>${complete?'All '+MISSIONS.length+' crystals found!':'Next: '+esc(currentMission().short)}</h2><span>${complete?'Forest Guardians':'Quest '+(state.index+1)+' of '+MISSIONS.length}</span></div>
+      <div class="bonus-idea"><b>New! Five more forest chapters</b><br>Finish the original five crystals, then enjoy 17 colour, treasure, wildlife and photo-pose activities. Your heroes and earned XP stay with you.</div>${safetyTip()}`;
   }
   function renderQuest(){
     const el=$('quest-screen');
-    if(state.index>=5){el.innerHTML=`<span class="eyebrow">OUR ADVENTURE COMPLETE</span><div class="complete-scene"><div class="trophy" aria-hidden="true">🏆</div><h2>You saved the<br>enchanted forest!</h2><p>Five explorers. Five magical crystals.<br>One extraordinary family adventure.</p><div class="complete-gems">${MISSIONS.map(m=>gem(m)).join('')}</div><b>${state.xp} family XP · Forest Guardians</b></div>${partyRow()}<button class="btn gold full" data-action="tab" data-value="treasure" style="margin-top:20px">${icon('chest')} Open our treasure chest</button><button class="subtle-button wide" data-action="new-adventure">Start another adventure</button>${safetyTip()}`;return;}
+    if(state.index>=MISSIONS.length){el.innerHTML=`<span class="eyebrow">OUR ADVENTURE COMPLETE</span><div class="complete-scene"><div class="trophy" aria-hidden="true">🏆</div><h2>You saved the<br>enchanted forest!</h2><p>Five explorers. ${MISSIONS.length} magical crystals.<br>One extraordinary family adventure.</p><div class="complete-gems">${MISSIONS.map(m=>gem(m)).join('')}</div><b>${state.xp} family XP · Forest Guardians</b></div>${partyRow()}<button class="btn gold full" data-action="tab" data-value="treasure" style="margin-top:20px">${icon('chest')} Open our treasure chest</button><button class="subtle-button wide" data-action="new-adventure">Start another adventure</button>${safetyTip()}`;return;}
     const m=currentMission(),done=state.checks.filter(Boolean).length;
-    el.innerHTML=`<div class="quest-head"><span class="eyebrow">QUEST ${state.index+1} OF 5 · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read the quest aloud, or stop narration">${icon('sound')}</button></div><h1 class="page-title">${esc(m.title)}</h1>
+    el.innerHTML=`<div class="quest-head"><span class="eyebrow">QUEST ${state.index+1} OF ${MISSIONS.length} · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read the quest aloud, or stop narration">${icon('sound')}</button></div><h1 class="page-title">${esc(m.title)}</h1>
       <div class="quest-scene">${icon(m.icon,'large-symbol')}<div class="scene-hero">${avatar(state.leader)}</div><span class="reward-pill">${icon('star')} ${m.xp} XP</span></div>
       <div class="guardian-speech">${fox()}<div class="speech"><b>The Forest Guardian</b>${esc(m.story)}</div></div>
-      <div class="task-heading">Find your three clues<span id="clue-counter">${done}/3 found</span></div><div id="quest-tasks">${[0,1,2].map(i=>`<div class="task-row ${state.checks[i]?'done':''}"><button class="task-check" data-action="check" data-value="${i}" aria-pressed="${state.checks[i]}"><span class="clue-icon" aria-hidden="true">${m.symbols[i]}</span><span class="clue-text">${esc(taskText(i))}</span><span class="tickbox" aria-hidden="true">✓</span></button><button class="swap" data-action="swap" data-value="${i}">Can’t find it? Try a different clue</button></div>`).join('')}</div>
-      <button id="claim-button" class="btn gold full quest-claim" data-action="claim" ${done!==3?'disabled':''}>${icon('sparkles')} ${done===3?'Claim crystal · +'+m.xp+' XP':'Find all 3 to unlock the crystal'}</button><p class="muted-note">Point to a discovery, then tap its clue. The whole family shares the reward!</p>
+      <div class="task-heading">Find your ${m.tasks.length} clues<span id="clue-counter">${done}/${m.tasks.length} found</span></div><div id="quest-tasks">${m.tasks.map((_,i)=>`<div class="task-row ${state.checks[i]?'done':''}"><button class="task-check" data-action="check" data-value="${i}" aria-pressed="${state.checks[i]}"><span class="clue-icon" aria-hidden="true">${m.symbols[i]}</span><span class="clue-text">${esc(taskText(i))}${m.hints?.[i]?`<small class="clue-hint">${esc(m.hints[i])}</small>`:''}</span><span class="tickbox" aria-hidden="true">✓</span></button><button class="swap" data-action="swap" data-value="${i}">Can’t find it? Try a different clue</button></div>`).join('')}</div>
+      <button id="claim-button" class="btn gold full quest-claim" data-action="claim" ${done!==m.tasks.length?'disabled':''}>${icon('sparkles')} ${done===m.tasks.length?'Claim crystal · +'+m.xp+' XP':'Find all '+m.tasks.length+' to unlock the crystal'}</button><p class="muted-note">Point to a discovery, then tap its clue. The whole family shares the reward!</p>
       <button class="subtle-button wide" data-action="rest">Need a little explorer break?</button>${safetyTip()}`;
   }
   function renderHeroes(){
@@ -223,8 +250,8 @@
   }
   function renderTreasure(){
     const journal=treasureTab==='journal';
-    $('treasure-screen').innerHTML=`<span class="eyebrow">LITTLE WONDERS, BIG MEMORIES</span><h1 class="page-title">Our treasure chest</h1><div class="tab-switch" aria-label="Treasure collection"><button data-action="treasure-tab" data-value="crystals" aria-pressed="${!journal}">Crystals · ${state.index}/5</button><button data-action="treasure-tab" data-value="journal" aria-pressed="${journal}">Discoveries · ${state.journal.length}</button></div>
-      ${journal?renderJournal():`<div class="treasure-chest-scene">${icon('chest','big-chest')}<div><b>${state.index} magical ${state.index===1?'crystal':'crystals'}</b><small>${state.xp} family XP collected</small></div></div><div class="gem-grid">${MISSIONS.map((m,i)=>`<button class="gem-card ${i>=state.index?'locked':''}" data-action="gem" data-value="${i}" aria-label="${esc(m.gem.replace(/^[^A-Za-z]+/,''))}, ${i<state.index?'collected':'locked'}">${i<state.index?'<span class="earned" aria-hidden="true">✓</span>':''}${gem(m)}<b>${esc(m.gem.replace(/^[^A-Za-z]+/,''))}</b><small>${i<state.index?'Collected!':'Quest '+(i+1)}</small></button>`).join('')}</div><p class="muted-note">These treasures are pretend. Our real forest treasures stay in the forest.</p><button class="btn full" data-action="tab" data-value="quest">${icon(state.index===5?'star':'compass')} ${state.index===5?'See our celebration':'Back to our quest'}</button>`}`;
+    $('treasure-screen').innerHTML=`<span class="eyebrow">LITTLE WONDERS, BIG MEMORIES</span><h1 class="page-title">Our treasure chest</h1><div class="tab-switch" aria-label="Treasure collection"><button data-action="treasure-tab" data-value="crystals" aria-pressed="${!journal}">Crystals · ${state.index}/${MISSIONS.length}</button><button data-action="treasure-tab" data-value="journal" aria-pressed="${journal}">Discoveries · ${state.journal.length}</button></div>
+      ${journal?renderJournal():`<div class="treasure-chest-scene">${icon('chest','big-chest')}<div><b>${state.index} magical ${state.index===1?'crystal':'crystals'}</b><small>${state.xp} family XP collected</small></div></div><div class="gem-grid">${MISSIONS.map((m,i)=>`<button class="gem-card ${i>=state.index?'locked':''}" data-action="gem" data-value="${i}" aria-label="${esc(m.gem.replace(/^[^A-Za-z]+/,''))}, ${i<state.index?'collected':'locked'}">${i<state.index?'<span class="earned" aria-hidden="true">✓</span>':''}${gem(m)}<b>${esc(m.gem.replace(/^[^A-Za-z]+/,''))}</b><small>${i<state.index?'Collected!':'Quest '+(i+1)}</small></button>`).join('')}</div><p class="muted-note">These treasures are pretend. Our real forest treasures stay in the forest.</p><button class="btn full" data-action="tab" data-value="quest">${icon(state.index===MISSIONS.length?'star':'compass')} ${state.index===MISSIONS.length?'See our celebration':'Back to our quest'}</button>`}`;
   }
   function renderJournal(){
     return `<p class="intro">What did your family discover? Tap a picture and let a grown-up write a tiny memory.</p><div class="discovery-grid">${Object.entries(CATEGORIES).map(([key,c])=>`<button data-action="discovery" data-value="${key}"><span aria-hidden="true">${c.emoji}</span>${c.label}</button>`).join('')}</div>
@@ -232,11 +259,11 @@
       <p class="muted-note">Memories stay on this device. Guardian ideas are playful offline prompts, not AI species identification.</p>`;
   }
   function renderTrail(){
-    $('trail-screen').innerHTML=`<span class="eyebrow">OUR FIVE-CRYSTAL JOURNEY</span><h1 class="page-title">The story trail</h1><p class="intro">One magical chapter at a time. This is your <b>story map</b>, not a walking route or a map of real landmarks.</p>
+    $('trail-screen').innerHTML=`<span class="eyebrow">OUR ${MISSIONS.length}-CRYSTAL JOURNEY</span><h1 class="page-title">The story trail</h1><p class="intro">One magical chapter at a time. This is your <b>story map</b>, not a walking route or a map of real landmarks.</p>
       <div class="story-map">${icon('leaf','map-leaf')}${MISSIONS.map((m,i)=>`<button class="map-stop ${i<state.index?'completed':i===state.index?'current':'locked'}" data-action="map-stop" data-value="${i}" aria-label="Quest ${i+1}: ${esc(m.short)}, ${i<state.index?'complete':i===state.index?'current':'locked'}"><span class="node">${icon(i<state.index?'check':i===state.index?m.icon:'lock')}</span><span class="map-label"><b>${esc(m.short)}</b><small>${i<state.index?'Crystal collected':i===state.index?'Your next adventure':'Complete the earlier quest to unlock'}</small></span><span class="map-arrow" aria-hidden="true">${i===state.index?'›':''}</span></button>`).join('')}</div>
       <form id="place-form" class="panel"><h3>${icon('pin')} Our exploring spot</h3><label class="field-label" for="park-name">Park or trail</label><input class="text-field" id="park-name" name="park" value="${esc(state.park)}" maxlength="100" required><label class="field-label" for="start-point">Starting point</label><input class="text-field" id="start-point" name="start" value="${esc(state.start)}" maxlength="120"><button class="btn quiet full" type="submit" style="margin-top:14px">Save this adventure location</button><p class="small">The name personalises your story. The woodland clues are pre-written; this version doesn’t research parks or generate GPS-based quests.</p></form>
       <section class="panel"><h3>Optional explorer GPS</h3><p class="small">Take one location reading when you ask. There is no background tracking, no stored location history, and no coordinate upload.</p><div class="gps-box" id="gps-display" role="status" aria-live="polite">${gpsDisplay()}</div><div class="gps-actions"><button class="btn blue" data-action="gps" ${gpsBusy?'disabled':''}>${icon('pin')} ${gpsBusy?'Finding you…':locationFix?'Update location':'Use my GPS'}</button><button class="btn quiet" data-action="clear-gps" ${!locationFix&&!gpsBusy?'disabled':''}>Clear</button></div><p class="small">GPS cannot tell you whether a route is safe. Follow posted signs and a grown-up’s judgement. The game works without location permission.</p></section>
-      <div class="safe-note"><b>Safe exploring at Chedoke or any park:</b> stay on marked paths, away from cliff edges, water and wildlife. Do not climb or enter closed trails to finish a mission. Swap a clue instead.</div>`;
+      <div class="safe-note"><b>Safe exploring at Chedoke or any park:</b> stay on marked paths, away from cliff edges, water and wildlife. Never climb to finish a mission or enter closed trails. Finding and pointing counts; only a grown-up can decide whether any low step-up is safe. Swap a clue instead.</div>`;
   }
   function gpsDisplay(){
     if(gpsBusy)return 'Asking your phone for a location reading…';
@@ -278,10 +305,10 @@
   }
   function updateHeroPreview(){if(!draftHero)return;$('avatar-preview').innerHTML=avatar(draftHero.index,draftHero.look);const r=ROLE(draftHero.role);$('hero-power').textContent=r.power;$('hero-power-desc').textContent=r.description;}
   function claimCrystal(){
-    if(state.index>=5||state.checks.length!==3||!state.checks.every(v=>v===true))return;
-    const m=MISSIONS[state.index];state.xp+=m.xp;state.gems.push(m.gem);state.index++;state.checks=[false,false,false];state.variants=[0,0,0];
+    if($('sheet').open||state.index>=MISSIONS.length||state.checks.length!==currentMission().tasks.length||!state.checks.every(v=>v===true))return;
+    const m=MISSIONS[state.index];state.xp+=m.xp;state.gems.push(m.gem);state.index++;state.checks=(MISSIONS[state.index]?.tasks||[]).map(()=>false);state.variants=state.checks.map(()=>0);
     save();renderAll();playSound(true);confetti();
-    openSheet(`<div class="sheet-top"><span class="eyebrow">CRYSTAL UNLOCKED!</span><button data-action="close-sheet" aria-label="Close reward">${icon('close')}</button></div><div class="reward-body">${gem(m,'reward-crystal')}<h2 id="sheet-title">${esc(m.gem.replace(/^[^A-Za-z]+/,''))}<br>is yours!</h2><p>${esc(m.celebrate)}</p><div class="xp-reward">${icon('star')} +${m.xp} family XP</div><button class="btn full" data-action="next-quest">${state.index===5?'Celebrate with our team':'On to our next quest'} ${icon('arrow')}</button><button class="subtle-button wide" data-action="reward-bag">Peek in our treasure chest</button></div>`);
+    openSheet(`<div class="sheet-top"><span class="eyebrow">CRYSTAL UNLOCKED!</span><button data-action="close-sheet" aria-label="Close reward">${icon('close')}</button></div><div class="reward-body">${gem(m,'reward-crystal')}<h2 id="sheet-title">${esc(m.gem.replace(/^[^A-Za-z]+/,''))}<br>is yours!</h2><p>${esc(m.celebrate)}</p><div class="xp-reward">${icon('star')} +${m.xp} family XP</div><button class="btn full" data-action="next-quest">${state.index===MISSIONS.length?'Celebrate with our team':'On to our next quest'} ${icon('arrow')}</button><button class="subtle-button wide" data-action="reward-bag">Peek in our treasure chest</button></div>`);
   }
   function openGem(index){const m=MISSIONS[index];if(!m)return;if(index>=state.index){toast(`Finish quest ${index+1} to unlock this crystal.`);return;}openSheet(sheetHeader('A treasure you earned')+`<div class="reward-body">${gem(m,'reward-crystal')}<h2>${esc(m.gem.replace(/^[^A-Za-z]+/,''))}</h2><p>${esc(m.celebrate)}</p><span class="badge">Earned together · ${m.xp} XP</span><button class="btn quiet full" data-action="close-sheet">Back to our treasures</button></div>`);}
   function discoveryIdea(category,note){if(/mushroom|fungus|berry|berries|poison|snake|cliff|edge|waterfall/i.test(note))return 'A wonderful thing to notice from a safe distance. Stay on the path, don’t touch or taste it, and ask a grown-up before getting closer. What name would you give it in a pretend story?';return CATEGORIES[category].idea;}
@@ -303,7 +330,7 @@
   }
   function openInstall(){openSheet(sheetHeader('A little app of your own')+`<div class="sheet-body"><p>Open your published Netlify address in <b>Safari</b>, then:</p><ol class="install-steps"><li>Open the Safari <b>Share</b> menu.</li><li>Choose <b>Add to Home Screen</b>.</li><li>Turn on <b>Open as Web App</b> when shown, then tap <b>Add</b>.</li><li>Launch <b>Wild Explorer</b> from its new leaf icon.</li></ol><p class="helper">The Home Screen version removes Safari’s browser bars. This button cannot install it automatically on iPhone.</p><p class="helper">Open the app once with internet and wait for its offline cache to finish before your hike. Device storage settings can still remove cached data.</p><button class="btn full" data-action="close-sheet">Got it!</button></div>`);}
   function exportSave(){
-    const content=JSON.stringify({app:'operation-wild-explorer',version:2,exportedAt:new Date().toISOString(),state},null,2);
+    const content=JSON.stringify({app:'operation-wild-explorer',version:3,exportedAt:new Date().toISOString(),state},null,2);
     const blob=new Blob([content],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`wild-explorer-progress-${new Date().toISOString().slice(0,10)}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);toast('Progress backup prepared. Keep the JSON file somewhere safe.');
   }
   function newAdventurePrompt(){openSheet(sheetHeader('A fresh forest adventure?')+`<div class="sheet-body"><p>This resets this hike’s <b>XP, crystals and mission progress</b>. Your five heroes, outfits, park and journal will stay.</p><p class="helper">Export a backup first to keep a copy of this adventure.</p><button class="btn quiet full" data-action="export">Export a backup first</button><button class="btn full" data-action="reset-confirmed">Start a fresh adventure</button><button class="subtle-button wide" data-action="close-sheet">Keep our current adventure</button></div>`);}
@@ -321,8 +348,8 @@
       case 'hero':openHero(Number(v));break;
       case 'swatch':{if(!draftHero)return;const kind=button.dataset.kind;if(!['skin','colour','hair'].includes(kind))return;draftHero.look[kind]=clampInt(v,0,kind==='colour'?4:3);button.parentElement.querySelectorAll('button').forEach(b=>{const picked=b===button;b.setAttribute('aria-pressed',String(picked));b.textContent=picked?'✓':'';});updateHeroPreview();break;}
       case 'long-hair':if(draftHero){draftHero.look.long=!draftHero.look.long;button.setAttribute('aria-checked',String(draftHero.look.long));updateHeroPreview();}break;
-      case 'check':{const i=Number(v);if(state.index>=5||![0,1,2].includes(i))return;state.checks[i]=!state.checks[i];save();renderQuest();renderStatus();renderHome();const newButton=$('quest-screen').querySelector(`[data-action="check"][data-value="${i}"]`);newButton?.focus({preventScroll:true});if(state.checks[i]){playSound();if(state.checks.every(Boolean))toast('All three clues found! Your crystal is ready.');}break;}
-      case 'swap':{const i=Number(v);if(state.index>=5||![0,1,2].includes(i)||state.checks[i])return;state.variants[i]=(state.variants[i]+1)%3;save();renderQuest();$('quest-screen').querySelector(`[data-action="swap"][data-value="${i}"]`)?.focus({preventScroll:true});toast('A new clue! Stay right on your safe path.');break;}
+      case 'check':{const i=Number(v);if(state.index>=MISSIONS.length||!Number.isInteger(i)||i<0||i>=currentMission().tasks.length)return;state.checks[i]=!state.checks[i];save();renderQuest();renderStatus();renderHome();const newButton=$('quest-screen').querySelector(`[data-action="check"][data-value="${i}"]`);newButton?.focus({preventScroll:true});if(state.checks[i]){playSound();if(state.checks.every(Boolean))toast('All your clues found! Your crystal is ready.');}break;}
+      case 'swap':{const i=Number(v);if(state.index>=MISSIONS.length||!Number.isInteger(i)||i<0||i>=currentMission().tasks.length||state.checks[i])return;state.variants[i]=(state.variants[i]+1)%currentMission().tasks[i].length;save();renderQuest();$('quest-screen').querySelector(`[data-action="swap"][data-value="${i}"]`)?.focus({preventScroll:true});toast('A new clue! Stay right on your safe path.');break;}
       case 'claim':claimCrystal();break;
       case 'next-quest':closeSheet();setTab('quest');break;
       case 'reward-bag':closeSheet();treasureTab='crystals';setTab('treasure');break;
@@ -362,7 +389,7 @@
     const file=e.target.files?.[0];e.target.value='';if(!file)return;if(file.size>2000000){toast('That file is too large. Choose a Wild Explorer JSON progress backup.');return;}
     try{
       const data=JSON.parse(await file.text());const raw=data?.app==='operation-wild-explorer'?data.state:data;
-      if(!raw||typeof raw!=='object'||!Array.isArray(raw.names)||raw.names.length!==5||!Array.isArray(raw.checks)||!Number.isInteger(raw.index)||raw.index<0||raw.index>5||typeof raw.xp!=='number'||!Number.isFinite(raw.xp))throw new Error('Invalid save');
+      if(!raw||typeof raw!=='object'||!Array.isArray(raw.names)||raw.names.length!==5||!Array.isArray(raw.checks)||!Number.isInteger(raw.index)||raw.index<0||raw.index>MISSIONS.length||typeof raw.xp!=='number'||!Number.isFinite(raw.xp))throw new Error('Invalid save');
       pendingRestore=normalise(raw);
       openSheet(sheetHeader('Restore this adventure?')+`<div class="sheet-body"><p>This backup has <b>${pendingRestore.xp} XP</b>, <b>${pendingRestore.index} crystals</b> and <b>${pendingRestore.journal.length} memories</b>.</p><p>Restoring replaces the current progress, heroes and journal on this device. Export your current adventure first to keep both.</p><button class="btn quiet full" data-action="export">Export current progress first</button><button class="btn full" data-action="restore-confirmed">Restore this backup</button><button class="subtle-button wide" data-action="close-sheet">Keep current progress</button></div>`);
     }catch{pendingRestore=null;toast('That isn’t a valid Wild Explorer progress backup. Nothing was changed.');}
