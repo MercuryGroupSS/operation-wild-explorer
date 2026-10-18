@@ -5,7 +5,7 @@ A bright, mobile-first family nature RPG for two adults and three young children
 Production: https://operation-wild-explorer.netlify.app
 Netlify project: `142205d8-6800-49d7-996f-5e0ee5094ee7`
 
-## Release 3.0.0
+## Release 3.0.1
 
 - A varied Find / Listen / Move / Imagine / Solve deck; adjacent categories differ and recent cards are avoided when possible.
 - Safe alternatives for every card, swaps, breaks and a shorter ending without losing earned progress.

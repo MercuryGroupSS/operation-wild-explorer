@@ -3,7 +3,7 @@
    New saves migrate from and mirror the original wildExplorerSave key. */
 'use strict';
 (() => {
-  const VERSION = '3.0.0';
+  const VERSION = '3.0.1';
   const E = window.WildEngine;
   const SPECIALTIES = {scout:{label:'Scout',emoji:'🔎',hint:'Point out a colour, shape or tiny detail.'},listener:{label:'Listener',emoji:'👂',hint:'Invite everyone to pause and notice a quiet sound.'},detective:{label:'Detective',emoji:'🧩',hint:'Ask a curious question and connect two discoveries.'}};
   const DEFAULT_SPECIALTIES = ['scout','listener','detective','scout','listener'];
@@ -103,6 +103,10 @@
     if(Array.isArray(raw.journal)) d.journal=raw.journal.slice(-150).filter(e=>e&&typeof e==='object'&&CATEGORIES[e.category]&&clean(e.note,280)).map(e=>({category:e.category,note:clean(e.note,280),at:Number.isFinite(new Date(e.at).getTime())?new Date(e.at).toISOString():new Date().toISOString()}));
     d.specialties=DEFAULT_SPECIALTIES.map((x,i)=>SPECIALTIES[raw.specialties?.[i]]?raw.specialties[i]:x);
     d.expedition=E.normaliseExpansion(raw.expedition,d);
+    d.index=d.expedition.active.claimedChapters.length;
+    d.gems=MISSIONS.slice(0,d.index).map(m=>m.gem);
+    d.xp=d.expedition.lifetime.xp;
+    d.checks=[0,1,2].map(i=>d.expedition.active.done.some(r=>r.chapter===d.expedition.active.chapter&&r.step===i));
     return d;
   }
   let saveIssue='', importedLegacy=false;
@@ -194,7 +198,7 @@
     if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){toast('Read-aloud is unavailable here. A grown-up can read the card.');return;}
     if(speechActive){speechSynthesis.cancel();speechActive=false;toast('Narration stopped.');return;}
     const card=currentCard();
-    const text=card?`${card.type}. ${card.title}. ${card.prompt}. ${card.alternativeActive?card.alternative:''}`:'Your discoveries brought the map together. Share your favourite memory.';
+    const text=card?`${card.type}. ${card.title}. ${card.prompt}. Safe alternative: ${card.alternative}`:'Your discoveries brought the map together. Share your favourite memory.';
     try{speechSynthesis.cancel();const say=new SpeechSynthesisUtterance(text+' Stay together on the safe path.');say.lang='en-CA';say.rate=.85;say.pitch=1.04;
       const voices=speechSynthesis.getVoices(),voice=voices.find(v=>v.localService&&/^en/.test(v.lang));if(voice)say.voice=voice;
       say.onend=()=>{speechActive=false;};say.onerror=()=>{speechActive=false;toast('That voice is unavailable. A grown-up can read the card.');};speechActive=true;speechSynthesis.speak(say);
@@ -229,7 +233,7 @@
     el.innerHTML=`<div class="quest-head"><span class="eyebrow">CHAPTER ${a.chapter+1} OF 5 · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read the challenge aloud, or stop narration">${icon('sound')}</button></div><h1 class="page-title">${esc(m.title)}</h1>
       <div class="chapter-strip">${MISSIONS.map((x,i)=>`<span class="map-piece ${a.claimedChapters.includes(i)?'found':''}" aria-label="Map piece ${i+1}${a.claimedChapters.includes(i)?' found':''}">${a.claimedChapters.includes(i)?'🧩':i+1}</span>`).join('')}</div>
       <div class="lead-banner"><div class="lead-avatar">${avatar(state.leader)}</div><p><b>${esc(state.names[state.leader])} · ${lead.emoji} ${lead.label}</b><span>${esc(lead.hint)}</span></p><button class="subtle-button" data-action="pass-lead">Pass lead</button></div>
-      ${ready?`<div class="challenge-card ready"><span class="challenge-symbol">🧩</span><span class="eyebrow">YOUR MAP PIECE IS READY</span><h2>Wonderful teamwork!</h2><p>Your discoveries light up another piece of the Guardian’s map.</p><button class="btn gold full" data-action="claim" data-chapter="${a.chapter}">${icon('sparkles')} Claim crystal + ${m.xp} XP</button></div>`:card?`<article class="challenge-card"><div class="card-meta"><span class="type-chip type-${esc(card.type.toLowerCase())}">${esc(card.type)}</span><span>Challenge ${a.step+1} / ${length}</span></div><span class="challenge-symbol" aria-hidden="true">${card.emoji}</span><h2>${esc(card.title)}</h2><p class="challenge-prompt">${esc(card.prompt)}</p><details class="safe-alternative"><summary>No need to find it: a safe alternative</summary><p>${esc(card.alternative)}</p></details><p class="challenge-help">${esc(card.difficultyPrompt||'Point, describe or pretend. Everyone can join in their own way.')}</p><label class="field-label" for="clue-memory">What did we notice? <small>Optional</small></label><input class="text-field" id="clue-memory" maxlength="140" placeholder="A word, a colour, a little wonder…"><button class="btn full" data-action="complete-challenge" data-card="${esc(card.id)}" data-chapter="${a.chapter}" data-step="${a.step}">${icon('check')} We explored it!</button><button class="subtle-button wide" data-action="swap-challenge">Can’t find it? Try an easier way</button></article>`:''}
+      ${ready?`<div class="challenge-card ready"><span class="challenge-symbol">🧩</span><span class="eyebrow">YOUR MAP PIECE IS READY</span><h2>Wonderful teamwork!</h2><p>Your discoveries light up another piece of the Guardian’s map.</p><button class="btn gold full" data-action="claim" data-chapter="${a.chapter}">${icon('sparkles')} Claim crystal + ${m.xp} XP</button></div>`:card?`<article class="challenge-card"><div class="card-meta"><span class="type-chip type-${esc(card.type.toLowerCase())}">${esc(card.type)}</span><span>Challenge ${a.step+1} / ${length}</span></div><span class="challenge-symbol" aria-hidden="true">${card.emoji}</span><h2>${esc(card.title)}</h2><p class="challenge-prompt">${esc(card.prompt)}</p><details class="safe-alternative"><summary>No need to find it: a safe alternative</summary><p>${esc(card.alternative)}</p></details><p class="challenge-help">${esc(card.difficultyPrompt||'Point, describe or pretend. Everyone can join in their own way.')}</p><label class="field-label" for="clue-memory">What did we notice? <small>Optional</small></label><input class="text-field" id="clue-memory" maxlength="140" placeholder="A word, a colour, a little wonder…"><button class="btn full" data-action="complete-challenge" data-card="${esc(card.id)}" data-key="${esc(card.challengeKey)}" data-chapter="${a.chapter}" data-step="${a.step}">${icon('check')} We explored it!</button><button class="subtle-button wide" data-action="swap-challenge">Can’t find it? Try an easier way</button></article>`:''}
       <p class="story-connection">${esc(chapterStory(a.chapter))}</p><div class="quick-actions"><button class="btn quiet" data-action="rest">Take a break</button><button class="btn quiet" data-action="finish-early">Finish for today</button></div>${safetyTip()}`;
   }
   function chapterStory(chapter){
@@ -333,7 +337,7 @@
   function completeChallenge(button){
     if(Date.now()<challengeTapUntil)return;
     const a=active(),card=currentCard();if(!card)return;
-    const r=E.completeChallenge(state.expedition,{cardId:button.dataset.card,expectedChapter:Number(button.dataset.chapter),expectedStep:Number(button.dataset.step),at:new Date().toISOString(),note:clean($('clue-memory')?.value,140),specialty:state.specialties[state.leader]});
+    const r=E.completeChallenge(state.expedition,{cardId:button.dataset.card,challengeKey:button.dataset.key,expectedChapter:Number(button.dataset.chapter),expectedStep:Number(button.dataset.step),at:new Date().toISOString(),note:clean($('clue-memory')?.value,140),specialty:state.specialties[state.leader]});
     if(!r.changed)return;challengeTapUntil=Date.now()+500;state.expedition=r.expansion;state.leader=(state.leader+1)%5;
     state.checks=[0,1,2].map(i=>active().done.some(x=>x.chapter===active().chapter&&x.step===i));save();renderAll();playSound();
     toast(`${state.names[state.leader]} gets the next pretend lead!`);$('quest-screen').querySelector('.challenge-card')?.scrollIntoView({block:'nearest',behavior:'auto'});
@@ -373,14 +377,19 @@
   }
   async function openPostcard(id){
     const p=state.expedition.postcards.find(x=>x.id===id);if(!p)return;viewedPostcardId=id;
-    openSheet(sheetHeader('Our private adventure postcard')+`<div class="sheet-body"><div class="postcard-preview"><span class="eyebrow">A LITTLE QUEST. A BIG MEMORY.</span><h2>${esc(p.park||'Our family adventure')}</h2><p>${esc(new Date(p.date||p.createdAt).toLocaleDateString('en-CA'))}</p><div class="postcard-badges">${(p.badges||[]).map(b=>`<span class="badge">${esc(b)}</span>`).join('')}</div><ul class="postcard-discoveries">${(p.discoveries||[]).map(d=>`<li><b>${esc(d.emoji||'🌿')} ${esc(d.title)}</b>${d.note?`<span>${esc(d.note)}</span>`:''}</li>`).join('')}</ul><div id="postcard-photos" class="postcard-photos"></div></div><form id="postcard-form" data-id="${esc(id)}"><label class="field-label" for="postcard-favorite">Our favourite moment</label><textarea class="text-field" id="postcard-favorite" rows="3" maxlength="280">${esc(p.favorite||'')}</textarea><button class="btn quiet full" type="submit">Save favourite moment</button></form><button class="btn quiet full" data-action="add-photo" data-value="${esc(id)}" ${photoBusy||p.photoIds.length>=4?'disabled':''}>${photoBusy?'Saving photo…':'Choose an optional photo'} (${p.photoIds.length}/4)</button><p class="helper">Grown-up choice: choose a JPEG, PNG or WebP image from this device. No photo is needed to complete any challenge. Images stay here, with location metadata removed. HEIC may need conversion first.</p><button class="btn full" data-action="export-postcard" data-value="${esc(id)}">${icon('download')} Download a private postcard</button><p class="helper">The downloaded HTML keepsake includes your text and any available photos. Open it in a browser; you choose whether to share it. No automatic sharing.</p></div>`);
+    openSheet(sheetHeader('Our private adventure postcard')+`<div class="sheet-body"><div class="postcard-preview"><span class="eyebrow">A LITTLE QUEST. A BIG MEMORY.</span><h2>${esc(p.park||'Our family adventure')}</h2><p>${esc(new Date(p.date||p.createdAt).toLocaleDateString('en-CA'))}</p><div class="postcard-badges">${(p.badges||[]).map(b=>`<span class="badge">${esc(b)}</span>`).join('')}</div><ul class="postcard-discoveries">${(p.discoveries||[]).map(d=>`<li><b>${esc(d.emoji||'🌿')} ${esc(d.title)}</b>${d.note?`<span>${esc(d.note)}</span>`:''}</li>`).join('')}</ul><div id="postcard-photos" class="postcard-photos"></div></div><form id="postcard-form" data-id="${esc(id)}"><label class="field-label" for="postcard-favorite">Our favourite moment</label><textarea class="text-field" id="postcard-favorite" rows="3" maxlength="280">${esc(p.favorite||'')}</textarea><button class="btn quiet full" type="submit">Save favourite moment</button></form><button class="btn quiet full" data-action="add-photo" data-value="${esc(id)}" ${photoBusy||p.photoIds.length>=4?'disabled':''}>${photoBusy?'Saving photo…':'Choose an optional photo'} (${p.photoIds.length}/4)</button><p class="helper">Grown-up choice: choose a JPEG, PNG or WebP image from this device. No photo is needed to complete any challenge. Images stay here, with location metadata removed. HEIC may need conversion first.</p><button class="btn full" data-action="export-postcard" data-value="${esc(id)}">${icon('download')} Download a private postcard</button>${p.photoIds.length?`<button class="subtle-button wide" data-action="export-postcard-text" data-value="${esc(id)}">Download text-only postcard instead</button>`:''}<p class="helper">The downloaded HTML keepsake includes your text and any available photos. Open it in a browser; you choose whether to share it. No automatic sharing.</p></div>`);
     for(const photoId of p.photoIds){try{const data=await WildPostcards.loadPhoto(photoId);if(viewedPostcardId!==id||!$('postcard-photos'))return;const div=document.createElement('div');div.className='postcard-photo';if(data){const img=document.createElement('img');img.src=data;img.alt='Your chosen adventure photo';div.append(img);}else{div.textContent='This photo is unavailable on this browser. Add it again from your device.';}const button=document.createElement('button');button.type='button';button.className='subtle-button';button.dataset.action='remove-photo';button.dataset.value=id;button.dataset.photo=photoId;button.textContent='Remove photo';div.append(button);$('postcard-photos').append(div);}catch{toast('Photo storage is unavailable. Your postcard text is safe.');}}
   }
-  async function removePostcardPhoto(id,photoId){const p=state.expedition.postcards.find(x=>x.id===id);if(!p)return;p.photoIds=p.photoIds.filter(x=>x!==photoId);save();try{await WildPostcards.deletePhoto(photoId);}catch{}void openPostcard(id);}
-  async function exportPostcard(id){
+  async function removePostcardPhoto(id,photoId){
+    const p=state.expedition.postcards.find(x=>x.id===id);if(!p||!p.photoIds.includes(photoId))return;
+    const shared=state.expedition.postcards.some(x=>x.id!==id&&x.photoIds.includes(photoId));
+    if(!shared){try{await WildPostcards.deletePhoto(photoId);}catch(error){toast(error.message||'Could not remove the stored photo. Please try again.');return;}}
+    p.photoIds=p.photoIds.filter(x=>x!==photoId);save();void openPostcard(id);
+  }
+  async function exportPostcard(id,withoutPhotos=false){
     const p=state.expedition.postcards.find(x=>x.id===id);if(!p)return;
     if($('postcard-favorite')&&viewedPostcardId===id){p.favorite=clean($('postcard-favorite').value,280);save();}
-    try{const result=await WildPostcards.exportPostcard(p,{photoIds:p.photoIds});toast(result?.missingPhotoIds?.length?'Postcard downloaded; some photos were unavailable.':'Your private postcard is ready to save.');}catch(error){toast(error.message||'Could not export. Your postcard is still on this device.');}
+    try{const result=await WildPostcards.exportPostcard(p,{photoIds:withoutPhotos?[]:p.photoIds});toast(result?.missingPhotoIds?.length?'Postcard downloaded; some photos were unavailable.':'Your private postcard is ready to save.');}catch(error){toast(error.message||'Could not export. Your postcard is still on this device.');}
   }
   let puzzlePicked=[];
   function openPuzzle(){
@@ -396,17 +405,17 @@
     if(r.changed){state.expedition=r.expansion;enrichLatestPostcard();save();confetti();openPuzzle();toast('Your family’s story made the map whole!');}
     else{puzzlePicked=[];$('puzzle-progress').textContent='Let’s try the story order again. Check our journey notes below.';$('sheet-content').querySelectorAll('[data-action="puzzle-choice"]').forEach(x=>x.disabled=false);}
   }
-  async function verifyOffline(showMessage=true){
+  async function verifyOffline(showMessage=true,repair=false){
     if(!('serviceWorker'in navigator)||!window.isSecureContext){if(showMessage)toast('Offline play needs the HTTPS site in a supported browser.');return false;}
     try{
       const ready=await Promise.race([navigator.serviceWorker.ready,new Promise((_,reject)=>setTimeout(()=>reject(new Error('Offline setup is still running. Try again online in a moment.')),12000))]);
       swRegistration=ready;const worker=ready.active;if(!worker)throw new Error('Offline setup has not finished yet.');
-      const result=await new Promise((resolve,reject)=>{const channel=new MessageChannel();const timer=setTimeout(()=>reject(new Error('Offline verification timed out. Try again while online.')),12000);channel.port1.onmessage=e=>{clearTimeout(timer);resolve(e.data);};worker.postMessage({type:'CHECK_OFFLINE'},[channel.port2]);});
-      offlineReady=result.ready===true&&result.version===VERSION;if(!offlineReady)throw new Error('Offline files are incomplete. Stay online and try again, or install the waiting game update.');
+      const result=await new Promise((resolve,reject)=>{const channel=new MessageChannel();const timer=setTimeout(()=>reject(new Error('Offline verification timed out. Try again while online.')),12000);channel.port1.onmessage=e=>{clearTimeout(timer);resolve(e.data);};worker.postMessage({type:repair?'PREPARE_OFFLINE':'CHECK_OFFLINE'},[channel.port2]);});
+      offlineReady=result.ready===true&&result.version===VERSION;if(!offlineReady)throw new Error(result.error||'Offline files are incomplete. Stay online and try again, or install the waiting game update.');
       save();renderHome();if(showMessage)toast('Adventure and artwork are ready offline on this device.');return true;
     }catch(error){offlineReady=false;if(showMessage)toast(error.message||'Could not confirm offline files. Keep internet on for now.');return false;}
   }
-  async function downloadAdventure(){const b=document.querySelector('[data-action="download-adventure"]');if(b)b.disabled=true;toast('Checking the game, challenge deck and artwork for offline use…');await verifyOffline(true);if(b?.isConnected)b.disabled=false;}
+  async function downloadAdventure(){const b=document.querySelector('[data-action="download-adventure"]');if(b)b.disabled=true;toast('Checking the game, challenge deck and artwork for offline use…');await verifyOffline(true,true);if(b?.isConnected)b.disabled=false;}
   $('postcard-photo').addEventListener('change',async event=>{
     const file=event.target.files?.[0];event.target.value='';const id=viewedPostcardId,p=state.expedition.postcards.find(x=>x.id===id);if(!file||!p||photoBusy||p.photoIds.length>=4)return;photoBusy=true;
     try{const photoId=await WildPostcards.storePhoto(file);const target=state.expedition.postcards.find(x=>x.id===id);if(target){target.photoIds.push(photoId);save();toast('Photo saved only on this device.');}else await WildPostcards.deletePhoto(photoId);}
@@ -435,6 +444,7 @@
       case 'add-photo':if(!photoBusy){viewedPostcardId=v;$('postcard-photo').click();}break;
       case 'remove-photo':void removePostcardPhoto(v,button.dataset.photo);break;
       case 'export-postcard':void exportPostcard(v);break;
+      case 'export-postcard-text':void exportPostcard(v,true);break;
       case 'download-adventure':void downloadAdventure();break;
       case 'puzzle':openPuzzle();break;
       case 'puzzle-choice':choosePuzzle(v);break;
@@ -459,7 +469,7 @@
       case 'install':openInstall();break;
       case 'export':exportSave();break;
       case 'import':$('import-file').click();break;
-      case 'restore-confirmed':if(pendingRestore){state=pendingRestore;pendingRestore=null;save();closeSheet();renderAll();toast('Your saved family adventure is restored.');}break;
+      case 'restore-confirmed':if(pendingRestore){state=pendingRestore;pendingRestore=null;enrichLatestPostcard();save();closeSheet();renderAll();toast('Your saved family adventure is restored.');}break;
       case 'new-adventure':newAdventurePrompt();break;
       case 'reset-confirmed':openBuilder();break;
       case 'check-update':void checkForUpdate();break;
@@ -484,7 +494,7 @@
   });
   let pendingRestore=null;
   $('import-file').addEventListener('change',async e=>{
-    const file=e.target.files?.[0];e.target.value='';if(!file)return;if(file.size>2000000){toast('That file is too large. Choose a Wild Explorer JSON progress backup.');return;}
+    const file=e.target.files?.[0];e.target.value='';if(!file)return;if(file.size>10000000){toast('That file is too large. Choose a Wild Explorer JSON progress backup.');return;}
     try{
       const data=JSON.parse(await file.text());const raw=data?.app==='operation-wild-explorer'?data.state:data;
       if(!raw||typeof raw!=='object'||!Array.isArray(raw.names)||raw.names.length!==5||!Array.isArray(raw.checks)||!Number.isInteger(raw.index)||raw.index<0||raw.index>5||typeof raw.xp!=='number'||!Number.isFinite(raw.xp))throw new Error('Invalid save');

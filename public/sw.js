@@ -1,8 +1,8 @@
 /* Increment VERSION and CSS/JS query versions together for every update. */
 'use strict';
-const VERSION = '3.0.0';
+const VERSION = '3.0.1';
 const CACHE = 'wild-explorer-' + VERSION;
-const CORE = ['./', './index.html', './styles.css?v=3.0.0', './app.js?v=3.0.0', './engine.js?v=3.0.0', './postcards.js?v=3.0.0',
+const CORE = ['./', './index.html', './styles.css?v=3.0.1', './app.js?v=3.0.1', './engine.js?v=3.0.1', './postcards.js?v=3.0.1',
   './manifest.webmanifest', './assets/icon.svg', './assets/icon-180.png',
   './assets/icon-192.png', './assets/icon-512.png', './assets/forest-friends-v2.webp'];
 self.addEventListener('install', event => {
@@ -15,10 +15,21 @@ self.addEventListener('install', event => {
 });
 self.addEventListener('message', event => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
-  if (event.data?.type === 'CHECK_OFFLINE') event.waitUntil((async () => {
+  if (['CHECK_OFFLINE','PREPARE_OFFLINE'].includes(event.data?.type)) event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    const present = await Promise.all(CORE.map(url => cache.match(url)));
-    event.ports[0]?.postMessage({ready:present.every(Boolean),version:VERSION,files:present.filter(Boolean).length});
+    let present = await Promise.all(CORE.map(url => cache.match(url)));
+    let error = '';
+    if (event.data.type === 'PREPARE_OFFLINE' && !present.every(Boolean)) {
+      try {
+        // Do not mix an old installed shell with files from a newer release.
+        const source = await fetch('./sw.js', {cache:'no-store'});
+        const remoteVersion = (await source.text()).match(/const VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1];
+        if (!source.ok || remoteVersion !== VERSION) throw new Error('A different game release is available. Check for an update before downloading again.');
+        await cache.addAll(CORE.filter((url,index) => !present[index]));
+        present = await Promise.all(CORE.map(url => cache.match(url)));
+      } catch (problem) { error = problem.message || 'Could not download all offline files. Try again online.'; }
+    }
+    event.ports[0]?.postMessage({ready:present.every(Boolean),version:VERSION,files:present.filter(Boolean).length,error});
   })());
 });
 self.addEventListener('activate', event => {

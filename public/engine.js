@@ -193,7 +193,7 @@
     if (expansion.postcards.some(p => p.id === a.id)) return;
     const date = [...a.done].reverse().find(r => r.at)?.at || '';
     expansion.postcards.push(normalisePostcard({ ...a, date, createdAt: date, badges: badges(expansion).map(b => b.id) }));
-    expansion.postcards = expansion.postcards.slice(-60);
+    // Keep every saved outing; never silently prune private memories.
     expansion.lifetime.outings += 1;
   }
   function normaliseExpansion(raw, legacyState = {}) {
@@ -213,7 +213,7 @@
     const lifetime = object(raw.lifetime), specialties = object(lifetime.specialties);
     const e = { schema: 1, options: active.options, active, recentIds: list(raw.recentIds || raw.history?.recentIds).filter(id => CARD_BY_ID[id]).slice(-90), wallet: int(raw.wallet, 0, 1000000), owned, equipped: { gear: null, camp: null, companion: null }, postcards: [], lifetime: { xp: int(lifetime.xp, 0, 10000000), crystals: int(lifetime.crystals, 0, 1000000), challenges: int(lifetime.challenges, 0, 10000000), outings: int(lifetime.outings, 0, 1000000), specialties: { scout: int(specialties.scout, 0, 10000000), listener: int(specialties.listener, 0, 10000000), detective: int(specialties.detective, 0, 10000000) } }, legacyFunded: true, sequence: int(raw.sequence, 0, 1000000) };
     for (const slot of ['gear', 'camp', 'companion']) { const id = raw.equipped?.[slot]; if (owned.includes(id) && SHOP_BY_ID[id].slot === slot) e.equipped[slot] = id; }
-    list(raw.postcards).slice(-60).forEach(p => { const postcard = normalisePostcard(p); if (!e.postcards.some(saved => saved.id === postcard.id)) e.postcards.push(postcard); });
+    list(raw.postcards).forEach(p => { const postcard = normalisePostcard(p); if (!e.postcards.some(saved => saved.id === postcard.id)) e.postcards.push(postcard); });
     return e;
   }
   function currentKey(expansion) { const a = expansion.active; return a.id + ':' + a.chapter + ':' + a.step + ':' + a.swaps; }

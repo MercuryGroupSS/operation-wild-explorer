@@ -325,3 +325,18 @@ test('every API action accepts serialised state and returns serialisable, stable
   assert.equal(e.wallet, 0);
   assert.equal(e.lifetime.xp, 140);
 });
+
+test('more than sixty outings retain older postcard text and photo references', () => {
+  let e = E.normaliseExpansion(null, {});
+  e = E.finishEarly(e).expansion;
+  e.postcards[0].favorite = 'Our oldest memory';
+  e.postcards[0].photoIds = ['photo-oldest'];
+  for (let i = 0; i < 61; i++) {
+    e = E.startNext(e, {duration:'short'}, 'archive-'+i).expansion;
+    e = E.finishEarly(e).expansion;
+  }
+  e = E.normaliseExpansion(JSON.parse(JSON.stringify(e)));
+  assert.equal(e.postcards.length, 62);
+  assert.equal(e.postcards[0].favorite, 'Our oldest memory');
+  assert.deepEqual(e.postcards[0].photoIds, ['photo-oldest']);
+});
