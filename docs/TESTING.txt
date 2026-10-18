@@ -1,0 +1,57 @@
+OPERATION WILD EXPLORER 2.0.0 — TEST NOTES
+========================================
+
+Test scope: game code and layouts were exercised in an isolated Chromium
+document at mobile and tablet viewport sizes. Because local browser
+navigation was unavailable in this build environment, localStorage and
+GPS were mocked in the interaction tests. The service worker was tested
+in a Node VM with mock network/cache APIs, not an installed Safari PWA.
+No claim is made that this package was tested on a physical iPhone.
+
+On-device checks still needed after your upload:
+- iPhone Safari/Home Screen installation and icon display.
+- Real GPS permission, denied permission, and reported accuracy.
+- Narration voice and optional audio on the device.
+- Offline reload after the deployed app finishes caching.
+- Existing real browser save availability on the same origin.
+- Deployed Netlify security headers and service-worker update behaviour.
+
+GAMEPLAY
+PASS: Five visible family heroes and five navigation tabs
+PASS: Safe clue substitution without reward inflation
+PASS: Crystal unlock rewards exactly once, including double click
+PASS: All five missions complete with 440 total family XP
+PASS: Names, class, outfit, skin, hair and pretend leader save
+PASS: Discovery journal saves without adding unearned XP
+PASS: Journal HTML is escaped and risky discoveries get safe-distance prompts
+PASS: Manual park and start point update
+PASS: Exported JSON includes valid progress and no GPS snapshot
+PASS: Validated backup import with replacement confirmation
+PASS: New-adventure reset requires confirmation and retains heroes and journal
+PASS: No uncaught JavaScript errors during the complete game flow
+
+SAVES, GPS & LAYOUT
+PASS: Original v1 save migrates names, roles, XP, crystals and unfinished clues
+PASS: Version 2 progress survives a fresh app initialisation
+PASS: Unreadable v2 JSON falls back to the intact original save
+PASS: Blocked browser storage shows a warning but does not stop gameplay
+PASS: GPS is opt-in, one-shot, displayed accurately, not saved, and clearable (mock fix)
+PASS: Cancelled GPS requests cannot restore a stale location
+PASS: GPS denial gives a clear fallback to manual park selection (mock denial)
+PASS: All five tabs fit 320, 375, 390, 430 px portrait, 844 px landscape and 768 px tablet without horizontal overflow
+
+OFFLINE WORKER UNIT TESTS
+PASS: First install precaches all 10 required assets and activates
+PASS: Activation removes only older Wild Explorer caches
+PASS: Offline navigation returns the cached game HTML
+PASS: Offline script and artwork retrieval uses installed cache
+PASS: Later updates wait for the user’s Update game action
+
+STATIC CHECKS
+PASS: JavaScript syntax checks for app.js and sw.js.
+PASS: Manifest and local asset references resolve.
+PASS: No camera call, continuous GPS tracking, external scripts or AI keys.
+PASS: Pinch-zoom is not disabled.
+
+GPS values, names and journal notes used by the automated tests are test
+fixtures. They are NOT embedded in the deployable game defaults.

@@ -1,0 +1,17 @@
+{
+  "source": "Operation_Wild_Explorer_Mobile_v2.zip",
+  "appVersion": "2.0.0",
+  "runtimeFiles": {
+    "_headers": "57c6323e88ed3f1594e4cc784f4b349db742e9f4c14a995b2f340cd7298369bf",
+    "app.js": "2c9130a50afc7b9b0f2489fc691aec52dd2bbeff733520be93ebac22816552c6",
+    "assets/forest-friends-v2.webp": "15475d14c9dee085c76a802f20ba795f9dc7c3d31804ad7ddb076429ded6b39c",
+    "assets/icon-180.png": "2ee2f749d779e0aca7addcd1eec427de348456e3a220893698f35c67e771b8e0",
+    "assets/icon-192.png": "c44f98ac194541420fc16782a3d0c421f042778c75939fc748cec1e3a064d345",
+    "assets/icon-512.png": "aba00242aef59684555dd6f6d3cbf646e61e8ab50a275137355af9bf20a7426a",
+    "assets/icon.svg": "7c94efb80ac767c4581dda70f64fe3845941ef5b122f5e61cd2fc7dfb6807a49",
+    "index.html": "3748ad67523dbaab256e2445db38d0e8b5c7e57381d35be5b950a2fb6a9da9eb",
+    "manifest.webmanifest": "10cedaf6107ce192e13a9389abd832e883da64eb8987890db1af596886bf1df2",
+    "styles.css": "6979104d0f5fd28eace6e66fd4d6b23d78d66df4caf65f85e11655c11c0c4be0",
+    "sw.js": "7391448ffde6a2f693117d7e8846a4efa47dbe41db566859c8dddb00cf84888f"
+  }
+}
