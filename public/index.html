@@ -13,11 +13,17 @@
   <link rel="icon" type="image/svg+xml" href="./assets/icon.svg">
   <link rel="apple-touch-icon" href="./assets/icon-180.png">
   <link rel="preload" as="image" href="./assets/forest-friends-v2.webp">
-  <link rel="stylesheet" href="./styles.css?v=3.2.0">
-  <script src="./classic.js?v=3.2.0" defer></script>
-  <script src="./engine.js?v=3.2.0" defer></script>
-  <script src="./postcards.js?v=3.2.0" defer></script>
-  <script src="./app.js?v=3.2.0" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=3.3.0">
+  <link rel="stylesheet" href="./quest-magic.css?v=3.3.0">
+  <script src="./classic.js?v=3.3.0" defer></script>
+  <script src="./engine.js?v=3.3.0" defer></script>
+  <script src="./postcards.js?v=3.3.0" defer></script>
+  <script src="./gear.js?v=3.3.0" defer></script>
+  <script src="./quest-magic.js?v=3.3.0" defer></script>
+  <script src="./narration-content.js?v=3.3.0" defer></script>
+  <script src="./narration-manifest.js?v=3.3.0" defer></script>
+  <script src="./narration.js?v=3.3.0" defer></script>
+  <script src="./app.js?v=3.3.0" defer></script>
   <title>Operation Wild Explorer</title>
 </head>
 <body>
@@ -37,12 +43,13 @@
       <div class="status-main"><div class="status-line"><b id="level-text">Family level 1</b><span id="xp-text">0 XP</span></div><div class="xp-track" id="xp-meter" role="progressbar" aria-label="Experience towards next level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="xp-fill"></span></div></div>
       <button class="crystal-count" data-action="tab" data-value="treasure" aria-label="View collected crystals"><span id="tiny-gem"></span><b id="gem-count">0/5</b></button>
     </section>
+    <section id="equipment-bar" class="equipment-bar" aria-label="Your playable gear" hidden></section>
     <main id="main" tabindex="-1">
       <section id="home-screen" data-screen="home" aria-label="Adventure home"></section>
       <section id="quest-screen" data-screen="quest" aria-label="Current quest" hidden></section>
       <section id="heroes-screen" data-screen="heroes" aria-label="Your explorers" hidden></section>
       <section id="treasure-screen" data-screen="treasure" aria-label="Crystals and discoveries" hidden></section>
-      <section id="trail-screen" data-screen="trail" aria-label="Story trail and optional location" hidden></section>
+      <section id="trail-screen" data-screen="trail" aria-label="Treasure map and optional location" hidden></section>
     </main>
     <footer class="page-foot"><span data-icon="leaf"></span> Tiny footsteps. Wonderful discoveries.</footer>
   </div>
@@ -51,7 +58,7 @@
     <button data-action="tab" data-value="quest"><span data-icon="compass"></span><b>Quest</b></button>
     <button data-action="tab" data-value="heroes"><span data-icon="heroes"></span><b>Heroes</b></button>
     <button data-action="tab" data-value="treasure"><span data-icon="chest"></span><b>Treasure</b></button>
-    <button data-action="tab" data-value="trail"><span data-icon="map"></span><b>Trail</b></button>
+    <button data-action="tab" data-value="trail"><span data-icon="map"></span><b>Map</b></button>
   </nav>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <div id="confetti" class="confetti" aria-hidden="true"></div>

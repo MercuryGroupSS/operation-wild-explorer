@@ -142,16 +142,16 @@
   CARDS.push(...NIGHT_CARDS);
   const CARD_BY_ID = Object.assign(Object.create(null), Object.fromEntries(CARDS.map(c => [c.id, c])));
   const SHOP = [
-    { id: 'compass', name: 'Star compass', emoji: '🧭', cost: 2, slot: 'gear', description: 'A pretend compass for your family’s story.' },
-    { id: 'leaf-cape', name: 'Leaf cape', emoji: '🍃', cost: 3, slot: 'gear', description: 'A storybook cape for the whole team.' },
-    { id: 'explorer-lantern', name: 'Firefly lantern', emoji: '🏮', cost: 4, slot: 'gear', description: 'A pretend glow to decorate camp.' },
-    { id: 'fox-friend', name: 'Friendly fox', emoji: '🦊', cost: 3, slot: 'companion', description: 'A make-believe woodland friend for camp. Real wildlife stays wild.' },
-    { id: 'bunting', name: 'Rainbow bunting', emoji: '🎏', cost: 2, slot: 'camp', description: 'Bright flags for your make-believe camp.' },
-    { id: 'cosy-tent', name: 'Cosy story tent', emoji: '⛺', cost: 4, slot: 'camp', description: 'A colourful camp decoration.' },
-    { id: 'moon-cape', name: 'Moon cape', emoji: '🌙', cost: 3, slot: 'gear', description: 'A silvery make-believe cape for your night-adventure team.' },
-    { id: 'bat-friend', name: 'Friendly bat', emoji: '🦇', cost: 2, slot: 'companion', description: 'A cheerful storybook bat for camp. Real wildlife stays wild.' },
-    { id: 'pumpkin-lantern', name: 'Pumpkin lantern', emoji: '🎃', cost: 4, slot: 'camp', description: 'A smiling pretend lantern for camp; no flame or real equipment.' },
-    { id: 'guardian-flag', name: 'Guardian flag', emoji: '🚩', cost: 5, slot: 'camp', description: 'Celebrate your family’s adventures.' }
+    { id: 'compass', name: 'Star compass', emoji: '🧭', cost: 2, slot: 'gear', description: 'An interactive practice dial, plus real phone heading on supported devices.' },
+    { id: 'leaf-cape', name: 'Leaf cape', emoji: '🍃', cost: 3, slot: 'gear', description: 'Dress your whole team and play three little leaf-shape games.' },
+    { id: 'explorer-lantern', name: 'Firefly lantern', emoji: '🏮', cost: 4, slot: 'gear', description: 'Turn your game screen warm orange and adjust its glow.' },
+    { id: 'fox-friend', name: 'Friendly fox', emoji: '🦊', cost: 3, slot: 'companion', description: 'Play colour, rhythm and kindness games with a storybook fox.' },
+    { id: 'bunting', name: 'Rainbow bunting', emoji: '🎏', cost: 2, slot: 'camp', description: 'Use bright flags to copy and finish a repeating colour pattern.' },
+    { id: 'cosy-tent', name: 'Cosy story tent', emoji: '⛺', cost: 4, slot: 'camp', description: 'Open a three-part family storytelling game in your pretend tent.' },
+    { id: 'moon-cape', name: 'Moon cape', emoji: '🌙', cost: 3, slot: 'gear', description: 'Dress your team in moon capes and try gentle hand-shape games.' },
+    { id: 'bat-friend', name: 'Friendly bat', emoji: '🦇', cost: 2, slot: 'companion', description: 'Try quiet listening and hand-shape games with a pretend bat.' },
+    { id: 'pumpkin-lantern', name: 'Pumpkin lantern', emoji: '🎃', cost: 4, slot: 'camp', description: 'A smiling lantern that gives your game screen an adjustable orange glow.' },
+    { id: 'guardian-flag', name: 'Guardian flag', emoji: '🚩', cost: 5, slot: 'camp', description: 'Choose a hand signal and celebrate your team with a kind message.' }
   ].map(item => ({ ...item, title: item.name }));
   const SHOP_BY_ID = Object.assign(Object.create(null), Object.fromEntries(SHOP.map(item => [item.id, item])));
   const BADGES = [

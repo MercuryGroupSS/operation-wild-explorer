@@ -1,0 +1,3008 @@
+{
+  "schema": 1,
+  "pack": "bella-v1",
+  "voice": "af_bella",
+  "label": "Bella",
+  "model": "onnx-community/Kokoro-82M-v1.0-ONNX",
+  "dtype": "fp32",
+  "speed": 0.9,
+  "gainDb": -2,
+  "format": "mp3",
+  "sampleRate": 24000,
+  "generatedAt": "2026-10-18T21:37:17.619Z",
+  "clips": [
+    {
+      "key": "0a088f8680c3403a6ca0d8f36746618dfe1dfd7ebaba9ae1563a0f2e566f465e",
+      "text": "Stay together on the safe path.",
+      "file": "./assets/narration/bella-v1/0a088f8680c3403a6ca0d8f36746618dfe1dfd7ebaba9ae1563a0f2e566f465e.mp3",
+      "bytes": 21956,
+      "seconds": 2.7,
+      "sha256": "e43c747300803c8f5708ab81e515aa51c408c0daeecc45bfffde5178cb4d9f06",
+      "sourcePeak": 0.498141,
+      "sourceRms": 0.06386
+    },
+    {
+      "key": "c2e411b795f469113fd9071d5e9c4526431908a6ecdd95fd282fc825aeee6719",
+      "text": "Stay beside your grown-up. Stop walking before looking at the screen.",
+      "file": "./assets/narration/bella-v1/c2e411b795f469113fd9071d5e9c4526431908a6ecdd95fd282fc825aeee6719.mp3",
+      "bytes": 44204,
+      "seconds": 5,
+      "sha256": "9c834924e5a81ed113121fb65f6e1aa9ad8a13a09f5adc44f1d44410140f8a10",
+      "sourcePeak": 0.584958,
+      "sourceRms": 0.075015
+    },
+    {
+      "key": "0b3b3b28a09a65b4731dd11ab85007b2e7d3fabd9ddfcd11c772169ca83812ed",
+      "text": "Your crystal is ready.",
+      "file": "./assets/narration/bella-v1/0b3b3b28a09a65b4731dd11ab85007b2e7d3fabd9ddfcd11c772169ca83812ed.mp3",
+      "bytes": 17636,
+      "seconds": 2.275,
+      "sha256": "f929c7070431ea776c306a1bdfc0a4a17c8ac2d638152b1de99bdd02279ff2b9",
+      "sourcePeak": 0.574019,
+      "sourceRms": 0.068331
+    },
+    {
+      "key": "c43558ba02e44abb1d5dcfe65a69f9e1095da6f55be0797e82ab8ab9ece90402",
+      "text": "Your classic hunt is complete.",
+      "file": "./assets/narration/bella-v1/c43558ba02e44abb1d5dcfe65a69f9e1095da6f55be0797e82ab8ab9ece90402.mp3",
+      "bytes": 21308,
+      "seconds": 2.675,
+      "sha256": "6ed1db6863d3e418142b23b53682fe7dd64ceb5221071aa59182b6e308c29d7c",
+      "sourcePeak": 0.633941,
+      "sourceRms": 0.070246
+    },
+    {
+      "key": "948b27f2ea97c01f5dc9a62e8986502e393e69d6175936891151e25fdf4229cb",
+      "text": "Your discoveries brought the map together. Share your favourite memory.",
+      "file": "./assets/narration/bella-v1/948b27f2ea97c01f5dc9a62e8986502e393e69d6175936891151e25fdf4229cb.mp3",
+      "bytes": 42788,
+      "seconds": 5.075,
+      "sha256": "1e94bee428e20b007d8282eb98b808f0df161905c5e6df8d97ee99c7a332d8d6",
+      "sourcePeak": 0.522615,
+      "sourceRms": 0.075866
+    },
+    {
+      "key": "e47ccc4408a587f8aed3bca409b51cfee19686ce4748639cb2fbd9da01235e90",
+      "text": "Find. A treasure for our eyes. Spot a natural treasure from the path. Point to it and leave it exactly where it is.",
+      "file": "./assets/narration/bella-v1/e47ccc4408a587f8aed3bca409b51cfee19686ce4748639cb2fbd9da01235e90.mp3",
+      "bytes": 74684,
+      "seconds": 8.4,
+      "sha256": "0d955018a7b4953616bbe9efe67f23b9162f942f0fb352cf5f3b4565facf449b",
+      "sourcePeak": 0.812151,
+      "sourceRms": 0.081597
+    },
+    {
+      "key": "d6d20a37524707dbd11dc579d99aa8f573d9c0fae7e0402fe216a75ef249a296",
+      "text": "Safe alternative: Point to a colour you can see on your clothes, then help a grown-up find a matching patch.",
+      "file": "./assets/narration/bella-v1/d6d20a37524707dbd11dc579d99aa8f573d9c0fae7e0402fe216a75ef249a296.mp3",
+      "bytes": 66548,
+      "seconds": 7.55,
+      "sha256": "9aab552c8ab85527640398e14ef8b291170cc369255a2e9ec8fc414112370094",
+      "sourcePeak": 0.569061,
+      "sourceRms": 0.082874
+    },
+    {
+      "key": "2bc26ca95143c3533734ca500b5f802d5f2f47bfd07996592a9a61e88c34d43c",
+      "text": "If you like, share one extra detail you noticed.",
+      "file": "./assets/narration/bella-v1/2bc26ca95143c3533734ca500b5f802d5f2f47bfd07996592a9a61e88c34d43c.mp3",
+      "bytes": 35420,
+      "seconds": 4.175,
+      "sha256": "04bd295a33219bd87549ae3db3d019e2ca5fc47b5e6bc145b4687bcd33c09887",
+      "sourcePeak": 0.795598,
+      "sourceRms": 0.07123
+    },
+    {
+      "key": "4378dffa31ec975edc38d5ec1a8379d9b1fc13c692610b999bef7a3b783a7b64",
+      "text": "If you like, explain one clue or invent a second idea for the team.",
+      "file": "./assets/narration/bella-v1/4378dffa31ec975edc38d5ec1a8379d9b1fc13c692610b999bef7a3b783a7b64.mp3",
+      "bytes": 48044,
+      "seconds": 5.575,
+      "sha256": "6bb407360983e6f6254aed5519cc71a847725173746c926bfadfa1233cc4e510",
+      "sourcePeak": 0.658123,
+      "sourceRms": 0.074577
+    },
+    {
+      "key": "552f65e1788bff0e7525a5a6fdf92f89dbad2e4c20c6477b11f47da728c698fa",
+      "text": "Find. A tiny silk masterpiece. Look for a spider web from the path. Watch without touching the web, spider or plants.",
+      "file": "./assets/narration/bella-v1/552f65e1788bff0e7525a5a6fdf92f89dbad2e4c20c6477b11f47da728c698fa.mp3",
+      "bytes": 85292,
+      "seconds": 9.325,
+      "sha256": "2538bfaab3243808912b65a98bf07253954aa7399ad2d7492cdcde09d2688c75",
+      "sourcePeak": 0.814407,
+      "sourceRms": 0.083079
+    },
+    {
+      "key": "4725db7a7ca936574371b04577b0c251d379f168ed85470eeab8e04c686fe0ba",
+      "text": "Safe alternative: Look at the lines on your own palm. Follow one with a fingertip, or choose a line for a grown-up to follow on their palm.",
+      "file": "./assets/narration/bella-v1/4725db7a7ca936574371b04577b0c251d379f168ed85470eeab8e04c686fe0ba.mp3",
+      "bytes": 87908,
+      "seconds": 9.85,
+      "sha256": "2c2e18302b433d73cf0f8cebe08ad979f8bb5bc5aeae9627b0f17c427f01b652",
+      "sourcePeak": 0.723702,
+      "sourceRms": 0.085244
+    },
+    {
+      "key": "2c4584626481eca5873983b831d6621e300dc7484f7904794ac2172251c6b267",
+      "text": "Find. Something hanging. Spot a leaf, seed or branch hanging on a tree. Look from where you stand; do not reach, pull or climb.",
+      "file": "./assets/narration/bella-v1/2c4584626481eca5873983b831d6621e300dc7484f7904794ac2172251c6b267.mp3",
+      "bytes": 88220,
+      "seconds": 9.95,
+      "sha256": "3e67cfa4b9f694847a4743ca99b9ebb94527073623b2d1d23e792d0224c25fcb",
+      "sourcePeak": 0.675529,
+      "sourceRms": 0.086757
+    },
+    {
+      "key": "256ef2a3b2842b8d8fc44bf8f8d150b8ffbbddc3753bcfd0858a031f8af0d735",
+      "text": "Safe alternative: Hold one hand comfortably out and let your fingers hang down, or ask a grown-up to do it. Count the hanging fingers.",
+      "file": "./assets/narration/bella-v1/256ef2a3b2842b8d8fc44bf8f8d150b8ffbbddc3753bcfd0858a031f8af0d735.mp3",
+      "bytes": 91652,
+      "seconds": 10,
+      "sha256": "43aa33838ddfaccee5256e4e08131f5b3b4ac3f059fa6cea85597279de45a045",
+      "sourcePeak": 1.013969,
+      "sourceRms": 0.084499
+    },
+    {
+      "key": "165a801aaabbb1e467ff6a97fd25774a03653be4e5fd098b61bc0b58ce4e0f43",
+      "text": "Find. A little neighbour. Look for a bug from the path. Give it space, with no touching, lifting things or disturbing its home.",
+      "file": "./assets/narration/bella-v1/165a801aaabbb1e467ff6a97fd25774a03653be4e5fd098b61bc0b58ce4e0f43.mp3",
+      "bytes": 81068,
+      "seconds": 9.2,
+      "sha256": "e972ba23405274396a918eb360b4e801e0915f2cfde267b5105f14affb4b2bfd",
+      "sourcePeak": 0.776739,
+      "sourceRms": 0.083264
+    },
+    {
+      "key": "2f2eae67e80cee960827da02522d4fb9bec16d70cd330b368ad77f0c1a235656",
+      "text": "Safe alternative: Spread one hand and watch two fingers gently walk across your other palm, or choose which two fingers a grown-up uses on their palm.",
+      "file": "./assets/narration/bella-v1/2f2eae67e80cee960827da02522d4fb9bec16d70cd330b368ad77f0c1a235656.mp3",
+      "bytes": 99428,
+      "seconds": 10.925,
+      "sha256": "55398842fa7462f0338e11b8abd4082bd42d812f511ebe12435820a8066202e6",
+      "sourcePeak": 0.541547,
+      "sourceRms": 0.084297
+    },
+    {
+      "key": "5b93d45cace0c8a551748c5c758db26bbeb8d007e3f36cd832eb09d3035c434b",
+      "text": "Find. Pinecone detective. See whether a pinecone is visible from the path. Leave it where it is; do not pick it up or pull one from a tree.",
+      "file": "./assets/narration/bella-v1/5b93d45cace0c8a551748c5c758db26bbeb8d007e3f36cd832eb09d3035c434b.mp3",
+      "bytes": 91604,
+      "seconds": 10.3,
+      "sha256": "06842632f3845bf5573fa2ee5ed9357cf8a9565cd573cf39e5076c87ac3b9c75",
+      "sourcePeak": 0.645596,
+      "sourceRms": 0.085838
+    },
+    {
+      "key": "a39cfce8461363f518baf67563bb12e0d3a0815bd64212aab9dffc8b83fb2a7e",
+      "text": "Safe alternative: Look at the bumps and lines on your own knuckles. Point to a repeating detail without touching anything outdoors.",
+      "file": "./assets/narration/bella-v1/a39cfce8461363f518baf67563bb12e0d3a0815bd64212aab9dffc8b83fb2a7e.mp3",
+      "bytes": 84836,
+      "seconds": 9.4,
+      "sha256": "4c73ef2ef64e5d0c98b1d0642093c398be0706484029056d98c96b9aac6aac3b",
+      "sourcePeak": 0.638693,
+      "sourceRms": 0.083726
+    },
+    {
+      "key": "b9a41b17afc57f873902c35be2faff49649d93f0f4cb045eec20137c97fdfac5",
+      "text": "Find. Four leaf colours. Look for four leaf colours without picking leaves. Any four colours around you count if leaves are all the same colour.",
+      "file": "./assets/narration/bella-v1/b9a41b17afc57f873902c35be2faff49649d93f0f4cb045eec20137c97fdfac5.mp3",
+      "bytes": 88124,
+      "seconds": 9.7,
+      "sha256": "7a1408107515ff5e350357a847fc0185ad9513c8b95e93ed358d26df5c17163c",
+      "sourcePeak": 0.718894,
+      "sourceRms": 0.084368
+    },
+    {
+      "key": "0137a7853f60b59d979be367ca6f63ad0247c3d7f80def2d64329b8e9cc23303",
+      "text": "Safe alternative: Point to up to four colours on your family’s clothes. Finding just one colour together counts too.",
+      "file": "./assets/narration/bella-v1/0137a7853f60b59d979be367ca6f63ad0247c3d7f80def2d64329b8e9cc23303.mp3",
+      "bytes": 78404,
+      "seconds": 8.725,
+      "sha256": "6b479e77f66f5e051ca1849e2b85c52d1b125193938b5cd6405de4a1180afd86",
+      "sourcePeak": 0.921458,
+      "sourceRms": 0.083186
+    },
+    {
+      "key": "b88f35aa59e7eafbe2bd124b866651a648b83dff47012a3e5cc1268e557daa1f",
+      "text": "Find. A splash of white. Find something white you can see safely, such as a cloud, a sign or your own clothing. Leave everything where it is.",
+      "file": "./assets/narration/bella-v1/b88f35aa59e7eafbe2bd124b866651a648b83dff47012a3e5cc1268e557daa1f.mp3",
+      "bytes": 98108,
+      "seconds": 10.825,
+      "sha256": "7de70e5d86a9150575c13ec657dcfc3fac2709f06a404f09e35d60367e1ea180",
+      "sourcePeak": 0.86127,
+      "sourceRms": 0.083982
+    },
+    {
+      "key": "4adadd69d0acc38bfb7a5d00795c75424f54b6916fa5958c79e6f42bcbfad626",
+      "text": "Safe alternative: Point to the lightest colour on your clothes, then compare it with a darker patch. Any colours count.",
+      "file": "./assets/narration/bella-v1/4adadd69d0acc38bfb7a5d00795c75424f54b6916fa5958c79e6f42bcbfad626.mp3",
+      "bytes": 76628,
+      "seconds": 8.575,
+      "sha256": "7150f65e0eb6d2a6392d459c97f2c22f46db144ba8dcf1e032e80c5469d2c6d3",
+      "sourcePeak": 0.576606,
+      "sourceRms": 0.084714
+    },
+    {
+      "key": "e713f1219c148e0eb4b3c93328da82197aa46d929e9a30552f763affb51112a8",
+      "text": "Find. A squirrel-shaped surprise. If a squirrel is visible, watch quietly from far away. Never approach, feed, chase or call to it.",
+      "file": "./assets/narration/bella-v1/e713f1219c148e0eb4b3c93328da82197aa46d929e9a30552f763affb51112a8.mp3",
+      "bytes": 92612,
+      "seconds": 10.475,
+      "sha256": "0bc565c8d1b025d52fc21380863e4ca1b269b4289b7d4e6a9f2f31f865ee5b4a",
+      "sourcePeak": 0.687199,
+      "sourceRms": 0.0852
+    },
+    {
+      "key": "b87d89914d967512d1571fc7389dee61b369e082112405e663798deb88c6afd8",
+      "text": "Safe alternative: Seated or with feet planted, gently hold your hands near your chest like squirrel paws for three quiet seconds, or choose a grown-up to copy.",
+      "file": "./assets/narration/bella-v1/b87d89914d967512d1571fc7389dee61b369e082112405e663798deb88c6afd8.mp3",
+      "bytes": 107252,
+      "seconds": 11.775,
+      "sha256": "eeedcaf11257d611fb78266e867563ee19c5c90511b20ad25d4e3b29f50dd6d2",
+      "sourcePeak": 0.688487,
+      "sourceRms": 0.08594
+    },
+    {
+      "key": "aa7a349597ecf82ce486a497a99dc899dc4b225255ecc0b754eb43657c6b2664",
+      "text": "Find. Round and wonderful. Point to a round shape you can see from your safe spot.",
+      "file": "./assets/narration/bella-v1/aa7a349597ecf82ce486a497a99dc899dc4b225255ecc0b754eb43657c6b2664.mp3",
+      "bytes": 57356,
+      "seconds": 6.55,
+      "sha256": "501d52cf6090264603d99617e15d8ab0d6c3bcaf29140db0639099dfddcb35c5",
+      "sourcePeak": 0.679724,
+      "sourceRms": 0.080928
+    },
+    {
+      "key": "45465a56748fca2edf4fc349d5d4925bcedaf6482e19e0b360ed8d0d9e3970af",
+      "text": "Safe alternative: Make a circle with your fingers, or ask a grown-up to make a big circle and a small one for you to compare.",
+      "file": "./assets/narration/bella-v1/45465a56748fca2edf4fc349d5d4925bcedaf6482e19e0b360ed8d0d9e3970af.mp3",
+      "bytes": 81332,
+      "seconds": 8.9,
+      "sha256": "83ea4f08515d2a0ad9466d48ddc0f22313186ea68385b65da1636a76e7aaaa4e",
+      "sourcePeak": 0.933947,
+      "sourceRms": 0.084945
+    },
+    {
+      "key": "ca9320cfd4d2649e25c2e90083075297c55b6a8afcb94ae174fa48bf3eb04455",
+      "text": "Find. Shadow spotting. While standing on safe level ground, look for a shadow near you. Keep away from roads and edges.",
+      "file": "./assets/narration/bella-v1/ca9320cfd4d2649e25c2e90083075297c55b6a8afcb94ae174fa48bf3eb04455.mp3",
+      "bytes": 79580,
+      "seconds": 8.95,
+      "sha256": "c72cea52ad19fe331c03dffac05db8f95e3f5659330977aec8065815659a5d6b",
+      "sourcePeak": 0.751493,
+      "sourceRms": 0.081114
+    },
+    {
+      "key": "5a163a777e2e86e6164716939da1cee89ed6ba70faa48fabe2fe180f9cbe84cb",
+      "text": "Safe alternative: Point to a dark patch on your clothes and follow its edge with your eyes or a fingertip.",
+      "file": "./assets/narration/bella-v1/5a163a777e2e86e6164716939da1cee89ed6ba70faa48fabe2fe180f9cbe84cb.mp3",
+      "bytes": 70844,
+      "seconds": 7.95,
+      "sha256": "9ee59b8fc952fec2f93b14e7de6e1264099f925f68af6663789a762e1d3effad",
+      "sourcePeak": 0.624437,
+      "sourceRms": 0.081711
+    },
+    {
+      "key": "37533f62975792e4f45da37ff58d6805b8da252e502a2c55211b0a731a669762",
+      "text": "Find. Tiny and mighty. Point to one small detail visible from the path. A mark, line or colour is enough.",
+      "file": "./assets/narration/bella-v1/37533f62975792e4f45da37ff58d6805b8da252e502a2c55211b0a731a669762.mp3",
+      "bytes": 75644,
+      "seconds": 8.675,
+      "sha256": "903b3cee1c0ff69bee6f2918008640aa3df26827b2015e93cfeab3a3295b33fa",
+      "sourcePeak": 0.937893,
+      "sourceRms": 0.086376
+    },
+    {
+      "key": "e9d25395cd8811b45541cff6996d264869b1ab2738fe1dfa6dddb3868a033bb8",
+      "text": "Safe alternative: Find a tiny detail on your own clothing.",
+      "file": "./assets/narration/bella-v1/e9d25395cd8811b45541cff6996d264869b1ab2738fe1dfa6dddb3868a033bb8.mp3",
+      "bytes": 43196,
+      "seconds": 4.975,
+      "sha256": "bb5d5c3f20dcdf60033ee0f9636fad9fdbb24f3f9c036c67a8e2ea91ccb3360b",
+      "sourcePeak": 0.853493,
+      "sourceRms": 0.076516
+    },
+    {
+      "key": "232aa9d370976e284f3528668beefb0d758d451b07a04d105dc5e5ecd1667a2e",
+      "text": "Find. A growing story. Look for fresh-looking green growth from the path. Leave buds and flowers untouched.",
+      "file": "./assets/narration/bella-v1/232aa9d370976e284f3528668beefb0d758d451b07a04d105dc5e5ecd1667a2e.mp3",
+      "bytes": 72644,
+      "seconds": 8.45,
+      "sha256": "1b51871b1ff9b96026b7a21b1b14ac9607e503d07f4f862c961838575479c803",
+      "sourcePeak": 0.744371,
+      "sourceRms": 0.082669
+    },
+    {
+      "key": "a3829e72936910c1abc66d4bf818ec9673219b30849ddb30772a1080abce9053",
+      "text": "Safe alternative: Gently close then open your hand like an opening leaf, or count the fingers as a grown-up slowly opens theirs.",
+      "file": "./assets/narration/bella-v1/a3829e72936910c1abc66d4bf818ec9673219b30849ddb30772a1080abce9053.mp3",
+      "bytes": 91220,
+      "seconds": 10,
+      "sha256": "f97f132292ebdbe14599ec3257ac4f5e92d78a5837e684c204a0784e74091819",
+      "sourcePeak": 0.666987,
+      "sourceRms": 0.082365
+    },
+    {
+      "key": "1c837f8f7e3c93d722d5e5e4f158051b02a14977bd672d629754f842923c41ec",
+      "text": "Listen. Bird-song ears. Pause beside a grown-up and listen for a bird sound. Stay quiet and keep your eyes open; no calls or recordings to attract birds.",
+      "file": "./assets/narration/bella-v1/1c837f8f7e3c93d722d5e5e4f158051b02a14977bd672d629754f842923c41ec.mp3",
+      "bytes": 110924,
+      "seconds": 12.3,
+      "sha256": "9b972ba1150ff5d12b557fcc0cd0ce01768f3e19d4a46bfb50431621b8e2114a",
+      "sourcePeak": 0.66533,
+      "sourceRms": 0.086657
+    },
+    {
+      "key": "c6580c3f185ad7a74c9b1f3fb7c0352e6861602b1858fb8d135dae3fd0023e68",
+      "text": "Safe alternative: Listen quietly for any sound with eyes open. Share what you hear, or give a small nod if all is quiet; stay in your safe spot.",
+      "file": "./assets/narration/bella-v1/c6580c3f185ad7a74c9b1f3fb7c0352e6861602b1858fb8d135dae3fd0023e68.mp3",
+      "bytes": 101132,
+      "seconds": 11.175,
+      "sha256": "19fc65bca69a8d543059183d0bf191874dd09ceaf70f296ab83e63428a9ea85e",
+      "sourcePeak": 0.675086,
+      "sourceRms": 0.086388
+    },
+    {
+      "key": "06339396d4efa953a2aedb950862ffb41f7e368e9d32bfe5fac507204c0abe7a",
+      "text": "Listen. The breeze orchestra. Listen for the breeze or leaves moving while you stay safely with your team.",
+      "file": "./assets/narration/bella-v1/06339396d4efa953a2aedb950862ffb41f7e368e9d32bfe5fac507204c0abe7a.mp3",
+      "bytes": 68876,
+      "seconds": 7.8,
+      "sha256": "7a887e117f0187f5e19d47eead7beb237c48e35e6c92315ecd9fbefe4c963a23",
+      "sourcePeak": 0.756555,
+      "sourceRms": 0.08074
+    },
+    {
+      "key": "c8929d0072d584addab01537c80dce60e0f3c2dae8ab1d3e8d743a438cf00cec",
+      "text": "Safe alternative: Gently rub your own sleeve and listen to its rustle, or choose when a grown-up starts and stops rubbing theirs.",
+      "file": "./assets/narration/bella-v1/c8929d0072d584addab01537c80dce60e0f3c2dae8ab1d3e8d743a438cf00cec.mp3",
+      "bytes": 83540,
+      "seconds": 9.225,
+      "sha256": "f939117f896eb8a9cdfe05877e0da910b9eac1ccc4f441131c2d6edb6ee195d4",
+      "sourcePeak": 0.583629,
+      "sourceRms": 0.082432
+    },
+    {
+      "key": "fab61d0511dfc21033f86a48be3d56faee7e87e2382427938baeec86aab33da0",
+      "text": "Listen. Ten quiet seconds. Listen with your eyes open while a grown-up counts ten quiet seconds. What did you notice?",
+      "file": "./assets/narration/bella-v1/fab61d0511dfc21033f86a48be3d56faee7e87e2382427938baeec86aab33da0.mp3",
+      "bytes": 80804,
+      "seconds": 8.95,
+      "sha256": "63a172d8b9120552d44541750701944bb30e2cc1418452a2e3db054397242286",
+      "sourcePeak": 0.736929,
+      "sourceRms": 0.085275
+    },
+    {
+      "key": "f2c74a56b1bfb36a0d81a515419bd7388ad78d4cfece232d1f6e680631d1ed65",
+      "text": "Safe alternative: Listen with eyes open for five quiet seconds. Say what you heard or give a little nod if it stayed quiet.",
+      "file": "./assets/narration/bella-v1/f2c74a56b1bfb36a0d81a515419bd7388ad78d4cfece232d1f6e680631d1ed65.mp3",
+      "bytes": 85676,
+      "seconds": 9.475,
+      "sha256": "923c5b9119d5b924d39b61e99b38a31ef5ab533647958c95129c35b3acee23bb",
+      "sourcePeak": 0.781109,
+      "sourceRms": 0.084156
+    },
+    {
+      "key": "a6d01f130d2a1331cf8a7c25b6450f4245431965d3173814e99f1e292407ea36",
+      "text": "Listen. Near sound, far sound. From the same safe spot, notice a nearby sound and a faraway sound. No need to move toward either one.",
+      "file": "./assets/narration/bella-v1/a6d01f130d2a1331cf8a7c25b6450f4245431965d3173814e99f1e292407ea36.mp3",
+      "bytes": 100820,
+      "seconds": 11.325,
+      "sha256": "3dcc6ee9f97d75fb34f248c32951de64e276fa38df269c85da27cfb71cd64854",
+      "sourcePeak": 0.712586,
+      "sourceRms": 0.090071
+    },
+    {
+      "key": "21534eda88209110abc839f7aa84de4f0574d32004beb65a4100762fbe62eac5",
+      "text": "Safe alternative: Stay still and listen as a grown-up gently taps their palm beside you, then softly rubs their sleeve. Which sound is quieter?",
+      "file": "./assets/narration/bella-v1/21534eda88209110abc839f7aa84de4f0574d32004beb65a4100762fbe62eac5.mp3",
+      "bytes": 100700,
+      "seconds": 11.1,
+      "sha256": "f16a8dcdeb28df7d4983459799539a4d1d085c121e79ee928b3bf23e805e38e0",
+      "sourcePeak": 0.699977,
+      "sourceRms": 0.085691
+    },
+    {
+      "key": "a31a7b3d87c6db3522c2478848625415912cf9e03076d337930261e5358515ce",
+      "text": "Listen. Our gentle footsteps. If your grown-up says the level path is clear, listen to a few ordinary slow footsteps.",
+      "file": "./assets/narration/bella-v1/a31a7b3d87c6db3522c2478848625415912cf9e03076d337930261e5358515ce.mp3",
+      "bytes": 81020,
+      "seconds": 9.15,
+      "sha256": "a87c2fdb9d0a731135769efefe382b70c75c5bf91f49af81cdf18e678dceb39d",
+      "sourcePeak": 0.702158,
+      "sourceRms": 0.085337
+    },
+    {
+      "key": "07ca3c071bbbfa5966eda013ab560ededc91cd2a59dd9874e75f96e6ef97bff1",
+      "text": "Safe alternative: Stay seated or still and gently tap one finger on your own hand.",
+      "file": "./assets/narration/bella-v1/07ca3c071bbbfa5966eda013ab560ededc91cd2a59dd9874e75f96e6ef97bff1.mp3",
+      "bytes": 59396,
+      "seconds": 6.675,
+      "sha256": "80977635800b89e79455cfa68a02e5677c92689dfb6bef49041e3dbe20ed51f1",
+      "sourcePeak": 0.623117,
+      "sourceRms": 0.082093
+    },
+    {
+      "key": "5d051c92312bcb66fa095a68c14219dd61542f1ad981aa03245804da5e88d1d6",
+      "text": "Listen. A very soft sound. Stay still beside your grown-up and notice the quietest sound you can hear.",
+      "file": "./assets/narration/bella-v1/5d051c92312bcb66fa095a68c14219dd61542f1ad981aa03245804da5e88d1d6.mp3",
+      "bytes": 68204,
+      "seconds": 7.725,
+      "sha256": "47b69cc8db68f03bdf379bf730b91d33192a635f368297decf6ba4139f2adf0e",
+      "sourcePeak": 0.790824,
+      "sourceRms": 0.082052
+    },
+    {
+      "key": "84c38b517f456bcace692cd781bf521d141681a016c887e434ec3242d5caf7e6",
+      "text": "Safe alternative: Listen as a grown-up gently rubs their sleeve or taps their palm, then stops. Say or show when the soft sound stops.",
+      "file": "./assets/narration/bella-v1/84c38b517f456bcace692cd781bf521d141681a016c887e434ec3242d5caf7e6.mp3",
+      "bytes": 97172,
+      "seconds": 10.7,
+      "sha256": "4eca0d46eb2c4ff13e225c2d9790009dc7e7c8e2b278fd7cde7200c26d0a2bf6",
+      "sourcePeak": 0.724059,
+      "sourceRms": 0.084656
+    },
+    {
+      "key": "bad5bf5778765259438bc94bfacc9e6dad6dd3f465373bd11b7fd74c8302b58b",
+      "text": "Listen. A tiny rhythm. Listen for a sound with a rhythm. Keep listening from your safe spot without copying or calling to wildlife.",
+      "file": "./assets/narration/bella-v1/bad5bf5778765259438bc94bfacc9e6dad6dd3f465373bd11b7fd74c8302b58b.mp3",
+      "bytes": 88508,
+      "seconds": 9.9,
+      "sha256": "091366a4c4290c1c8aa60ceb7e6486b72e3e3d308c0922fbe7ed2e8493e811ea",
+      "sourcePeak": 0.822219,
+      "sourceRms": 0.085099
+    },
+    {
+      "key": "8736cea3886c5de436b5c294516a1e7a4abc4baff802ed40a2ea0f05000b1f08",
+      "text": "Safe alternative: Gently tap a slow rhythm on your own knee.",
+      "file": "./assets/narration/bella-v1/8736cea3886c5de436b5c294516a1e7a4abc4baff802ed40a2ea0f05000b1f08.mp3",
+      "bytes": 40652,
+      "seconds": 4.775,
+      "sha256": "2a0f891e7c1b91e10619b7614187e72a5ca809a8a3650759dc0f236839c0dba7",
+      "sourcePeak": 0.565644,
+      "sourceRms": 0.073864
+    },
+    {
+      "key": "2d31ae2da2f4d6ec94505acfeac715ee60b3f20b013a454717b27de82cc1c54b",
+      "text": "Listen. Our family whisper. One explorer whispers their favourite colour. The others listen and point to something like it.",
+      "file": "./assets/narration/bella-v1/2d31ae2da2f4d6ec94505acfeac715ee60b3f20b013a454717b27de82cc1c54b.mp3",
+      "bytes": 77804,
+      "seconds": 8.725,
+      "sha256": "c9ccd00d02a3c780732d65bca925358a5d997d9d4888f2fcfa27f2b6d2c76ceb",
+      "sourcePeak": 0.883478,
+      "sourceRms": 0.084036
+    },
+    {
+      "key": "e31c0789e70da011e6299fad79a00c8b635aad0e8848a9d1269b78fd95cc8de9",
+      "text": "Safe alternative: Let someone point to a colour for everyone to look at together.",
+      "file": "./assets/narration/bella-v1/e31c0789e70da011e6299fad79a00c8b635aad0e8848a9d1269b78fd95cc8de9.mp3",
+      "bytes": 51932,
+      "seconds": 6,
+      "sha256": "fb3cc21a5f18cc7fd42452bfaf101f46ebc08157c98a47c4501763da1bf65c28",
+      "sourcePeak": 0.646176,
+      "sourceRms": 0.080272
+    },
+    {
+      "key": "c96928d17287ae9333013c01ccbbed38cf11d02a51591eba1f5971bd2244ff3d",
+      "text": "Listen. The quiet season. Notice the sounds around you from a dry, safe path. Stay clear of icy areas and keep warm with your grown-ups.",
+      "file": "./assets/narration/bella-v1/c96928d17287ae9333013c01ccbbed38cf11d02a51591eba1f5971bd2244ff3d.mp3",
+      "bytes": 96908,
+      "seconds": 10.7,
+      "sha256": "2104a78cab60225958c850d07a5b8c76d1bfc2cb9c89da5adb49fbaff8d7299c",
+      "sourcePeak": 0.688521,
+      "sourceRms": 0.084239
+    },
+    {
+      "key": "9d04224181926e91adda348b392660ba2429da6428a7340f114b75d38476d1d5",
+      "text": "Safe alternative: In a warm, safe spot, listen as a grown-up gently pats then rubs their own sleeve. Choose which sound to hear again.",
+      "file": "./assets/narration/bella-v1/9d04224181926e91adda348b392660ba2429da6428a7340f114b75d38476d1d5.mp3",
+      "bytes": 95228,
+      "seconds": 10.55,
+      "sha256": "8988daa7a3482600ea8cd3f4f94d4d7115233948ad28701ff7b5aec8dd41fe27",
+      "sourcePeak": 0.586573,
+      "sourceRms": 0.085929
+    },
+    {
+      "key": "b15675166dd71cbf5e326f9205549189b4f86ba8a3f035303a7dc02e65257af9",
+      "text": "Move. Tall as a tree. On safe level ground, stretch gently tall like a tree with your feet planted. No climbing or balancing on anything.",
+      "file": "./assets/narration/bella-v1/b15675166dd71cbf5e326f9205549189b4f86ba8a3f035303a7dc02e65257af9.mp3",
+      "bytes": 96932,
+      "seconds": 10.775,
+      "sha256": "644dc7f73de1879caf6066b53ee6718b65b9b8a736ea03897b51554d17c8698d",
+      "sourcePeak": 0.5939,
+      "sourceRms": 0.089807
+    },
+    {
+      "key": "b21bf31a814a1dcd1d78a1fdfcae8510a93859b849cef9beb2a4caabbd7ee8fe",
+      "text": "Safe alternative: Stay seated and raise your hands only as far as comfortable.",
+      "file": "./assets/narration/bella-v1/b21bf31a814a1dcd1d78a1fdfcae8510a93859b849cef9beb2a4caabbd7ee8fe.mp3",
+      "bytes": 54476,
+      "seconds": 6.125,
+      "sha256": "592f3cff0437d8089de6512052eb5337a5aa0e39069eaf543f56020f9fac5c40",
+      "sourcePeak": 0.542265,
+      "sourceRms": 0.076707
+    },
+    {
+      "key": "0b3fce220a47a4c5d61dedab8c9a435143aad63a7b2365f771e39f96a7db5dc6",
+      "text": "Move. Our pretend mountain. Imagine climbing a mountain while staying on the ground. Slowly reach your arms up with both feet planted; do not climb real rocks or trees.",
+      "file": "./assets/narration/bella-v1/0b3fce220a47a4c5d61dedab8c9a435143aad63a7b2365f771e39f96a7db5dc6.mp3",
+      "bytes": 115508,
+      "seconds": 12.8,
+      "sha256": "390978dee7131ab06b764806d2f2419a008bd06ed909fcad35194a7d0de17675",
+      "sourcePeak": 0.804445,
+      "sourceRms": 0.089409
+    },
+    {
+      "key": "18b63cfc7a9fa9e9167ebd94801871f0ac4c06c2ea62fca246e5d2d0f252162c",
+      "text": "Safe alternative: Stay seated and make a tiny mountain shape with your hands.",
+      "file": "./assets/narration/bella-v1/18b63cfc7a9fa9e9167ebd94801871f0ac4c06c2ea62fca246e5d2d0f252162c.mp3",
+      "bytes": 52580,
+      "seconds": 5.825,
+      "sha256": "6d7cbb803883f6c5ef478e79c3b8eaa41251cb40f1005c84944df3928c26cee0",
+      "sourcePeak": 0.621577,
+      "sourceRms": 0.077737
+    },
+    {
+      "key": "98f9594beeddff215eafb77ccf5884f294791d1fc09cc3b47cd7ad567e9d0e86",
+      "text": "Move. Animal actor. Choose a pretend animal pose on safe level ground. Stay still or move gently beside your grown-up, with no animal calls near wildlife.",
+      "file": "./assets/narration/bella-v1/98f9594beeddff215eafb77ccf5884f294791d1fc09cc3b47cd7ad567e9d0e86.mp3",
+      "bytes": 113540,
+      "seconds": 12.475,
+      "sha256": "1a7eb4f6a1a7cb1f33e3904bf162894e27889fa7cbca5d0142e451b80b52bd84",
+      "sourcePeak": 0.708835,
+      "sourceRms": 0.089038
+    },
+    {
+      "key": "745d4710beab9b8e71640549316d949121eb042444a6669ce0f755946cd2af39",
+      "text": "Safe alternative: Make a quiet animal face while seated, or choose which animal face a grown-up makes for everyone to copy.",
+      "file": "./assets/narration/bella-v1/745d4710beab9b8e71640549316d949121eb042444a6669ce0f755946cd2af39.mp3",
+      "bytes": 86108,
+      "seconds": 9.5,
+      "sha256": "276ef379744f6473f59fa2ee6ead31ef12d5566d942623c45fa3fb5079dec39f",
+      "sourcePeak": 0.668296,
+      "sourceRms": 0.084443
+    },
+    {
+      "key": "e9068e39aac11b89c89c36c5bd05c88960847cbf0656e677d96d2e78fd5cf024",
+      "text": "Move. A tiny floating pose. Optional: seated on safe level ground beside a grown-up, briefly lift your toes if comfortable. No standing balance, ledges, climbing or jumping; no camera needed.",
+      "file": "./assets/narration/bella-v1/e9068e39aac11b89c89c36c5bd05c88960847cbf0656e677d96d2e78fd5cf024.mp3",
+      "bytes": 137468,
+      "seconds": 15.1,
+      "sha256": "b650c50057da08d9832ac22c4ef0d71554ee3ffc187fa10d682c06ce98ac6967",
+      "sourcePeak": 0.803308,
+      "sourceRms": 0.089663
+    },
+    {
+      "key": "7e1269f666d54d1c8db6cd3c86d1cd9f3c3b9ad35b12e7fd358a9ca8a1d4b21e",
+      "text": "Safe alternative: Keep both feet comfortably down and slowly raise and lower one hand like a floating leaf, or direct a grown-up’s hand up and down.",
+      "file": "./assets/narration/bella-v1/7e1269f666d54d1c8db6cd3c86d1cd9f3c3b9ad35b12e7fd358a9ca8a1d4b21e.mp3",
+      "bytes": 103052,
+      "seconds": 11.325,
+      "sha256": "1e0ae943c1d5e85c432e4d71656df939c544b492ac758997a40b82c01311aca8",
+      "sourcePeak": 0.696825,
+      "sourceRms": 0.084929
+    },
+    {
+      "key": "d0805ed11b73dda5567b8486eb9022d8f7165469f1f90397f8592e41d75f91e0",
+      "text": "Move. Our cosy rest stop. Let a grown-up choose a safe bench or resting spot. Rest together; a family photo is optional and never needed to complete the clue.",
+      "file": "./assets/narration/bella-v1/d0805ed11b73dda5567b8486eb9022d8f7165469f1f90397f8592e41d75f91e0.mp3",
+      "bytes": 112772,
+      "seconds": 12.25,
+      "sha256": "b8e71476f1c6d281c4287318d36ecfa552a5a2526b1a44a2d1d285d84129db8a",
+      "sourcePeak": 0.889686,
+      "sourceRms": 0.088929
+    },
+    {
+      "key": "e77fd6be9d60f9a0c325eaee40e601c41544518e0b46cf51b543ac4cc05dcddb",
+      "text": "Safe alternative: Pause comfortably where your grown-up says it is safe. A tiny seated stretch counts.",
+      "file": "./assets/narration/bella-v1/e77fd6be9d60f9a0c325eaee40e601c41544518e0b46cf51b543ac4cc05dcddb.mp3",
+      "bytes": 67604,
+      "seconds": 7.625,
+      "sha256": "a96e7caea98bb9d2f2dbc13bd10e28dd8c8e224193563002ae2976e755ea85ca",
+      "sourcePeak": 0.730186,
+      "sourceRms": 0.083522
+    },
+    {
+      "key": "557df75210fe5fd8d116f97bed1e062cb36fd78460ae605be39b0208fd47ba2d",
+      "text": "Move. Little leaf hands. Stay planted on safe level ground and gently wiggle your hands like leaves in a breeze.",
+      "file": "./assets/narration/bella-v1/557df75210fe5fd8d116f97bed1e062cb36fd78460ae605be39b0208fd47ba2d.mp3",
+      "bytes": 79892,
+      "seconds": 8.95,
+      "sha256": "e8b35cf20e12e02c37d6ac5ba91922a981ec3bd14b963a3b5862b3c0b3438e4c",
+      "sourcePeak": 0.52829,
+      "sourceRms": 0.083959
+    },
+    {
+      "key": "032652e2e6c1a38dca0eeef47220bf02629520fce106b41777f8b04f019fdac3",
+      "text": "Safe alternative: Wiggle one finger, or choose when a grown-up wiggles their fingers and when they stop.",
+      "file": "./assets/narration/bella-v1/032652e2e6c1a38dca0eeef47220bf02629520fce106b41777f8b04f019fdac3.mp3",
+      "bytes": 69116,
+      "seconds": 7.575,
+      "sha256": "c4de9130405e0800f5cd88b0f07a4042781a9679f9ea14ee245038b8d1addc4d",
+      "sourcePeak": 0.512272,
+      "sourceRms": 0.082246
+    },
+    {
+      "key": "25517bbecfe79939634341a2662bcae48771ced0383deb19e2c716141677c352",
+      "text": "Move. A thank-you wave. Give nature a gentle thank-you wave while staying with your team.",
+      "file": "./assets/narration/bella-v1/25517bbecfe79939634341a2662bcae48771ced0383deb19e2c716141677c352.mp3",
+      "bytes": 58604,
+      "seconds": 6.775,
+      "sha256": "aa361b050afcdf8e24eafb047e85ab9976445d736ac7e6ead68ac8cf8abf4cae",
+      "sourcePeak": 1.059696,
+      "sourceRms": 0.083677
+    },
+    {
+      "key": "7e699939ebae6011da9174fbd9a02ef905d51f0a41519b60a3047b122204f9af",
+      "text": "Safe alternative: Smile, nod or say a quiet thank-you instead.",
+      "file": "./assets/narration/bella-v1/7e699939ebae6011da9174fbd9a02ef905d51f0a41519b60a3047b122204f9af.mp3",
+      "bytes": 49868,
+      "seconds": 5.7,
+      "sha256": "8025d4e2379c2db6e0f5ef67ed3898565965ce145d8831fd81ae4a48fea47793",
+      "sourcePeak": 0.657523,
+      "sourceRms": 0.077392
+    },
+    {
+      "key": "12270b60f71616e9bd063d8a933f1cbee54cf8d6b00e91f7cc99fb4f572a45d2",
+      "text": "Move. Make a branch shape. On safe level ground, make a gentle Y shape with your arms. Keep your feet planted and leave room around you.",
+      "file": "./assets/narration/bella-v1/12270b60f71616e9bd063d8a933f1cbee54cf8d6b00e91f7cc99fb4f572a45d2.mp3",
+      "bytes": 90452,
+      "seconds": 10.15,
+      "sha256": "6b27b0c90c25a265209037fde0390e2b05983ce0f364568cdea0652ada1db545",
+      "sourcePeak": 0.662381,
+      "sourceRms": 0.087171
+    },
+    {
+      "key": "6e6d1f4b542dd0840366f7d891bb3f51946eecc011e1509feda81811dfa95dee",
+      "text": "Safe alternative: Make a Y with two fingers, or draw it in the air while seated.",
+      "file": "./assets/narration/bella-v1/6e6d1f4b542dd0840366f7d891bb3f51946eecc011e1509feda81811dfa95dee.mp3",
+      "bytes": 54380,
+      "seconds": 6.1,
+      "sha256": "4e13f8b7fb7cce7993580e2eb563fabeddd8973073eef1e9725d1205b21ff6bc",
+      "sourcePeak": 0.595916,
+      "sourceRms": 0.079713
+    },
+    {
+      "key": "f0f61f5749dd5f8dd78f252ed80ed606fec2d69d5f7cca02d8bf599708492d97",
+      "text": "Move. Our team signal. Invent a gentle hand signal that means “we explore together.” Stay still beside your grown-up.",
+      "file": "./assets/narration/bella-v1/f0f61f5749dd5f8dd78f252ed80ed606fec2d69d5f7cca02d8bf599708492d97.mp3",
+      "bytes": 80756,
+      "seconds": 9.125,
+      "sha256": "53dad3858f8c91346b38f33731763e58e443c5d2ee4613b6db28023aa8288b0a",
+      "sourcePeak": 0.568186,
+      "sourceRms": 0.087756
+    },
+    {
+      "key": "28cbfc6d341d73ce0f2e9f4811be534a3b2e41a0ce7d4d38b6fa24a5d60705a6",
+      "text": "Safe alternative: Choose a smile or a spoken word as your team signal.",
+      "file": "./assets/narration/bella-v1/28cbfc6d341d73ce0f2e9f4811be534a3b2e41a0ce7d4d38b6fa24a5d60705a6.mp3",
+      "bytes": 50300,
+      "seconds": 5.775,
+      "sha256": "a28b999d4c2a2df731f2bde71a2b35949ea30e72ad8fd4578f3b4f3655bea865",
+      "sourcePeak": 0.522955,
+      "sourceRms": 0.07564
+    },
+    {
+      "key": "85c225e1edfbf06dc891f7545838edba5904b220d828e9640da90df46d498452",
+      "text": "Imagine. Make an acorn character. Stay still beside your grown-up. Cup your hands into a round acorn shape, then show a funny smiling face for the family to copy. Give your character a name. You do not need to find, collect or draw on a real acorn; leave them untouched.",
+      "file": "./assets/narration/bella-v1/85c225e1edfbf06dc891f7545838edba5904b220d828e9640da90df46d498452.mp3",
+      "bytes": 182756,
+      "seconds": 19.925,
+      "sha256": "4df6db2796d35af02d4d9ea37cd01dfa72dc2eed86891c7a08c7671865961c21",
+      "sourcePeak": 0.636905,
+      "sourceRms": 0.088059
+    },
+    {
+      "key": "7c940d53605f79481094f8a12995e60d9ffe4e6056e161f64793ec8ba2a13d74",
+      "text": "Safe alternative: Choose a smile or a surprised face for a grown-up to make, then copy it if comfortable.",
+      "file": "./assets/narration/bella-v1/7c940d53605f79481094f8a12995e60d9ffe4e6056e161f64793ec8ba2a13d74.mp3",
+      "bytes": 71636,
+      "seconds": 8,
+      "sha256": "50c6434d2d7e948e858b6d8cdec2a2bfbb49cb5571964ae1ee7fad5cab2d1e3c",
+      "sourcePeak": 0.603685,
+      "sourceRms": 0.083026
+    },
+    {
+      "key": "15c2b7ca533e0be69d26af9485dc9d7190c6f1f3a2cea6e524e090c88ea02900",
+      "text": "Imagine. Copy a cloud creature. From a safe still spot, notice a cloud shape while looking away from the sun. Trace its outline with a finger, then shape your hands to match. Give it a creature name. If no cloud is visible, copy a shape on your sleeve.",
+      "file": "./assets/narration/bella-v1/15c2b7ca533e0be69d26af9485dc9d7190c6f1f3a2cea6e524e090c88ea02900.mp3",
+      "bytes": 166172,
+      "seconds": 17.975,
+      "sha256": "80fd2fb63a9b36e8482b5dd0fb033a516f08b9e419b12cfe5cbf2e8cee3b9782",
+      "sourcePeak": 0.739929,
+      "sourceRms": 0.090756
+    },
+    {
+      "key": "895a951db56fd7d1241c7b4e356bfd816724bf52f7e8cb8b069b72199de91dc7",
+      "text": "Safe alternative: Point to a shape on your clothes and ask a grown-up to trace its outline in the air. Choose a name for the shape together.",
+      "file": "./assets/narration/bella-v1/895a951db56fd7d1241c7b4e356bfd816724bf52f7e8cb8b069b72199de91dc7.mp3",
+      "bytes": 87500,
+      "seconds": 9.6,
+      "sha256": "fd5eb8e20a4e599d25e1d87507daee8aed07324c853d7b82b462a3e8723ef8ba",
+      "sourcePeak": 0.897726,
+      "sourceRms": 0.084543
+    },
+    {
+      "key": "15e86f5e9f5aad9fc5aa8ca6d9f5b8396ee29efe5317c4016fa51a301cb78dbd",
+      "text": "Imagine. Be a friendly guardian. Stay beside your grown-up and check that your team is together. Give them a kind reminder to leave nature untouched, then make a small hand signal for everyone to copy. Your guardian story can have a name too.",
+      "file": "./assets/narration/bella-v1/15e86f5e9f5aad9fc5aa8ca6d9f5b8396ee29efe5317c4016fa51a301cb78dbd.mp3",
+      "bytes": 156956,
+      "seconds": 17.25,
+      "sha256": "3ea1116a2a53e01dff2bffba051f213dfbc44bdd2d7f67f40ecf5786e7b350fa",
+      "sourcePeak": 0.708979,
+      "sourceRms": 0.087265
+    },
+    {
+      "key": "04e2d293ed29e366d9d091e5fa5fd051969e7b01be513c478fbfd7c7f0a17e79",
+      "text": "Safe alternative: Choose a quiet wave, nod or kind word, and teach it to your family while everyone stays in their safe spot.",
+      "file": "./assets/narration/bella-v1/04e2d293ed29e366d9d091e5fa5fd051969e7b01be513c478fbfd7c7f0a17e79.mp3",
+      "bytes": 84668,
+      "seconds": 9.35,
+      "sha256": "6244c7e2dd33ad50f41292cf2a914251239141699d2bc300f68d08b2a9a7900c",
+      "sourcePeak": 0.770717,
+      "sourceRms": 0.083617
+    },
+    {
+      "key": "22e8090209edd89d420ffd1faadb0487e0ed63b7bebe191234b9fd4387b9fc1b",
+      "text": "Imagine. Build a hand-shaped boat. Stay on the path away from water. Cup your hands into a little boat shape, then gently open and close your fingers. Compare the gaps and choose a shape for your story boat. Leave real leaves untouched.",
+      "file": "./assets/narration/bella-v1/22e8090209edd89d420ffd1faadb0487e0ed63b7bebe191234b9fd4387b9fc1b.mp3",
+      "bytes": 155108,
+      "seconds": 16.9,
+      "sha256": "fd0e9f41fd3bb7f6f1f5a4fe2f2062e8239ce9b6bb4037e3a990742edd109733",
+      "sourcePeak": 0.65794,
+      "sourceRms": 0.090492
+    },
+    {
+      "key": "f3a9566fb53d403704253b98050bfbbfa79000e604dbca95952b05b40d0c8891",
+      "text": "Safe alternative: Ask a grown-up to cup their hands, then spread their fingers. Point or say which shape has bigger gaps.",
+      "file": "./assets/narration/bella-v1/f3a9566fb53d403704253b98050bfbbfa79000e604dbca95952b05b40d0c8891.mp3",
+      "bytes": 81356,
+      "seconds": 8.95,
+      "sha256": "6a07a4cfee25af71e3e2bef2988f8f6599d274a47e2981c64f2d0d5a31d462dc",
+      "sourcePeak": 0.839413,
+      "sourceRms": 0.084963
+    },
+    {
+      "key": "7d958924ec33b144a600305fc60da7ed9bbe838145281ed71275615daaa4a0c9",
+      "text": "Imagine. Our three-clue adventure. From your safe spot, point to a real colour, a line and a round shape. Clothes and hands count. Copy one shape with a finger, then let each explorer add a word about the clues to a friendly story.",
+      "file": "./assets/narration/bella-v1/7d958924ec33b144a600305fc60da7ed9bbe838145281ed71275615daaa4a0c9.mp3",
+      "bytes": 157124,
+      "seconds": 17.275,
+      "sha256": "1dad9f3e5403d893c242fc307fd0f162e0d65baab8c878333db2edbd3a75febe",
+      "sourcePeak": 0.930441,
+      "sourceRms": 0.088924
+    },
+    {
+      "key": "daf078823614f98cd2ef6c77bb3089ec92574fe433fb8784863f1aa42dddc468",
+      "text": "Safe alternative: Choose one visible detail on your clothes. Ask a grown-up to copy its shape with a finger, then name what you found together.",
+      "file": "./assets/narration/bella-v1/daf078823614f98cd2ef6c77bb3089ec92574fe433fb8784863f1aa42dddc468.mp3",
+      "bytes": 93020,
+      "seconds": 10.375,
+      "sha256": "9609935c1b2293d1f3816685ffb8933f57fc25ac0489d4e7515aa1934ccd8198",
+      "sourcePeak": 0.961713,
+      "sourceRms": 0.086791
+    },
+    {
+      "key": "d5e984941990e12c8898d83f878da5dd2fb618e99b68f6451f8823ebad29c2bb",
+      "text": "Imagine. Build a tiny hand roof. Stay comfortably still and touch your fingertips together to make a little roof. Change it from wide to narrow and compare the shapes. Give your hand-house a story name; do not move stones, sticks or living things.",
+      "file": "./assets/narration/bella-v1/d5e984941990e12c8898d83f878da5dd2fb618e99b68f6451f8823ebad29c2bb.mp3",
+      "bytes": 159836,
+      "seconds": 17.25,
+      "sha256": "3474985eeda04a1e24c74c001e528611185e05f53edd3b8da1e1e1c46b9496f9",
+      "sourcePeak": 0.54608,
+      "sourceRms": 0.089512
+    },
+    {
+      "key": "59bb028f843d5f968959a7738912b42c66f819a8e9c5530dd15631f5709590c4",
+      "text": "Safe alternative: Choose a wide or narrow roof for a grown-up to make with their hands, then ask them to change it and spot the difference.",
+      "file": "./assets/narration/bella-v1/59bb028f843d5f968959a7738912b42c66f819a8e9c5530dd15631f5709590c4.mp3",
+      "bytes": 88964,
+      "seconds": 9.8,
+      "sha256": "b8f45dacf4dc69f8de7e69a2afb7cef5f1576a216bebd4516b07747f91e1c2e9",
+      "sourcePeak": 0.922695,
+      "sourceRms": 0.083998
+    },
+    {
+      "key": "a8e439c39e52bce80943112a6095788f380cdcc383918f06d6eca201307f7780",
+      "text": "Imagine. Try a looking superpower. Use your super-looking power from a safe still spot: find a colour, a line and a tiny detail on your own clothes. Point them out, then help another explorer find the same details on theirs.",
+      "file": "./assets/narration/bella-v1/a8e439c39e52bce80943112a6095788f380cdcc383918f06d6eca201307f7780.mp3",
+      "bytes": 152324,
+      "seconds": 16.85,
+      "sha256": "5e707a6f1d652f11c0593abf7113c90caca828c0d2d30f55e4839af3ad1ede05",
+      "sourcePeak": 0.919894,
+      "sourceRms": 0.088983
+    },
+    {
+      "key": "71b6b674959ac0d216c3b0277aea8e876fbe490bb41c1db41d9bd36aa7bb639b",
+      "text": "Safe alternative: Choose one detail on your sleeve for a grown-up to look at, then point to a similar detail they find on their own clothes.",
+      "file": "./assets/narration/bella-v1/71b6b674959ac0d216c3b0277aea8e876fbe490bb41c1db41d9bd36aa7bb639b.mp3",
+      "bytes": 89996,
+      "seconds": 10.075,
+      "sha256": "07ba89e5ae18b870c48e46fcc5bc8764a8db61d082744eb903c35ec6fa60210c",
+      "sourcePeak": 0.658283,
+      "sourceRms": 0.081804
+    },
+    {
+      "key": "69bdea94adef979bb4bd5df014ada16f636e811ac65f621c5220be06985745a2",
+      "text": "Imagine. Frame nature’s postcard. Stay in your grown-up’s safe stopping spot. Make a small picture frame with your fingers and look through it at a detail already visible, away from the sun. Tell the family what your real-life postcard shows.",
+      "file": "./assets/narration/bella-v1/69bdea94adef979bb4bd5df014ada16f636e811ac65f621c5220be06985745a2.mp3",
+      "bytes": 160652,
+      "seconds": 17.575,
+      "sha256": "f2326d290e14650614fc5655793e268d5e96e151afcf8208a0a3c1bd60cc5112",
+      "sourcePeak": 0.680257,
+      "sourceRms": 0.090895
+    },
+    {
+      "key": "123703df5f30c62a940683d425fef8ecfa486430275301f72df0e6122a81b45e",
+      "text": "Safe alternative: Ask a grown-up to make a finger frame around a detail on their own sleeve. Choose a colour or shape you can see inside it.",
+      "file": "./assets/narration/bella-v1/123703df5f30c62a940683d425fef8ecfa486430275301f72df0e6122a81b45e.mp3",
+      "bytes": 93644,
+      "seconds": 10.35,
+      "sha256": "3bb686ac8ee66c4903069b5fbeebc92293beb83a81ec7b09dc8a6312d9a03888",
+      "sourcePeak": 0.938937,
+      "sourceRms": 0.082292
+    },
+    {
+      "key": "3744ae00f0241bd0ca019dddbc5a5c937eead4d5813f818aa0446bc36c9d9953",
+      "text": "Imagine. A little shade experiment. Stay in your grown-up’s safe stopping spot. Hold one hand a little above your other palm, then move it aside. Can you see a patch of shade change? Keep looking at your hands, never at the sun. If no shade shows, compare the colours on the front and back of your hand.",
+      "file": "./assets/narration/bella-v1/3744ae00f0241bd0ca019dddbc5a5c937eead4d5813f818aa0446bc36c9d9953.mp3",
+      "bytes": 188060,
+      "seconds": 20.325,
+      "sha256": "7b8c816cbe2e70577442a0d41a574d12f100c8bfd7a2eb89fd5c580f7061d5d8",
+      "sourcePeak": 0.782734,
+      "sourceRms": 0.08946
+    },
+    {
+      "key": "237ae3dc2c7d807e4b6ae20b7aff261a574ce081339979e4d6d6deed3d83b5bd",
+      "text": "Safe alternative: Ask a grown-up to show their palm and the back of their hand. Point to a colour or line that looks different.",
+      "file": "./assets/narration/bella-v1/237ae3dc2c7d807e4b6ae20b7aff261a574ce081339979e4d6d6deed3d83b5bd.mp3",
+      "bytes": 80180,
+      "seconds": 9.1,
+      "sha256": "1b7d3b7a8cde9f4134c76e7216949d84511889736f83baaf517143ac0ae9fa5c",
+      "sourcePeak": 0.806185,
+      "sourceRms": 0.080803
+    },
+    {
+      "key": "8dec7b813fd37d06120a81ef01167db211ec0c3579fbf31faf8ffeeaf7912b10",
+      "text": "Solve. The colour clue. Pick two colours you can see. What is the same or different about them?",
+      "file": "./assets/narration/bella-v1/8dec7b813fd37d06120a81ef01167db211ec0c3579fbf31faf8ffeeaf7912b10.mp3",
+      "bytes": 58796,
+      "seconds": 6.8,
+      "sha256": "1b14a28948ea06b1093b7351a626ce6cf0cc793e2b7a0b7e78b5be0b2be756f7",
+      "sourcePeak": 0.575631,
+      "sourceRms": 0.080035
+    },
+    {
+      "key": "575d43cce7f1dfef2894bd16f22cad63e655a4aa79e8392b218d252393adcde0",
+      "text": "Safe alternative: Point to a colour on your clothes, then help a grown-up look for a matching patch on theirs.",
+      "file": "./assets/narration/bella-v1/575d43cce7f1dfef2894bd16f22cad63e655a4aa79e8392b218d252393adcde0.mp3",
+      "bytes": 67604,
+      "seconds": 7.675,
+      "sha256": "add0f57d817b7ccd31de464ea7997aaa270631296c59ca1e2b593fff00ad716a",
+      "sourcePeak": 0.574414,
+      "sourceRms": 0.082335
+    },
+    {
+      "key": "8b21bcdbe618d071227fcbe561bc59ea66d3d7e705abbddef904dd06ece8ab9e",
+      "text": "Solve. Pattern detectives. Find a repeating shape or line you can see from the path. Point without touching.",
+      "file": "./assets/narration/bella-v1/8b21bcdbe618d071227fcbe561bc59ea66d3d7e705abbddef904dd06ece8ab9e.mp3",
+      "bytes": 74324,
+      "seconds": 8.225,
+      "sha256": "370bdbe6e85d942a0faa5b277b691c94b549b92d321f145b616443b9b3c23d1e",
+      "sourcePeak": 0.789855,
+      "sourceRms": 0.083794
+    },
+    {
+      "key": "10a6ba19cd432b30dec4fc3e3b7aad62657d382d1309a37dd8e58c68fa4ca93a",
+      "text": "Safe alternative: Make a simple finger pattern together: one, two, one, two.",
+      "file": "./assets/narration/bella-v1/10a6ba19cd432b30dec4fc3e3b7aad62657d382d1309a37dd8e58c68fa4ca93a.mp3",
+      "bytes": 52724,
+      "seconds": 6.125,
+      "sha256": "eed84abd4f1d2f3c96045cb3645305aaf20d9333bb7c5231049a16cc65b485c4",
+      "sourcePeak": 0.59191,
+      "sourceRms": 0.081077
+    },
+    {
+      "key": "8c04d41f848294f1cc1e02ce1dd5855a1b7fc8782b7fbc12a89363bb8fc83873",
+      "text": "Solve. Count our clues. Count up to five things visible from your safe spot. Leaves, signs, colours or your own fingers count.",
+      "file": "./assets/narration/bella-v1/8c04d41f848294f1cc1e02ce1dd5855a1b7fc8782b7fbc12a89363bb8fc83873.mp3",
+      "bytes": 89156,
+      "seconds": 9.925,
+      "sha256": "eb68bbbc370abd5079a267f01340cb428bf00ae87f12127673ee52ece0222e42",
+      "sourcePeak": 0.554317,
+      "sourceRms": 0.084571
+    },
+    {
+      "key": "95c77752f997645af4bb8f743c5d9f5227c009d84cc6472128be295a0790139a",
+      "text": "Safe alternative: Count up to three fingers together, or point to one thing.",
+      "file": "./assets/narration/bella-v1/95c77752f997645af4bb8f743c5d9f5227c009d84cc6472128be295a0790139a.mp3",
+      "bytes": 51596,
+      "seconds": 5.9,
+      "sha256": "65568269afe554de6f8a4ce83f007f42e50fab899577edd9bcecd2bb7b486cab",
+      "sourcePeak": 0.554609,
+      "sourceRms": 0.079375
+    },
+    {
+      "key": "f2ce449985cbbae44bcfbb7e429b62bf64e31174a0a44ceb6bb29fa2254bd61f",
+      "text": "Solve. Big and little. Point to one big shape and one little shape from where you are. How are they different?",
+      "file": "./assets/narration/bella-v1/f2ce449985cbbae44bcfbb7e429b62bf64e31174a0a44ceb6bb29fa2254bd61f.mp3",
+      "bytes": 67004,
+      "seconds": 7.6,
+      "sha256": "11bc0d9d311fdcc1ece65e8ace68ae47f7bc066c95e2ed47ffe22054f89370a6",
+      "sourcePeak": 0.537427,
+      "sourceRms": 0.082626
+    },
+    {
+      "key": "af958808af44a1dc439f7936dce3c16c2f646fc966fb00a76c9c9766a522f000",
+      "text": "Safe alternative: Make a big circle and a tiny circle with your hands.",
+      "file": "./assets/narration/bella-v1/af958808af44a1dc439f7936dce3c16c2f646fc966fb00a76c9c9766a522f000.mp3",
+      "bytes": 49148,
+      "seconds": 5.55,
+      "sha256": "f8e95318d2c3d2da6bde134a440f187b8e8850f8fe96f25e89116ec02a60dee8",
+      "sourcePeak": 0.591368,
+      "sourceRms": 0.077179
+    },
+    {
+      "key": "6dd35b303a61c5ff860a6de328cfe34dcd2807556660842b6fd8a8a42d14b786",
+      "text": "Solve. Remember our wonder. Remember something your family noticed earlier. Give one clue so the others can guess it.",
+      "file": "./assets/narration/bella-v1/6dd35b303a61c5ff860a6de328cfe34dcd2807556660842b6fd8a8a42d14b786.mp3",
+      "bytes": 74420,
+      "seconds": 8.275,
+      "sha256": "f4261dc1682b66b5dcffa92957fd3d223e20f94f1c1a8a57ab7f3c9f986f52b1",
+      "sourcePeak": 0.648296,
+      "sourceRms": 0.085527
+    },
+    {
+      "key": "cc3d5a55e84d1d68e9126a946a5efa3ab55d66e48683124aeb3751bd9b3eb858",
+      "text": "Safe alternative: Point to something nearby and say its colour together.",
+      "file": "./assets/narration/bella-v1/cc3d5a55e84d1d68e9126a946a5efa3ab55d66e48683124aeb3751bd9b3eb858.mp3",
+      "bytes": 46412,
+      "seconds": 5.4,
+      "sha256": "b01e31e5730ae9b2018dc8d813a3c6b81e3b0c67d112412fdd6d1c38af258a93",
+      "sourcePeak": 0.582856,
+      "sourceRms": 0.076822
+    },
+    {
+      "key": "8d4fb1ac4ad0975c47585797108ec2ba0238e87d215a039bc26dd8c7fbf383f0",
+      "text": "Solve. Nature’s alphabet. Spot a shape that looks like a letter, such as a Y-shaped branch. Keep looking from the path.",
+      "file": "./assets/narration/bella-v1/8d4fb1ac4ad0975c47585797108ec2ba0238e87d215a039bc26dd8c7fbf383f0.mp3",
+      "bytes": 81188,
+      "seconds": 8.975,
+      "sha256": "f0ec1164af15489daacbd16753e67ef3426a9500af1dd28cadbcbd5afd1e5066",
+      "sourcePeak": 0.883735,
+      "sourceRms": 0.083385
+    },
+    {
+      "key": "d2198cc59b2949dfee557f94a0ff7032052854a567f291b7311da82ccd26df7f",
+      "text": "Safe alternative: Make the first letter of your name with a finger in the air.",
+      "file": "./assets/narration/bella-v1/d2198cc59b2949dfee557f94a0ff7032052854a567f291b7311da82ccd26df7f.mp3",
+      "bytes": 49316,
+      "seconds": 5.7,
+      "sha256": "f870a2532ab3fc716aacdb8079634c1fdaf462a08039e46d417f4f4060cd5552",
+      "sourcePeak": 0.615862,
+      "sourceRms": 0.075784
+    },
+    {
+      "key": "1fb74459407a3544d69ef24a3fdf57403d13de30fe9140153c3cd3536c20726b",
+      "text": "Solve. Sort with your eyes. Point to two things that look alike and one that looks different. Leave them all where they are.",
+      "file": "./assets/narration/bella-v1/1fb74459407a3544d69ef24a3fdf57403d13de30fe9140153c3cd3536c20726b.mp3",
+      "bytes": 75788,
+      "seconds": 8.275,
+      "sha256": "b105a1b119510a7b0df0bc5c21380a18a97311c3817341af4d8dae48421769c5",
+      "sourcePeak": 0.636057,
+      "sourceRms": 0.082571
+    },
+    {
+      "key": "f51b218faab8b3c6ca0d781bdd5f337a3199bdb513d42d106f29361943e548ef",
+      "text": "Safe alternative: Look at two fingers and your thumb, or a grown-up’s hand. Point to the shortest one and compare their shapes.",
+      "file": "./assets/narration/bella-v1/f51b218faab8b3c6ca0d781bdd5f337a3199bdb513d42d106f29361943e548ef.mp3",
+      "bytes": 79268,
+      "seconds": 8.95,
+      "sha256": "4aef45db32aa2534ed99c345707ce9855aca071a2bd1c97822f021bc14595b2c",
+      "sourcePeak": 0.688181,
+      "sourceRms": 0.084088
+    },
+    {
+      "key": "f0935fe18ea10f011cb2fb1e8caf5b6f9e0dd2828e3febd11bfafac6bdbb79e9",
+      "text": "Solve. Our explorer-team puzzle. How many explorers are in your team? Count everyone together and think of one way you helped each other.",
+      "file": "./assets/narration/bella-v1/f0935fe18ea10f011cb2fb1e8caf5b6f9e0dd2828e3febd11bfafac6bdbb79e9.mp3",
+      "bytes": 84788,
+      "seconds": 9.4,
+      "sha256": "1076c74e2957951eceddd91ed17afa6c40bc9c32a6d7e3136c7952b7d984f791",
+      "sourcePeak": 0.874946,
+      "sourceRms": 0.08336
+    },
+    {
+      "key": "61ad979c07af8178a0a015bace33a8538d5c8758d45cae63838a1e206f5a6888",
+      "text": "Safe alternative: Count each explorer together, pointing or saying a number as you go. A grown-up can help keep count.",
+      "file": "./assets/narration/bella-v1/61ad979c07af8178a0a015bace33a8538d5c8758d45cae63838a1e206f5a6888.mp3",
+      "bytes": 82892,
+      "seconds": 9.275,
+      "sha256": "9b3a1fa023c833aa6e8d996630a71aeab2ce20642b4cfe54857358f2f758b119",
+      "sourcePeak": 0.920489,
+      "sourceRms": 0.084707
+    },
+    {
+      "key": "7f361035cda0d77bd30beb2753113c897c37ee889fe0a6dd16629c7ce280a7f3",
+      "text": "Solve. Autumn colour puzzle. Look for two different leaf colours from the path. Which one reminds you of something cosy?",
+      "file": "./assets/narration/bella-v1/7f361035cda0d77bd30beb2753113c897c37ee889fe0a6dd16629c7ce280a7f3.mp3",
+      "bytes": 77708,
+      "seconds": 8.8,
+      "sha256": "767f8b06bc87647f61cc2aa43f3084157e529514ed80998290643d2ed24c0591",
+      "sourcePeak": 0.685233,
+      "sourceRms": 0.085806
+    },
+    {
+      "key": "06cca2a41273d11ecbb5eca5765b2c23c01299c9d60bbcdb1ca9e17865f5e619",
+      "text": "Safe alternative: Point to two colours on your clothes and compare them with a grown-up. Leave every leaf where it is.",
+      "file": "./assets/narration/bella-v1/06cca2a41273d11ecbb5eca5765b2c23c01299c9d60bbcdb1ca9e17865f5e619.mp3",
+      "bytes": 71828,
+      "seconds": 8.225,
+      "sha256": "68d7a370f3c7b026d117b0419bade8433bb431c24c48bb3038fcb3568b400ac7",
+      "sourcePeak": 0.723261,
+      "sourceRms": 0.081613
+    },
+    {
+      "key": "d76e7ccb5794af09ce1d1e4753fcc887d83fa6004ac0fe09a2a692ef353b32b5",
+      "text": "Find. Moonbeam colour match. Stay still beside your grown-up and find a moon-like colour on your own clothes: white, silver or yellow. Point to a second patch that matches. Any colour you can actually see works.",
+      "file": "./assets/narration/bella-v1/d76e7ccb5794af09ce1d1e4753fcc887d83fa6004ac0fe09a2a692ef353b32b5.mp3",
+      "bytes": 135356,
+      "seconds": 15.025,
+      "sha256": "0cb79adc242b820f2d4fe42bc7d57367a677e7c0374340f16fb297af1047fd48",
+      "sourcePeak": 0.601797,
+      "sourceRms": 0.089686
+    },
+    {
+      "key": "617889e633db97abd8239e241d0de1645e721102a456aca258e78ac0d6fd89a5",
+      "text": "Safe alternative: Seated indoors, point to a colour on your clothes and ask a grown-up to help find a match.",
+      "file": "./assets/narration/bella-v1/617889e633db97abd8239e241d0de1645e721102a456aca258e78ac0d6fd89a5.mp3",
+      "bytes": 70676,
+      "seconds": 7.875,
+      "sha256": "3ae4691e9f2d01d780349d31255c2225531d42cf3b77993bb3385b90793b2f6d",
+      "sourcePeak": 0.90605,
+      "sourceRms": 0.08217
+    },
+    {
+      "key": "cfaccbfde8fb9c18f57e57f8560666cf017ca828f9af30167b56e19dd9b6c838",
+      "text": "Find. A friendly shadow shape. From your grown-up’s well-lit stopping spot, find a shadow already nearby and trace its outline with a finger in the air. Give the shape a friendly name. Keep the lights on; if no shadow is clear, trace a shape on your own sleeve.",
+      "file": "./assets/narration/bella-v1/cfaccbfde8fb9c18f57e57f8560666cf017ca828f9af30167b56e19dd9b6c838.mp3",
+      "bytes": 171116,
+      "seconds": 18.525,
+      "sha256": "bc5f66d38ea5162d29ddb8c3252452baad66fa763939b338476f51c64c2962e7",
+      "sourcePeak": 0.764004,
+      "sourceRms": 0.088344
+    },
+    {
+      "key": "0cfb5d63a1606d68ba1a17974cb9eee352d528a99724a2e12fac7e46f7062c1e",
+      "text": "Safe alternative: Seated indoors in a lit room, trace a visible shape on your own clothes, or guide a grown-up’s finger with words.",
+      "file": "./assets/narration/bella-v1/0cfb5d63a1606d68ba1a17974cb9eee352d528a99724a2e12fac7e46f7062c1e.mp3",
+      "bytes": 86036,
+      "seconds": 9.575,
+      "sha256": "0476dbc92f5d0e54f96027c473e28f20da8ed396db85c862d56a45f0d6d1efff",
+      "sourcePeak": 0.609294,
+      "sourceRms": 0.082857
+    },
+    {
+      "key": "8d0b2a0229591caf587cd7239d82e12b8cb408e880fa04f93a06cbdde5dbcb7a",
+      "text": "Find. Tiny torch detective. Stay still while a grown-up optionally aims a handheld torch down at your own shoe. Find a line and follow it with your eyes. Use ordinary lighting instead if you prefer; never aim a light at eyes or animals.",
+      "file": "./assets/narration/bella-v1/8d0b2a0229591caf587cd7239d82e12b8cb408e880fa04f93a06cbdde5dbcb7a.mp3",
+      "bytes": 163868,
+      "seconds": 17.525,
+      "sha256": "bb6d9892761b6411a2438cb6a71c9cbef02f8198597c69141ff585e33d1d3197",
+      "sourcePeak": 0.660483,
+      "sourceRms": 0.088182
+    },
+    {
+      "key": "6b6731bc80f458109fd71d5a5f5657e6b81b8e8d9f13e72025993b0656a77b14",
+      "text": "Safe alternative: Seated indoors, point to a line or colour on your sleeve using the room light.",
+      "file": "./assets/narration/bella-v1/6b6731bc80f458109fd71d5a5f5657e6b81b8e8d9f13e72025993b0656a77b14.mp3",
+      "bytes": 66476,
+      "seconds": 7.3,
+      "sha256": "e3d5b08de9ffd99bfa97f3c028818a1ba4097e38e70461157db3867e30ba15ec",
+      "sourcePeak": 0.601982,
+      "sourceRms": 0.077668
+    },
+    {
+      "key": "a68da16ea66b2b08d6600c49072dacbce9342cbd95d6151707a559c8c6940747",
+      "text": "Listen. The cosy quiet count. Stay still with your grown-up, eyes open, while they count five quiet seconds. Listen, then share one sound you heard or show a quiet thumbs-up if it was peaceful. Stay in your spot.",
+      "file": "./assets/narration/bella-v1/a68da16ea66b2b08d6600c49072dacbce9342cbd95d6151707a559c8c6940747.mp3",
+      "bytes": 145604,
+      "seconds": 15.825,
+      "sha256": "0955afb2a948e1496a35cafc9776aa2a56d04e23878df8e9dadb1fc4e1f76094",
+      "sourcePeak": 0.879738,
+      "sourceRms": 0.088974
+    },
+    {
+      "key": "c579dc05b4f8e71cded08f5aaccf3c28ced2709bd8db223e34ea9ef6ea9b6b6a",
+      "text": "Safe alternative: Seated indoors, listen while a grown-up gently taps their palm once, then show or say when you hear it.",
+      "file": "./assets/narration/bella-v1/c579dc05b4f8e71cded08f5aaccf3c28ced2709bd8db223e34ea9ef6ea9b6b6a.mp3",
+      "bytes": 79460,
+      "seconds": 8.925,
+      "sha256": "a005ef43ab1459e6d94a61e3122f4842e3a6e7f80690b0c5f59f7c6b5145c84e",
+      "sourcePeak": 0.682617,
+      "sourceRms": 0.085745
+    },
+    {
+      "key": "773b4b5ab454458d633d356b27e10777e2818622191245f622ddb1ad8a9cab4c",
+      "text": "Listen. Two little sound clues. Beside your grown-up, listen for one sound, then softly rub your own sleeve to make a second. Which is quieter? Stay in the same safe stopping spot; never follow sounds or copy animal calls.",
+      "file": "./assets/narration/bella-v1/773b4b5ab454458d633d356b27e10777e2818622191245f622ddb1ad8a9cab4c.mp3",
+      "bytes": 155012,
+      "seconds": 16.825,
+      "sha256": "6a586463534fd2c40760b0e5e419d3a354b87d31ecc598530df80ede6d45bf15",
+      "sourcePeak": 0.620385,
+      "sourceRms": 0.090651
+    },
+    {
+      "key": "012457c74c12def968b5e50377186a9acccd54c2aad9821d256c335c28c69e2f",
+      "text": "Safe alternative: Seated indoors, listen to a grown-up quietly tap then rub their own palm. Point or say which sounds softer.",
+      "file": "./assets/narration/bella-v1/012457c74c12def968b5e50377186a9acccd54c2aad9821d256c335c28c69e2f.mp3",
+      "bytes": 89708,
+      "seconds": 9.95,
+      "sha256": "389fda3e822a26720300f0d2700cc2093f5b43d57eb7d2846a48f77c1a94ef16",
+      "sourcePeak": 0.642394,
+      "sourceRms": 0.084482
+    },
+    {
+      "key": "2d0279d508f45ffea0c6a61a99b13d27167f21a00648f054d4db851f8187cefa",
+      "text": "Listen. The pumpkin’s tiny beat. Stay still and gently tap one finger on your own palm: tap, tap, pause. Let the next explorer copy your tiny beat. Keep it quiet around wildlife.",
+      "file": "./assets/narration/bella-v1/2d0279d508f45ffea0c6a61a99b13d27167f21a00648f054d4db851f8187cefa.mp3",
+      "bytes": 130124,
+      "seconds": 14.425,
+      "sha256": "32da2c2960b9727c81458abd52840ed0152231134c966afba6c4b3b4beabb7d2",
+      "sourcePeak": 0.673546,
+      "sourceRms": 0.089262
+    },
+    {
+      "key": "c13b84f91a2209d5ad58de552afcff288e1eff11751de42b3b65f53870707b02",
+      "text": "Safe alternative: Seated indoors, tap once if comfortable, or listen and choose whether a grown-up taps once or twice next.",
+      "file": "./assets/narration/bella-v1/c13b84f91a2209d5ad58de552afcff288e1eff11751de42b3b65f53870707b02.mp3",
+      "bytes": 84524,
+      "seconds": 9.275,
+      "sha256": "7c0e12cd365969ff435e23dc6af85f8b0ba2047094eb453b7327b1c2468140b2",
+      "sourcePeak": 0.698871,
+      "sourceRms": 0.085534
+    },
+    {
+      "key": "821f1b3bb385fbe2ab4d55da65edc48cc7f77da52b2ebf5f98ed2aa61a64a1ee",
+      "text": "Move. Make little bat wings. Beside your grown-up on level ground, keep both feet planted. Bring your thumbs near each other and gently spread your fingers into two bat wings. Open and close them slowly, with space around you.",
+      "file": "./assets/narration/bella-v1/821f1b3bb385fbe2ab4d55da65edc48cc7f77da52b2ebf5f98ed2aa61a64a1ee.mp3",
+      "bytes": 145844,
+      "seconds": 15.825,
+      "sha256": "d4dab1e9f1e5a94af1a11722c1880fdf0586958fc655efa9e119792855292e7c",
+      "sourcePeak": 0.700847,
+      "sourceRms": 0.089301
+    },
+    {
+      "key": "f6383417a0f53b1a74b66d9a981f108af3a74333ce8fd29703c6ef1c53aab6bd",
+      "text": "Safe alternative: Seated indoors, open one hand gently, or ask a grown-up to make a wing shape for you to choose and copy.",
+      "file": "./assets/narration/bella-v1/f6383417a0f53b1a74b66d9a981f108af3a74333ce8fd29703c6ef1c53aab6bd.mp3",
+      "bytes": 87164,
+      "seconds": 9.65,
+      "sha256": "79d198232830849a90ea2410c130356151d52a776edb0a3abc79aae4683ec4b8",
+      "sourcePeak": 1.007645,
+      "sourceRms": 0.086215
+    },
+    {
+      "key": "977749ec7362094dca85acb82b1ee9b947cbab7e94db995d1344adcaa677d034",
+      "text": "Move. Shape a pumpkin. Stay planted beside your grown-up and make a comfortable round pumpkin shape with your arms. Ask a family member to make a smaller one. Compare your two shapes without stretching or reaching far.",
+      "file": "./assets/narration/bella-v1/977749ec7362094dca85acb82b1ee9b947cbab7e94db995d1344adcaa677d034.mp3",
+      "bytes": 138308,
+      "seconds": 14.975,
+      "sha256": "1d032bc138c464e1056c10175bf5dc526c9ac1df13fe184b34411c2f77efe7a9",
+      "sourcePeak": 0.890685,
+      "sourceRms": 0.090499
+    },
+    {
+      "key": "f6a24ab4c7c4668e7b6fb38302d60d334f3627e722b5e96730cbfc0d902f51d0",
+      "text": "Safe alternative: Seated indoors, make a small circle with one hand, or choose the larger of two circles a grown-up makes.",
+      "file": "./assets/narration/bella-v1/f6a24ab4c7c4668e7b6fb38302d60d334f3627e722b5e96730cbfc0d902f51d0.mp3",
+      "bytes": 86012,
+      "seconds": 9.475,
+      "sha256": "3657cbecf7e5b39451d2962c8150d08a0a66c44e09167c0bd04870c30146b9c2",
+      "sourcePeak": 0.555472,
+      "sourceRms": 0.083498
+    },
+    {
+      "key": "7ab5753ff9e07ab5b45ae4cfe1b43d9226edcd2d6d1204f7bcb371a6edf1ae15",
+      "text": "Move. Crescent-moon fingers. Stay still with your grown-up and make a crescent shape with one hand. Slowly change it into a round moon. Keep your feet comfortably down and movements small.",
+      "file": "./assets/narration/bella-v1/7ab5753ff9e07ab5b45ae4cfe1b43d9226edcd2d6d1204f7bcb371a6edf1ae15.mp3",
+      "bytes": 118532,
+      "seconds": 13.05,
+      "sha256": "27d5715fb6df9c8c0bc9c5f0572b8bd97b69cc676813cf0d499bee44e3e4e289",
+      "sourcePeak": 0.67005,
+      "sourceRms": 0.089333
+    },
+    {
+      "key": "8bc4326dc9f49a561397c41dfa04a991823f6104b4dc6ac4e6ccd721c53b6bb6",
+      "text": "Safe alternative: Seated indoors, curl one finger comfortably, or direct a grown-up to make a crescent then a circle.",
+      "file": "./assets/narration/bella-v1/8bc4326dc9f49a561397c41dfa04a991823f6104b4dc6ac4e6ccd721c53b6bb6.mp3",
+      "bytes": 78476,
+      "seconds": 8.75,
+      "sha256": "8edc5f02bb2abfbf035d151966128c3cb153b285e101e4274d58c4797cecd85a",
+      "sourcePeak": 0.572139,
+      "sourceRms": 0.085453
+    },
+    {
+      "key": "5dcbc8f1608975b44b07834f137757f42e4717e7de1b14db90d3ccda75481203",
+      "text": "Imagine. Make a hand dragon. From your safe stopping spot, turn one hand into a dragon puppet: curl your fingers gently, then open and close its little mouth. Use a colour on your own sleeve to name your dragon and show the family its quiet hello.",
+      "file": "./assets/narration/bella-v1/5dcbc8f1608975b44b07834f137757f42e4717e7de1b14db90d3ccda75481203.mp3",
+      "bytes": 163892,
+      "seconds": 17.875,
+      "sha256": "1d42908d7f2c45717e71ce06b65b4e72d874439a42c39abb5fa980fcf654cb29",
+      "sourcePeak": 0.748993,
+      "sourceRms": 0.089435
+    },
+    {
+      "key": "85c5ee51975355efa7ef7cd05acf7a61968fbb1725fea2d9703e660e41c9bd14",
+      "text": "Safe alternative: Seated indoors, move one finger as a puppet, or choose a colour and direct a grown-up’s hand dragon.",
+      "file": "./assets/narration/bella-v1/85c5ee51975355efa7ef7cd05acf7a61968fbb1725fea2d9703e660e41c9bd14.mp3",
+      "bytes": 79772,
+      "seconds": 8.85,
+      "sha256": "0bd86eeadf2982615b7176402b69c787c263ae0fbf73c506927c11d1b72e7535",
+      "sourcePeak": 0.555749,
+      "sourceRms": 0.084545
+    },
+    {
+      "key": "c162761ce09b0207875b7eff36a474279b80551bdf6142358414b1b842de3675",
+      "text": "Imagine. Design our moon badge. Stay beside your grown-up in your safe stopping spot. Use a fingertip to trace a circle, crescent or star on your own open palm. Let the family copy your design and choose a name for your explorer badge.",
+      "file": "./assets/narration/bella-v1/c162761ce09b0207875b7eff36a474279b80551bdf6142358414b1b842de3675.mp3",
+      "bytes": 155300,
+      "seconds": 17.075,
+      "sha256": "0db0b8cad34ad5df26db8ef9c0f18f59b900dd7e6665dc0d339bc0c1615f5da0",
+      "sourcePeak": 0.584116,
+      "sourceRms": 0.089347
+    },
+    {
+      "key": "0de62521e65492708b586ad41329ee01aa7e33dda4a5028a29dcb8dd7c508392",
+      "text": "Safe alternative: Seated indoors, trace a little line on your palm, or choose a shape for a grown-up to trace on their own palm.",
+      "file": "./assets/narration/bella-v1/0de62521e65492708b586ad41329ee01aa7e33dda4a5028a29dcb8dd7c508392.mp3",
+      "bytes": 83228,
+      "seconds": 9.05,
+      "sha256": "eacfebdb1e1b9ee762b6492736dd232ffe80ab36c1fbe8ffaa2b18c5113c4676",
+      "sourcePeak": 0.65313,
+      "sourceRms": 0.083466
+    },
+    {
+      "key": "e4c36621b6c13398fad1caa2090961adc1539ee5908383a89e221918bf24eb4c",
+      "text": "Imagine. Give a real star thank-you. Stay in your safe spot and thank an explorer for something they actually did tonight, such as helping with a hat or waiting together. Make a small hand signal to go with your thank-you and teach it to the family.",
+      "file": "./assets/narration/bella-v1/e4c36621b6c13398fad1caa2090961adc1539ee5908383a89e221918bf24eb4c.mp3",
+      "bytes": 150428,
+      "seconds": 16.75,
+      "sha256": "8752442a0c188f6bb2dd1f0538d708f3768b606683a16c2ec6fd8b358eb76960",
+      "sourcePeak": 0.838083,
+      "sourceRms": 0.089298
+    },
+    {
+      "key": "cc9d52a9cfeeb3db35d68bde2f369ebb14d435eeb2580fbcf47c2cac915b1797",
+      "text": "Safe alternative: Seated indoors, point to someone who helped, then give them a smile or choose a thank-you word.",
+      "file": "./assets/narration/bella-v1/cc9d52a9cfeeb3db35d68bde2f369ebb14d435eeb2580fbcf47c2cac915b1797.mp3",
+      "bytes": 73988,
+      "seconds": 8.275,
+      "sha256": "e4781bd6e28ed34dfd6263736ac07f6d2ef847a8ba40d64cb2f710e9092fe877",
+      "sourcePeak": 0.5836,
+      "sourceRms": 0.083962
+    },
+    {
+      "key": "551c2f4c08f898f770474d8dfbdcad76cb53396a860d7bc7c5379ebe6c2673fc",
+      "text": "Solve. Make a pumpkin-moon pattern. Beside your grown-up, make a round pumpkin with your hands, then a crescent moon with one hand. Repeat: round, crescent, round. Ask the family to make the shape that comes next. Keep movements small.",
+      "file": "./assets/narration/bella-v1/551c2f4c08f898f770474d8dfbdcad76cb53396a860d7bc7c5379ebe6c2673fc.mp3",
+      "bytes": 156788,
+      "seconds": 17,
+      "sha256": "18bff2deeebe0a6440b178ab6a0db43af5ba2415185d8335d71b6e6c073dab34",
+      "sourcePeak": 0.92577,
+      "sourceRms": 0.090223
+    },
+    {
+      "key": "20b94b353108c4ecba3677b4ca4ee4007687f913a7cb2c5f2b9b720296a29dc2",
+      "text": "Safe alternative: Seated indoors, watch a grown-up make a circle then a crescent twice. Choose which shape comes next.",
+      "file": "./assets/narration/bella-v1/20b94b353108c4ecba3677b4ca4ee4007687f913a7cb2c5f2b9b720296a29dc2.mp3",
+      "bytes": 80396,
+      "seconds": 8.8,
+      "sha256": "56c99bb05e419508f24b24c49d34ee2f78621b239ede792ca682aba2c675a7c8",
+      "sourcePeak": 0.699927,
+      "sourceRms": 0.085429
+    },
+    {
+      "key": "976127a8fd447470d37953c3d60cf07984e6e12460e73a87f10dfea9f53cde03",
+      "text": "Solve. Big moon, little moon. Stay still with your grown-up. Each make a comfortable circle with your hands. Compare them: which circle is bigger? Make one circle smaller and check again.",
+      "file": "./assets/narration/bella-v1/976127a8fd447470d37953c3d60cf07984e6e12460e73a87f10dfea9f53cde03.mp3",
+      "bytes": 116924,
+      "seconds": 12.95,
+      "sha256": "66ff5814ced25ca2590daa928d6fdd050f6c9601983c36b39f76df0f464a07ee",
+      "sourcePeak": 0.626959,
+      "sourceRms": 0.088615
+    },
+    {
+      "key": "ae39ee392c979b625d706690c205ad31325d2111aeee188dc9e6329958d04d7a",
+      "text": "Safe alternative: Seated indoors, point to the bigger of two hand circles a grown-up makes, then help them make it smaller.",
+      "file": "./assets/narration/bella-v1/ae39ee392c979b625d706690c205ad31325d2111aeee188dc9e6329958d04d7a.mp3",
+      "bytes": 81068,
+      "seconds": 9.025,
+      "sha256": "227916178f672d2ee336cc7c4dcfb8059af6c36dfc1c99ad60f8255c12f0e946",
+      "sourcePeak": 0.618577,
+      "sourceRms": 0.084865
+    },
+    {
+      "key": "50be8e96375f89d0fdb99e793de5fd1c6f0e4fef749b43bf45e67cb6a5aed78e",
+      "text": "Solve. Our real mystery clue. Beside your grown-up, choose something already visible on your own clothes, such as a stripe, pocket or shoe. Give one colour or shape clue for your family to guess, then point out the answer. Stay in your safe spot.",
+      "file": "./assets/narration/bella-v1/50be8e96375f89d0fdb99e793de5fd1c6f0e4fef749b43bf45e67cb6a5aed78e.mp3",
+      "bytes": 157436,
+      "seconds": 17.25,
+      "sha256": "c97b964e1ab553ec6b4034a197b743e8a5b05d720323700de657bb2f10841c8c",
+      "sourcePeak": 0.640753,
+      "sourceRms": 0.08922
+    },
+    {
+      "key": "609f16e764b8b27b284c3b8c2af534b0c713d8305d309f98ebbe7b5b2bed2a3f",
+      "text": "Safe alternative: Seated indoors, let a grown-up describe a colour on your clothes and point to the matching place together.",
+      "file": "./assets/narration/bella-v1/609f16e764b8b27b284c3b8c2af534b0c713d8305d309f98ebbe7b5b2bed2a3f.mp3",
+      "bytes": 79244,
+      "seconds": 8.825,
+      "sha256": "1b263b528eaaf58327645ab6da9dbaf51cb5f5be016529a99371045c1aba8fd3",
+      "sourcePeak": 0.586514,
+      "sourceRms": 0.085089
+    },
+    {
+      "key": "e69babc8caea0e90a2874a5f3d22d21a714e825bebb0d96ee3d482eaadfca164",
+      "text": "Find. Make a wall creature. In a comfortably lit room, let a grown-up aim an optional handheld torch at a clear wall, away from eyes. Put your hand in the beam to make a creature’s shadow and change its ears with your fingers. Keep room lights on. Without a torch, make and compare hand shapes in the room light.",
+      "file": "./assets/narration/bella-v1/e69babc8caea0e90a2874a5f3d22d21a714e825bebb0d96ee3d482eaadfca164.mp3",
+      "bytes": 195620,
+      "seconds": 21.225,
+      "sha256": "8cf25e52f212d0c7213e7ed6aa452cc478341907b222a852fa8060b87300bb52",
+      "sourcePeak": 0.684842,
+      "sourceRms": 0.089072
+    },
+    {
+      "key": "e9a58e008d7a196d6363fe191b6b9ed43acfdc891826a4bd276206b124514ea4",
+      "text": "Safe alternative: Seated indoors with the lights on, make a hand shape for the family to copy, or choose one for a grown-up to make.",
+      "file": "./assets/narration/bella-v1/e9a58e008d7a196d6363fe191b6b9ed43acfdc891826a4bd276206b124514ea4.mp3",
+      "bytes": 87356,
+      "seconds": 9.75,
+      "sha256": "5a9d2988fa32e3c98e8acf992a0adb378147f9fdcf5545d3b3f75332a6779341",
+      "sourcePeak": 0.62575,
+      "sourceRms": 0.08451
+    },
+    {
+      "key": "55f60dddce325d1a584f0c230c9588f636c6df556bd4c37a16c3c431b6bfe0d9",
+      "text": "Find. Make your wizard hat. In your lit room, ask a grown-up for scrap paper and tape if you have them. Fold a pointed triangle or roll a little cone to hold as your wizard hat; add stars with an available crayon. Wear it only if the paper is large enough and a grown-up fits it above your eyes. Grown-ups handle any cutting; no neck ties. No paper? Choose an existing hat together.",
+      "file": "./assets/narration/bella-v1/55f60dddce325d1a584f0c230c9588f636c6df556bd4c37a16c3c431b6bfe0d9.mp3",
+      "bytes": 235628,
+      "seconds": 25.725,
+      "sha256": "cdcd5b6a3e2276b5046f3c5a698ce0591e295434951ce060e47b428d93993248",
+      "sourcePeak": 0.979258,
+      "sourceRms": 0.086445
+    },
+    {
+      "key": "3e568becfd6ec9885c8f3b6103f1d2cd88447c3f138fc548570e52784b8f92bf",
+      "text": "Safe alternative: Seated indoors, help fold a paper triangle to hold as a wizard badge, or choose an existing hat for a grown-up to show you. No paper or hat? Match two colours on your clothes for your wizard outfit, or swap this card.",
+      "file": "./assets/narration/bella-v1/3e568becfd6ec9885c8f3b6103f1d2cd88447c3f138fc548570e52784b8f92bf.mp3",
+      "bytes": 161540,
+      "seconds": 17.525,
+      "sha256": "58aa863082c76da603f7b5178306c2e40722cdc913d2e65c5272336a30be270a",
+      "sourcePeak": 0.796455,
+      "sourceRms": 0.088008
+    },
+    {
+      "key": "1c58d6484e421580f01e2820b7f4e570b50034b2639aceb3832d8a7cde4449d1",
+      "text": "Listen. The house’s quiet music. Stay seated or still beside your grown-up and listen for a familiar house sound, such as a clock or gentle hum. Tap its rhythm quietly on your own knee, or count three sounds together. Keep the room lit and leave appliances alone.",
+      "file": "./assets/narration/bella-v1/1c58d6484e421580f01e2820b7f4e570b50034b2639aceb3832d8a7cde4449d1.mp3",
+      "bytes": 174788,
+      "seconds": 19,
+      "sha256": "ab8649bf6e133f481b02d55447be63d519abe13a4fb2a63f82c75e81e9375d6f",
+      "sourcePeak": 0.755076,
+      "sourceRms": 0.087674
+    },
+    {
+      "key": "0e437e3d26f668f66b1d78369b4f5c6f0d25d034b7422426101a1fced12ba87a",
+      "text": "Safe alternative: Seated indoors, listen as a grown-up gently taps their palm three times, then copy one tap or count together.",
+      "file": "./assets/narration/bella-v1/0e437e3d26f668f66b1d78369b4f5c6f0d25d034b7422426101a1fced12ba87a.mp3",
+      "bytes": 89996,
+      "seconds": 10.025,
+      "sha256": "5b06f4a24dc6fbc6f13b80f5bb64840cdcf2ab1aad9ef09dbdb6e054d3d40a39",
+      "sourcePeak": 0.65858,
+      "sourceRms": 0.086663
+    },
+    {
+      "key": "df5da1ea1f83a117482b8d338d5ab066fa373f19daa90d3d2366b4d9dd03c729",
+      "text": "Listen. Make a pumpkin password. In your lit room, choose a familiar object your grown-up has placed beside you, such as a cushion or book. Softly say its name as the club password. The next explorer repeats it and points to the object.",
+      "file": "./assets/narration/bella-v1/df5da1ea1f83a117482b8d338d5ab066fa373f19daa90d3d2366b4d9dd03c729.mp3",
+      "bytes": 156668,
+      "seconds": 16.875,
+      "sha256": "d76eff8b09f749fe34ba52e76e7171f3bde9acf1f48a100a8f29bf696b3e0143",
+      "sourcePeak": 0.68865,
+      "sourceRms": 0.091164
+    },
+    {
+      "key": "407cb97701c8f8d7c60ba972e32605e3fc4a6195c3c87f2f5c38a07ae1df1692",
+      "text": "Safe alternative: Seated indoors, choose between two nearby objects a grown-up names. Pointing or looking at your choice counts.",
+      "file": "./assets/narration/bella-v1/407cb97701c8f8d7c60ba972e32605e3fc4a6195c3c87f2f5c38a07ae1df1692.mp3",
+      "bytes": 89252,
+      "seconds": 9.75,
+      "sha256": "2681a7be42944fbcffcc357a20c9249d726e36228ba5d7f4555ec06f1759c7c5",
+      "sourcePeak": 0.677259,
+      "sourceRms": 0.085731
+    },
+    {
+      "key": "e0f79d3a50a0f07d2034470098799a65518455cdb40f7e6ff78220ea64e28490",
+      "text": "Move. Make a little moon cape. Stay seated in your lit room. With a grown-up, choose a small tea towel or short piece of fabric and drape it over your shoulders. Hold its corners loosely and gently show its colours. Never tie or fasten it around your neck; keep your face clear and fabric off the floor. Take it off before moving.",
+      "file": "./assets/narration/bella-v1/e0f79d3a50a0f07d2034470098799a65518455cdb40f7e6ff78220ea64e28490.mp3",
+      "bytes": 201068,
+      "seconds": 21.925,
+      "sha256": "6ca98d3aa205ed447ebbdc4033417c63d02cadac4d3d6143cd1673bdd3e230a1",
+      "sourcePeak": 0.627434,
+      "sourceRms": 0.089027
+    },
+    {
+      "key": "7c4f7bca35d0a1ccd2aa3308c1d062600c7d09a42811d2c1d439850ef0ab38f6",
+      "text": "Safe alternative: Seated indoors, spread a small cloth on your lap and smooth it into a cape shape, or direct a grown-up to do it. No cloth? Fold scrap paper into a little cape shape to hold. Without either, compare the colours and patterns of your own sleeves.",
+      "file": "./assets/narration/bella-v1/7c4f7bca35d0a1ccd2aa3308c1d062600c7d09a42811d2c1d439850ef0ab38f6.mp3",
+      "bytes": 169604,
+      "seconds": 18.3,
+      "sha256": "07c178e578af9a017798f71bbedec31af220375df77dbbd11cadb0e3495c8a2a",
+      "sourcePeak": 0.647552,
+      "sourceRms": 0.089454
+    },
+    {
+      "key": "2db89326dd5e5478c7285888968a651c9b80104235beed13d704ab26bc1642bc",
+      "text": "Move. Copy our creature poses. Beside your grown-up in your lit room, sit or keep both feet on the clear floor. Make a friendly creature pose using your hands and face. Let the family copy it for three seconds, then swap leaders. Stay off furniture.",
+      "file": "./assets/narration/bella-v1/2db89326dd5e5478c7285888968a651c9b80104235beed13d704ab26bc1642bc.mp3",
+      "bytes": 163652,
+      "seconds": 17.75,
+      "sha256": "7b674d8d2fb35c099fbbc7bd8aa340fb8346bd74924be18c53d997a194f0af68",
+      "sourcePeak": 0.649031,
+      "sourceRms": 0.091841
+    },
+    {
+      "key": "274ccad8560d8d945602c6122436a75c5ed6811a25e243af75d5767ffdfaafec",
+      "text": "Safe alternative: Seated indoors, make a smile or tiny finger pose for someone to copy, or choose which of their poses to repeat.",
+      "file": "./assets/narration/bella-v1/274ccad8560d8d945602c6122436a75c5ed6811a25e243af75d5767ffdfaafec.mp3",
+      "bytes": 91580,
+      "seconds": 10.15,
+      "sha256": "e2431a57b2801624492e187128d463d57a8e577fa9de0b4f6647dfe2b7c6d107",
+      "sourcePeak": 0.566193,
+      "sourceRms": 0.08564
+    },
+    {
+      "key": "14945febbf848453b645d0ff7dbd51ccd2a71568d41e2fbc108aa9d50a0f83e5",
+      "text": "Imagine. Build a pumpkin palace. In your lit room, ask a grown-up to bring two cushions or folded towels to a clear floor or tabletop. Place them side by side as palace walls and leave a doorway between them. Add a large soft toy if you have one. Build low: no roofs, climbing or furniture moving.",
+      "file": "./assets/narration/bella-v1/14945febbf848453b645d0ff7dbd51ccd2a71568d41e2fbc108aa9d50a0f83e5.mp3",
+      "bytes": 202148,
+      "seconds": 21.975,
+      "sha256": "220b942f735de655cf61d7ed4494cbd49fcd448124e130d7046e9e9e9815d575",
+      "sourcePeak": 0.933008,
+      "sourceRms": 0.087903
+    },
+    {
+      "key": "147c8cd7bec7d7c5f79287f0b64d02bc210600699045178a12046634e58de3d9",
+      "text": "Safe alternative: Seated indoors, arrange two folded cloths or pieces of scrap paper with a gap between them, or tell a grown-up where to place them. Without materials, make two hand shapes with a doorway gap between them.",
+      "file": "./assets/narration/bella-v1/147c8cd7bec7d7c5f79287f0b64d02bc210600699045178a12046634e58de3d9.mp3",
+      "bytes": 148868,
+      "seconds": 16.125,
+      "sha256": "1b047d60b7c805fd10a937e9acad55f9456692bda5851d942194fe516d05206e",
+      "sourcePeak": 0.880345,
+      "sourceRms": 0.090377
+    },
+    {
+      "key": "d79f5eceeb39d35c0356fddbab2d93af9d27ba10fd565e7f241104b34b66aec5",
+      "text": "Imagine. Make a tiny storybook. In your lit room, fold a sheet of scrap paper in half with a grown-up to make a little book. Draw a friendly mouse or pumpkin on the cover with a crayon you already have. Give it a title and tell one sentence about tonight. No paper? Choose a picture in an existing book and tell its next sentence.",
+      "file": "./assets/narration/bella-v1/d79f5eceeb39d35c0356fddbab2d93af9d27ba10fd565e7f241104b34b66aec5.mp3",
+      "bytes": 204500,
+      "seconds": 22.175,
+      "sha256": "95ba50e10e317dea8ffafc7efb826f4b5e59e0e4805be1f9c74416e2419e5b28",
+      "sourcePeak": 0.656765,
+      "sourceRms": 0.08757
+    },
+    {
+      "key": "5d86ad487f77c65031c07d239f415e6e6b68130eda2bb82edbd4927c2cb01441",
+      "text": "Safe alternative: Seated indoors, choose a cover colour while a grown-up folds or draws for you, or point to a picture in an existing book and name one thing you see. Without either, take turns naming three real things in the room.",
+      "file": "./assets/narration/bella-v1/5d86ad487f77c65031c07d239f415e6e6b68130eda2bb82edbd4927c2cb01441.mp3",
+      "bytes": 150668,
+      "seconds": 16.6,
+      "sha256": "c38d09f2e82050b013d1d5aab2306c8169d92844bb33ef2395b6de5071e7eae8",
+      "sourcePeak": 0.629433,
+      "sourceRms": 0.08793
+    },
+    {
+      "key": "531cd54fbc323bcf08a4cb1df24f78dafb10afd109dddcbbed27ece43d18a379",
+      "text": "Solve. Try the shadow-size experiment. Stay seated beside your grown-up in a lit room. They can aim a handheld torch at a clear wall, away from eyes, while you hold a hand in the beam. Move your hand a little nearer the torch, then away. Which shadow gets bigger? Keep the room lights on. No torch? Compare your hand with a grown-up’s.",
+      "file": "./assets/narration/bella-v1/531cd54fbc323bcf08a4cb1df24f78dafb10afd109dddcbbed27ece43d18a379.mp3",
+      "bytes": 206276,
+      "seconds": 22.45,
+      "sha256": "e8b5e7ee2aaf4039f84dfa81762542b192f446a5561cfe525a1677254acca200",
+      "sourcePeak": 0.67309,
+      "sourceRms": 0.087106
+    },
+    {
+      "key": "6625566cc78997ed404a0b9dde15ab837cc1abec71b819831eabb8f3d1df0e09",
+      "text": "Safe alternative: Seated indoors, compare your hand and a grown-up’s side by side without touching. Point to the larger one and count fingers together.",
+      "file": "./assets/narration/bella-v1/6625566cc78997ed404a0b9dde15ab837cc1abec71b819831eabb8f3d1df0e09.mp3",
+      "bytes": 101036,
+      "seconds": 11.025,
+      "sha256": "e8b9dd1df8d7e14173a11d9f0a80ff7fc98ebf90aeb1fbe9de6fca2f1766eab1",
+      "sourcePeak": 0.589726,
+      "sourceRms": 0.085069
+    },
+    {
+      "key": "f8c4086913a27b4dbf7eff80a896daeec9b964a1a156312c62ccc0175184185e",
+      "text": "Solve. Build a cosy reading spot. In your lit room, solve this clue: “A soft place where we may sit and read.” Point to a safe chair, sofa or floor cushion. Let a grown-up bring an available book or cushion, then help arrange your cosy spot and share a page. No climbing or moving furniture.",
+      "file": "./assets/narration/bella-v1/f8c4086913a27b4dbf7eff80a896daeec9b964a1a156312c62ccc0175184185e.mp3",
+      "bytes": 197108,
+      "seconds": 21.45,
+      "sha256": "1e038c5e5b965a2c31446ef0eadee0d70a83c3fbe564e50ec032c97f0aba25da",
+      "sourcePeak": 0.869425,
+      "sourceRms": 0.090074
+    },
+    {
+      "key": "4f6af925d7e6b07435d8fc169bfe24739ba00c3f1036cd5426a42d669e4867f4",
+      "text": "Safe alternative: Seated indoors, choose a book or cushion already within reach, or tell a grown-up where you would like it placed. Without either, settle comfortably and point to two shapes in the room.",
+      "file": "./assets/narration/bella-v1/4f6af925d7e6b07435d8fc169bfe24739ba00c3f1036cd5426a42d669e4867f4.mp3",
+      "bytes": 126980,
+      "seconds": 13.9,
+      "sha256": "e801f886446f5e3adca4a3758b0740c771cd446d91ff1e8dc422894e874c7aa9",
+      "sourcePeak": 0.577894,
+      "sourceRms": 0.086874
+    },
+    {
+      "key": "2e1d9d0bc60ddeb0b80b578f9e0165e2d465c278b064308b9ee1d9555fae0e1a",
+      "text": "Find. Window-shape detective. Stop beside your grown-up in their chosen well-lit spot away from roads and edges. Notice a window shape already visible and count its sides together. Stay in your spot; do not approach homes or peer inside.",
+      "file": "./assets/narration/bella-v1/2e1d9d0bc60ddeb0b80b578f9e0165e2d465c278b064308b9ee1d9555fae0e1a.mp3",
+      "bytes": 162044,
+      "seconds": 17.425,
+      "sha256": "8adbd91ba9b1bd2f9b6cc756c82c452e4c6a6cb270d306b9fdce3ed92a65aabb",
+      "sourcePeak": 0.673189,
+      "sourceRms": 0.089464
+    },
+    {
+      "key": "8573d66ba1f2931e59a3d24729c28add2dde3606da329c7b913d3c1dd4347485",
+      "text": "Safe alternative: Seated indoors, point to a window or door shape you can see and count its corners together.",
+      "file": "./assets/narration/bella-v1/8573d66ba1f2931e59a3d24729c28add2dde3606da329c7b913d3c1dd4347485.mp3",
+      "bytes": 71924,
+      "seconds": 8,
+      "sha256": "6da797165dc144fc195dfd03936a3de5fb3f2a3eaa585818ddeb5157edfe5b9f",
+      "sourcePeak": 0.552113,
+      "sourceRms": 0.081512
+    },
+    {
+      "key": "3085d3b9e9a5a5cf04372556b87f69162a6ec2b12a82bdc59f4eb1517f2059c7",
+      "text": "Find. A cosy street colour. From your grown-up’s well-lit stopping spot away from roads, find a colour on a decoration already visible and match it to your clothes. If no decoration is visible, compare two clothing colours. No crossing, touching decorations or approaching a home.",
+      "file": "./assets/narration/bella-v1/3085d3b9e9a5a5cf04372556b87f69162a6ec2b12a82bdc59f4eb1517f2059c7.mp3",
+      "bytes": 186308,
+      "seconds": 20.15,
+      "sha256": "b80d6456bc8dd04e8f1dfbec2f217983ad7d3c3dc6f90f6d11761c25004207e5",
+      "sourcePeak": 0.807217,
+      "sourceRms": 0.087513
+    },
+    {
+      "key": "75e408474e800c58bec6e974fc6d90fa7f76c17403c3a73f3f5e7cf6231be71b",
+      "text": "Safe alternative: Seated indoors, match a colour on your clothes to something already visible in the room.",
+      "file": "./assets/narration/bella-v1/75e408474e800c58bec6e974fc6d90fa7f76c17403c3a73f3f5e7cf6231be71b.mp3",
+      "bytes": 68324,
+      "seconds": 7.575,
+      "sha256": "bf96d111805afdb84c7a3305bf5d443361921c649285a4ec51d2c2716427eb5d",
+      "sourcePeak": 0.689843,
+      "sourceRms": 0.079471
+    },
+    {
+      "key": "b4130f6039a4be1ff05c92105ac21d1ab88b74815ba5b50bbc72635d403f4ab9",
+      "text": "Listen. Our street sound postcard. Stay still with your grown-up in a well-lit safe spot away from roads. Listen to one everyday sound and describe it softly in two words, such as “soft rustle.” Let the family choose a word too. Do not follow sounds, approach anyone or make animal calls.",
+      "file": "./assets/narration/bella-v1/b4130f6039a4be1ff05c92105ac21d1ab88b74815ba5b50bbc72635d403f4ab9.mp3",
+      "bytes": 196604,
+      "seconds": 21.075,
+      "sha256": "37873685c00dc1a7d4940db54e8ea27adb3155c3b5cf73f89d97990d618499a0",
+      "sourcePeak": 0.944892,
+      "sourceRms": 0.086511
+    },
+    {
+      "key": "ae3301ae6bd2792f923f68c9fcb90ed264fad3ec88f19df33e288f113ee5a801",
+      "text": "Safe alternative: Seated indoors, listen as someone softly rubs their sleeve, then choose a word that describes the sound.",
+      "file": "./assets/narration/bella-v1/ae3301ae6bd2792f923f68c9fcb90ed264fad3ec88f19df33e288f113ee5a801.mp3",
+      "bytes": 87140,
+      "seconds": 9.55,
+      "sha256": "7cdb40c25a12bc649f258dcd889f061ea15b53b8c1e67fa83c0d5d535f775824",
+      "sourcePeak": 0.652174,
+      "sourceRms": 0.083616
+    },
+    {
+      "key": "8b557b5edc8b4375241017a7072865fa1aa9746302d753b537b9049d79a11acc",
+      "text": "Listen. A leafy sound experiment. From your grown-up’s safe, well-lit stopping spot, listen for leaves rustling without moving towards them. Then gently rub your own sleeve once and compare the sounds. If leaves are quiet, compare rubbing and tapping your sleeve. Leave plants alone.",
+      "file": "./assets/narration/bella-v1/8b557b5edc8b4375241017a7072865fa1aa9746302d753b537b9049d79a11acc.mp3",
+      "bytes": 179684,
+      "seconds": 19.75,
+      "sha256": "6568fe38f2ee30d17633acf0c5cde1cd9d40fdfc395626a7bc47b1b4a108a951",
+      "sourcePeak": 0.825543,
+      "sourceRms": 0.090133
+    },
+    {
+      "key": "340132833b43734c968887299423006ca41e38c6f843942e324266b08b02d6d9",
+      "text": "Safe alternative: Seated indoors, gently rub then tap your sleeve, or listen to a grown-up do it. Which sound is softer?",
+      "file": "./assets/narration/bella-v1/340132833b43734c968887299423006ca41e38c6f843942e324266b08b02d6d9.mp3",
+      "bytes": 85052,
+      "seconds": 9.55,
+      "sha256": "f83cdbf36d19c6707288357735284d2cdc1eabe121623ed07b552fdc91531690",
+      "sourcePeak": 0.620476,
+      "sourceRms": 0.083988
+    },
+    {
+      "key": "0aaa60359277970c8a4393b732cbb67dcd02599f6c13aa3d8395d00a274178dc",
+      "text": "Move. Make our family signal. In your grown-up’s well-lit safe stopping spot away from roads, keep your feet planted and make a tiny hand signal that means “ready together.” Teach it to your family and have them copy it. Keep looking ahead; only signal to your own team.",
+      "file": "./assets/narration/bella-v1/0aaa60359277970c8a4393b732cbb67dcd02599f6c13aa3d8395d00a274178dc.mp3",
+      "bytes": 170636,
+      "seconds": 18.65,
+      "sha256": "458a124dd2b1ae2682c09ab7a9870cef42b3eedf7af197270a778999ce467955",
+      "sourcePeak": 0.693282,
+      "sourceRms": 0.088798
+    },
+    {
+      "key": "9986fd1b3ce896c5e27fdc2aebf79331a9c84075ae67e96d18017d93cb95d3b6",
+      "text": "Safe alternative: Seated indoors, choose a small wave, nod or word for your family to copy.",
+      "file": "./assets/narration/bella-v1/9986fd1b3ce896c5e27fdc2aebf79331a9c84075ae67e96d18017d93cb95d3b6.mp3",
+      "bytes": 68540,
+      "seconds": 7.725,
+      "sha256": "22c52d52c2a5c63a1c8de0c1308a4d586eca100a3cbcddef2b4c9918c28f9f66",
+      "sourcePeak": 0.707873,
+      "sourceRms": 0.080538
+    },
+    {
+      "key": "7ad19fff3ed6f8a9c55c90529d5e392622d156cb843b233681dd779f08d9b172",
+      "text": "Move. A lantern-face game. Stay planted beside your grown-up in a well-lit, level spot clear of passers-by and roads. Show your family a gentle smiling pumpkin face, then a surprised one. Ask them to copy the face you choose.",
+      "file": "./assets/narration/bella-v1/7ad19fff3ed6f8a9c55c90529d5e392622d156cb843b233681dd779f08d9b172.mp3",
+      "bytes": 154844,
+      "seconds": 16.85,
+      "sha256": "232ab1bd2e481aa85a83178c1e56d081d53afde8d308a417f71cf17caaa79bce",
+      "sourcePeak": 0.820897,
+      "sourceRms": 0.089599
+    },
+    {
+      "key": "1d79ab5821552aca1ef9069909659c3d627be9fc8955ac617150cbd3e4b63ee2",
+      "text": "Safe alternative: Seated indoors, make a small smile or choose which face a grown-up makes next.",
+      "file": "./assets/narration/bella-v1/1d79ab5821552aca1ef9069909659c3d627be9fc8955ac617150cbd3e4b63ee2.mp3",
+      "bytes": 67244,
+      "seconds": 7.425,
+      "sha256": "bc470a14723ce03db1ccdba798a362512815b2c476490eb28cd43558e0871339",
+      "sourcePeak": 0.540285,
+      "sourceRms": 0.081761
+    },
+    {
+      "key": "f26ae810331abf1ead44446a021f34f6a5693c98a778189b10c08153ec4f4a35",
+      "text": "Imagine. Design from real patterns. From your grown-up’s safe, well-lit stopping spot away from roads, find a stripe or shape on your own clothing. Trace it lightly with a finger and show the family how to copy it on their own sleeves. Give your pattern a moth-wing name; leave real moths alone.",
+      "file": "./assets/narration/bella-v1/f26ae810331abf1ead44446a021f34f6a5693c98a778189b10c08153ec4f4a35.mp3",
+      "bytes": 190580,
+      "seconds": 20.825,
+      "sha256": "c08728c1c4a3bb11efe6886b0ebbf6504006c002190ebd6fd6bb5d0f2022c1a7",
+      "sourcePeak": 0.697106,
+      "sourceRms": 0.088752
+    },
+    {
+      "key": "297fb437120c962b305567fe0dd074336b00c0be8c641290dab17c41422c5257",
+      "text": "Safe alternative: Seated indoors, point to a pattern on your clothes, or choose a line for a grown-up to trace on their own sleeve.",
+      "file": "./assets/narration/bella-v1/297fb437120c962b305567fe0dd074336b00c0be8c641290dab17c41422c5257.mp3",
+      "bytes": 85340,
+      "seconds": 9.375,
+      "sha256": "585847bad4fcdb68749426077d9c80ef9f7d8d67d6e053d1f4bf0956daf1e379",
+      "sourcePeak": 0.613375,
+      "sourceRms": 0.084107
+    },
+    {
+      "key": "1d66b3b53b45a2009fcf11cf793646c293867f5d3a700055e5beb367ec159f1a",
+      "text": "Imagine. Tell our three-clue story. Stay beside your grown-up in your well-lit stopping spot. Point to a colour, a shape and something that glows already visible from there. Use those three real clues in one friendly Halloween sentence. A colour on your clothes can stand in for a missing clue. No home visits or stranger conversations.",
+      "file": "./assets/narration/bella-v1/1d66b3b53b45a2009fcf11cf793646c293867f5d3a700055e5beb367ec159f1a.mp3",
+      "bytes": 217676,
+      "seconds": 23.5,
+      "sha256": "ac521d037286f691a4b446ddd95429a435471d524986f3ac49932455343bc602",
+      "sourcePeak": 0.991048,
+      "sourceRms": 0.087309
+    },
+    {
+      "key": "e5ac922537b6d0ceee655938a625d751d68386f830cb24111a118afb341ef992",
+      "text": "Safe alternative: Seated indoors, point to two things you see and help a grown-up put their names into one funny sentence.",
+      "file": "./assets/narration/bella-v1/e5ac922537b6d0ceee655938a625d751d68386f830cb24111a118afb341ef992.mp3",
+      "bytes": 82508,
+      "seconds": 9.25,
+      "sha256": "ec736ecbeba3a6c4cb7411c616232400388a03da6c219b8cf117d6b1cb0e3f71",
+      "sourcePeak": 0.875465,
+      "sourceRms": 0.082903
+    },
+    {
+      "key": "9b4a72b1c9382481b53880d2eb414f42de1e9e2dfdcfc0883332e706c10ef842",
+      "text": "Solve. Match two real shapes. From your grown-up’s well-lit stopping spot away from roads, point to two shapes already visible. Are they the same or different? Windows, signs and your own clothing count. If only one is clear, copy its outline with a finger. Stay still and leave everything in place.",
+      "file": "./assets/narration/bella-v1/9b4a72b1c9382481b53880d2eb414f42de1e9e2dfdcfc0883332e706c10ef842.mp3",
+      "bytes": 190628,
+      "seconds": 20.675,
+      "sha256": "248b930da7c275a5269458a70e347219db1585231e3cffe1d1bd803e2f3476cf",
+      "sourcePeak": 0.763983,
+      "sourceRms": 0.089467
+    },
+    {
+      "key": "7e53bf18e55af5ef93b329a7d740b7c2de64b14595029c88abba503a5826534b",
+      "text": "Safe alternative: Seated indoors, compare the shapes of a visible door and window, or two shapes on your clothes.",
+      "file": "./assets/narration/bella-v1/7e53bf18e55af5ef93b329a7d740b7c2de64b14595029c88abba503a5826534b.mp3",
+      "bytes": 74204,
+      "seconds": 8.4,
+      "sha256": "a4247103a67f39b6e8b403688ca004c35c42f66eb0850c90548d6a6eb1d78be6",
+      "sourcePeak": 0.599689,
+      "sourceRms": 0.081428
+    },
+    {
+      "key": "7060cf9123bd876e2cbb0542c0b57c6bf1451e86e0c15fe5878712e682be4625",
+      "text": "Solve. Count the glowing clues. Stay still beside your grown-up in their safe, well-lit stopping spot away from roads. Count up to three decorations or lights already visible without looking into bright beams. Hold up a finger for each. If none are visible, count three fingers together. No door visits.",
+      "file": "./assets/narration/bella-v1/7060cf9123bd876e2cbb0542c0b57c6bf1451e86e0c15fe5878712e682be4625.mp3",
+      "bytes": 188804,
+      "seconds": 20.475,
+      "sha256": "cc45226efb1d7e6196fcb613893988f2df6a023aa5ddeb383eed2a380863b5b3",
+      "sourcePeak": 0.705784,
+      "sourceRms": 0.087819
+    },
+    {
+      "key": "ec272ca742605d92c64eee97624bcb424bcb496b8d5b11e514588af26f767a53",
+      "text": "Safe alternative: Seated indoors, count up to three colours on your clothes or count three fingers together.",
+      "file": "./assets/narration/bella-v1/ec272ca742605d92c64eee97624bcb424bcb496b8d5b11e514588af26f767a53.mp3",
+      "bytes": 70964,
+      "seconds": 7.9,
+      "sha256": "dcb90b30743bae345263107f02a0c8c7355a5d124892532bfb250e89be7c09c1",
+      "sourcePeak": 0.555995,
+      "sourceRms": 0.081415
+    },
+    {
+      "key": "961c3e37b5211e0cbe6a5262d0999205815a3e68c0777b331aa188bce870ece7",
+      "text": "Find. The path’s little lines. On a route your grown-up has checked is open and safe after dark, stop together in a well-lit, level place on the path. Point to a line already visible on the path and copy its direction with one finger in the air. Never leave the path to search.",
+      "file": "./assets/narration/bella-v1/961c3e37b5211e0cbe6a5262d0999205815a3e68c0777b331aa188bce870ece7.mp3",
+      "bytes": 179828,
+      "seconds": 19.675,
+      "sha256": "5c81d55e4a8c79cfbb194fb2b4eab58df09b10b93eb755746aa55546fd2ea339",
+      "sourcePeak": 0.603191,
+      "sourceRms": 0.088988
+    },
+    {
+      "key": "5f20edce0d97fedf36aac17a1197bfe3279039c5162827432eafe5fb7d81aa13",
+      "text": "Safe alternative: Seated indoors, follow a visible line on your sleeve with your eyes or a fingertip.",
+      "file": "./assets/narration/bella-v1/5f20edce0d97fedf36aac17a1197bfe3279039c5162827432eafe5fb7d81aa13.mp3",
+      "bytes": 69188,
+      "seconds": 7.775,
+      "sha256": "03fb79cc4992a22dd63ca4067357a4036ad348b683f95d24465dd7e05717c438",
+      "sourcePeak": 0.768693,
+      "sourceRms": 0.079591
+    },
+    {
+      "key": "6524ec62be16bb50cf5ee6490b931f655175a45ac49252acc51624092dabd73f",
+      "text": "Find. Copy a branch-shaped letter. On an adult-checked route open and safe after dark, stay still together on the well-lit path. Notice a branch shape already visible ahead and copy it with two fingers. Do not touch or approach it. If none is clear, copy a line on your own sleeve.",
+      "file": "./assets/narration/bella-v1/6524ec62be16bb50cf5ee6490b931f655175a45ac49252acc51624092dabd73f.mp3",
+      "bytes": 182660,
+      "seconds": 19.875,
+      "sha256": "96349f161a5be04ae7bd00f47ad3035308254ee903ec16498e2c1b969eb62b1f",
+      "sourcePeak": 0.731315,
+      "sourceRms": 0.089807
+    },
+    {
+      "key": "aacba05aa38e28c87e8a22156d8747d52690c3e496e8fc07f973174b0dda89ce",
+      "text": "Safe alternative: Seated indoors, make a tiny Y shape with two fingers, or choose a visible line for a grown-up to copy.",
+      "file": "./assets/narration/bella-v1/aacba05aa38e28c87e8a22156d8747d52690c3e496e8fc07f973174b0dda89ce.mp3",
+      "bytes": 86276,
+      "seconds": 9.575,
+      "sha256": "8e8b80b20ab4288bd131dfab9d6cf35ae30e1c57a2efdcd6a14cfecff58105f0",
+      "sourcePeak": 0.526249,
+      "sourceRms": 0.084164
+    },
+    {
+      "key": "7705ae14b7093104a4e8488f8bc39c2a5da5442380e574de465de1c5959b7df2",
+      "text": "Listen. The trees’ quiet chapter. On an adult-checked route open and safe after dark, pause together in a well-lit safe place on the path. Listen quietly for five seconds, then say whether you heard a rustle, another sound or quiet. Stay put; never follow sounds or copy animal calls.",
+      "file": "./assets/narration/bella-v1/7705ae14b7093104a4e8488f8bc39c2a5da5442380e574de465de1c5959b7df2.mp3",
+      "bytes": 196364,
+      "seconds": 21.5,
+      "sha256": "e7413c44056f0bfe36d339c6f59f27bcf0b8c87f677966a15df8ea25db53e58b",
+      "sourcePeak": 0.763912,
+      "sourceRms": 0.089589
+    },
+    {
+      "key": "51f78923f7b464030c02bb9a4450e27e857b33b28fd8adf37e654463c80f7064",
+      "text": "Safe alternative: Seated indoors, enjoy five quiet seconds, then point to your ear for a sound or give a quiet thumbs-up.",
+      "file": "./assets/narration/bella-v1/51f78923f7b464030c02bb9a4450e27e857b33b28fd8adf37e654463c80f7064.mp3",
+      "bytes": 84044,
+      "seconds": 9.525,
+      "sha256": "1f67f815c7a1b3605344883b8e2e63168b92e580bef44afac9bf61c81b0cd147",
+      "sourcePeak": 0.614772,
+      "sourceRms": 0.085971
+    },
+    {
+      "key": "5fd9e8d9742b56ee84b398d5b5d7b0dd308bce93a7e4a50a26fe6550b5f28935",
+      "text": "Listen. Our cosy coat rustle. On an adult-checked route open and safe after dark, stay still together on the well-lit path. Gently rub then tap your own sleeve. Listen for the difference and choose the softer sound. Keep it tiny and quiet around wildlife.",
+      "file": "./assets/narration/bella-v1/5fd9e8d9742b56ee84b398d5b5d7b0dd308bce93a7e4a50a26fe6550b5f28935.mp3",
+      "bytes": 171116,
+      "seconds": 18.675,
+      "sha256": "ad6aa83b89bf2492b4b90cbb96259cfd960ba912afcafbd2132a608e1d144f59",
+      "sourcePeak": 0.738951,
+      "sourceRms": 0.088112
+    },
+    {
+      "key": "13823de8c1d820df9f1d4c864d514be1f43f369828a4bc2997e86a4488642fb2",
+      "text": "Safe alternative: Seated indoors, gently touch your own sleeve or listen to a grown-up rub theirs, then describe what you notice.",
+      "file": "./assets/narration/bella-v1/13823de8c1d820df9f1d4c864d514be1f43f369828a4bc2997e86a4488642fb2.mp3",
+      "bytes": 88676,
+      "seconds": 9.725,
+      "sha256": "d4ae4e68e712c1095899b7c381b163866f4903cee6fb635a459f28cef8f9e89f",
+      "sourcePeak": 0.608546,
+      "sourceRms": 0.083377
+    },
+    {
+      "key": "e44f70dcb59463049cd523156fb8321e441dfff5402f4dbabff48d9265105214",
+      "text": "Move. Open a little seed hand. On an adult-checked route open and safe after dark, stay beside your grown-up on a well-lit, level path with both feet planted. Gently close one hand, then slowly open it like a seed sprouting. Count the fingers as they open. Leave plants untouched.",
+      "file": "./assets/narration/bella-v1/e44f70dcb59463049cd523156fb8321e441dfff5402f4dbabff48d9265105214.mp3",
+      "bytes": 187028,
+      "seconds": 20.3,
+      "sha256": "391d6fc8d3628051580df7b5fe753160a45e46d23a6458d8cfb46dfd6b15b4f2",
+      "sourcePeak": 0.774105,
+      "sourceRms": 0.091114
+    },
+    {
+      "key": "1a503638dc996e03f6b8b0151158e42521a9d873603d719ad2e313a9da1ec6be",
+      "text": "Safe alternative: Seated indoors, open one finger comfortably, or count as a grown-up slowly opens their hand.",
+      "file": "./assets/narration/bella-v1/1a503638dc996e03f6b8b0151158e42521a9d873603d719ad2e313a9da1ec6be.mp3",
+      "bytes": 79700,
+      "seconds": 8.925,
+      "sha256": "ba30e0da343f01dabdd993efb6eb888c8149dfa019524df4aa5662271db6e92b",
+      "sourcePeak": 0.714654,
+      "sourceRms": 0.084326
+    },
+    {
+      "key": "929101fc2b2576efc361af0de9b7a709cbf0c8cf10f1df4c497af95bddc9b535",
+      "text": "Move. Make an owl-wing shape. On an adult-checked route open and safe after dark, stay still together on the well-lit path with both feet planted. Gently spread your fingers into a small owl-wing shape and let the family copy it. No hooting, balancing or seeking real owls.",
+      "file": "./assets/narration/bella-v1/929101fc2b2576efc361af0de9b7a709cbf0c8cf10f1df4c497af95bddc9b535.mp3",
+      "bytes": 183020,
+      "seconds": 19.975,
+      "sha256": "6b753e9ccfd10901e0aaadaa0564815c977fb3d04f82eca15d8143b3ad89e6ef",
+      "sourcePeak": 0.722793,
+      "sourceRms": 0.090083
+    },
+    {
+      "key": "d0c6eb4cd8e2918c8bf9d09454bf92520cc8c0760353603020fda6e5e5d5b946",
+      "text": "Safe alternative: Seated indoors, open one hand if comfortable, or choose which hand a grown-up opens into a wing.",
+      "file": "./assets/narration/bella-v1/d0c6eb4cd8e2918c8bf9d09454bf92520cc8c0760353603020fda6e5e5d5b946.mp3",
+      "bytes": 83108,
+      "seconds": 9.125,
+      "sha256": "7eb712203efd5eb8b3adc6b1cf7875b0fec7c7abab614db71d3f52fc57cfa93f",
+      "sourcePeak": 0.726615,
+      "sourceRms": 0.083588
+    },
+    {
+      "key": "26ab9d4461144c85bb4345381dd258dc6b04e269f521759cf707281e9fd5278c",
+      "text": "Imagine. Be our kind path guardian. On an adult-checked route open and safe after dark, pause together on the well-lit path. Give your family a kind reminder to stay together and leave nature untouched. Make a small “together” hand signal for everyone to copy, then let your grown-up lead onward.",
+      "file": "./assets/narration/bella-v1/26ab9d4461144c85bb4345381dd258dc6b04e269f521759cf707281e9fd5278c.mp3",
+      "bytes": 191804,
+      "seconds": 20.925,
+      "sha256": "f62d722245e6d519b39d1fa0ad98f0a559fe0c5d290a9e6a5dba3a69d8ceb6cd",
+      "sourcePeak": 0.807468,
+      "sourceRms": 0.088604
+    },
+    {
+      "key": "351d868701a991b93cf48518095e839ece8f1f9b322028acf72a88a1805d2e12",
+      "text": "Safe alternative: Seated indoors, choose a kind explorer reminder and teach the family a small hand signal or word for it.",
+      "file": "./assets/narration/bella-v1/351d868701a991b93cf48518095e839ece8f1f9b322028acf72a88a1805d2e12.mp3",
+      "bytes": 87980,
+      "seconds": 9.725,
+      "sha256": "db2c4c5e57e6a7bc6d934f19bf3a22436f9c4df157620491d887560bde8fb312",
+      "sourcePeak": 0.54748,
+      "sourceRms": 0.080478
+    },
+    {
+      "key": "44ab5c82c92fa76bc072b7295879c30856d9b60a98cd772c4d82169e65fa8d4c",
+      "text": "Imagine. Make a leaf-shaped design. On an adult-checked route open and safe after dark, stay together in a well-lit stopping spot on the path. Look at a leaf already visible, leaving it untouched. Copy its shape with your hands and give the design a moon-boat name. If no leaf is clear, use the shape of your own hand. Stay away from water.",
+      "file": "./assets/narration/bella-v1/44ab5c82c92fa76bc072b7295879c30856d9b60a98cd772c4d82169e65fa8d4c.mp3",
+      "bytes": 215996,
+      "seconds": 23.4,
+      "sha256": "7c2105743c13f4b2ed59b59a6efa711e635b9ece1342dfcc2611d94ba6cf755a",
+      "sourcePeak": 0.763569,
+      "sourceRms": 0.087749
+    },
+    {
+      "key": "e48c1b0b38204c6d72bace2eec59adaca83f0567f376ea9b643430349c0e88c5",
+      "text": "Safe alternative: Seated indoors, spread one hand and trace its outline with a finger from your other hand, or direct a grown-up to trace their own.",
+      "file": "./assets/narration/bella-v1/e48c1b0b38204c6d72bace2eec59adaca83f0567f376ea9b643430349c0e88c5.mp3",
+      "bytes": 100892,
+      "seconds": 10.85,
+      "sha256": "150d4aac2fdf498e9dbd6599fef7b194a180fa58cca1f8cc1dd3ad2c3e6b485d",
+      "sourcePeak": 0.627462,
+      "sourceRms": 0.083055
+    },
+    {
+      "key": "b81bba6d780284f33a1b105bfacd643139798b358be39e00b93aa26b7aeea6a0",
+      "text": "Solve. Find a matching pair. On an adult-checked route open and safe after dark, stop together on the well-lit path. Point to two leaves with similar shapes already visible from your spot. Leave every leaf and living thing untouched. If none are clear, compare the two sleeves of your own coat instead.",
+      "file": "./assets/narration/bella-v1/b81bba6d780284f33a1b105bfacd643139798b358be39e00b93aa26b7aeea6a0.mp3",
+      "bytes": 193100,
+      "seconds": 20.825,
+      "sha256": "fb1d95cf82b8ed2989e1c430e34f0a2b0911ab2ba0ded76c7fbce461e642f4e9",
+      "sourcePeak": 1.096025,
+      "sourceRms": 0.089439
+    },
+    {
+      "key": "6f977dcdccdcd845441f925cb9b8625d461021ee06e85ef4421555558bb4c081",
+      "text": "Safe alternative: Seated indoors, compare your own two sleeves or shoes. Find one thing that matches.",
+      "file": "./assets/narration/bella-v1/6f977dcdccdcd845441f925cb9b8625d461021ee06e85ef4421555558bb4c081.mp3",
+      "bytes": 74852,
+      "seconds": 8.25,
+      "sha256": "000a25ebeaef5807e50c2da23df72bbb217c74f63bb8b6fedc39ce77e002d721",
+      "sourcePeak": 0.776012,
+      "sourceRms": 0.082392
+    },
+    {
+      "key": "b4c22068b980a199a71c53fa28c50de1ee202953a695b3cc930828356ff6a6db",
+      "text": "Solve. Practise our safe-stop plan. On an adult-checked route open and safe after dark, stay together on the well-lit path. Tell your grown-up the order: stop safely together, look at the card, put the screen away before moving. After this challenge, help check the screen is away and wait for your grown-up’s lead.",
+      "file": "./assets/narration/bella-v1/b4c22068b980a199a71c53fa28c50de1ee202953a695b3cc930828356ff6a6db.mp3",
+      "bytes": 197948,
+      "seconds": 21.525,
+      "sha256": "dac11039ac0f529095cd79d8232733ea24253d90ab0f3452a279abb375332036",
+      "sourcePeak": 0.995879,
+      "sourceRms": 0.088496
+    },
+    {
+      "key": "78d8694032b2490a4f4dbb3dc92fd1904d4c7cd2e1846a824e80cf891b9f3cb2",
+      "text": "Safe alternative: Seated indoors, tell a grown-up the three steps, then practise putting the screen down while everyone stays seated.",
+      "file": "./assets/narration/bella-v1/78d8694032b2490a4f4dbb3dc92fd1904d4c7cd2e1846a824e80cf891b9f3cb2.mp3",
+      "bytes": 86252,
+      "seconds": 9.45,
+      "sha256": "1eee78485603d31fa61bf196a277f26b7c89b2a28f706da5fdc47f7d226a81f9",
+      "sourcePeak": 0.692409,
+      "sourceRms": 0.085992
+    },
+    {
+      "key": "b1616fca64e51bcd9a44b616a89cec3278fd2091b31dc23e061f4fcc68f1999e",
+      "text": "The Emerald Crystal. Our first crystal is sleeping! Three forest colours will wake it up. Look with your eyes and point from the path.",
+      "file": "./assets/narration/bella-v1/b1616fca64e51bcd9a44b616a89cec3278fd2091b31dc23e061f4fcc68f1999e.mp3",
+      "bytes": 87380,
+      "seconds": 9.55,
+      "sha256": "7491fda796e3feebda5d2ed951e33beccbf4e046e70e884a5553d74cd4cad773",
+      "sourcePeak": 0.694707,
+      "sourceRms": 0.08546
+    },
+    {
+      "key": "5551b72516c62bdc8345605d7ec3dde30d19eb8896c2704dcbe6a6903d9684dd",
+      "text": "Spot something green.",
+      "file": "./assets/narration/bella-v1/5551b72516c62bdc8345605d7ec3dde30d19eb8896c2704dcbe6a6903d9684dd.mp3",
+      "bytes": 17228,
+      "seconds": 2.2,
+      "sha256": "565772f6f78239e9026ae7014b2a3189f102d0b808fb4b8e49a36eb6f03b1db7",
+      "sourcePeak": 0.544449,
+      "sourceRms": 0.062263
+    },
+    {
+      "key": "8067974230bda70ffd01563d8cfbb72be75d232a9eb8120f355d074c904d98fe",
+      "text": "Spot a green leaf on a tree.",
+      "file": "./assets/narration/bella-v1/8067974230bda70ffd01563d8cfbb72be75d232a9eb8120f355d074c904d98fe.mp3",
+      "bytes": 19652,
+      "seconds": 2.525,
+      "sha256": "3c009754bf050b6991daffa7f35c3f29df211761bafdd1530c3831456d11230c",
+      "sourcePeak": 0.551502,
+      "sourceRms": 0.072857
+    },
+    {
+      "key": "156eb23c11f150353431e81e6e122aa5d6f3c6efd580cc05949d9458a97acc80",
+      "text": "Point to any colour you can see.",
+      "file": "./assets/narration/bella-v1/156eb23c11f150353431e81e6e122aa5d6f3c6efd580cc05949d9458a97acc80.mp3",
+      "bytes": 20084,
+      "seconds": 2.6,
+      "sha256": "48fb9314e6dc4bb290a76d34599cea1dd42ca10fb4bd731244f7e51794a2e4a3",
+      "sourcePeak": 0.636244,
+      "sourceRms": 0.070796
+    },
+    {
+      "key": "ade9d8cbb82a042265d9e9c094d3bfcd2fcbd20dfb92ea13def96657dd0af0f1",
+      "text": "Spot yellow or orange.",
+      "file": "./assets/narration/bella-v1/ade9d8cbb82a042265d9e9c094d3bfcd2fcbd20dfb92ea13def96657dd0af0f1.mp3",
+      "bytes": 19412,
+      "seconds": 2.5,
+      "sha256": "0941a9444e903405d35eddd210f79446264d9bb461aaf3d3490e2399eefaf157",
+      "sourcePeak": 0.454863,
+      "sourceRms": 0.059411
+    },
+    {
+      "key": "f3914652ea6403740fda81702f16e7419e77946eaf1da3c663dc7ae01b653cd4",
+      "text": "Look for a yellow or orange leaf.",
+      "file": "./assets/narration/bella-v1/f3914652ea6403740fda81702f16e7419e77946eaf1da3c663dc7ae01b653cd4.mp3",
+      "bytes": 24836,
+      "seconds": 3.125,
+      "sha256": "0feac195014f7211f02ef130947c50f76eb53c98f64625de36e2976d41731e9e",
+      "sourcePeak": 0.621664,
+      "sourceRms": 0.069115
+    },
+    {
+      "key": "2ffaf3eaaa76bfb87bbd57b0b0bc53d519bf876409498eef062218f589ad941f",
+      "text": "Find something lighter than a tree trunk.",
+      "file": "./assets/narration/bella-v1/2ffaf3eaaa76bfb87bbd57b0b0bc53d519bf876409498eef062218f589ad941f.mp3",
+      "bytes": 25244,
+      "seconds": 3.125,
+      "sha256": "cf6ccce5f718d0d1c26573da70c07a5d9a07ca332bdb2374086a8271cadafaa7",
+      "sourcePeak": 0.699203,
+      "sourceRms": 0.070884
+    },
+    {
+      "key": "f36e06ccf9aeabca69729340889d5723180a9ec5103f8abe645fb40b114b81a8",
+      "text": "Spot something brown.",
+      "file": "./assets/narration/bella-v1/f36e06ccf9aeabca69729340889d5723180a9ec5103f8abe645fb40b114b81a8.mp3",
+      "bytes": 17468,
+      "seconds": 2.275,
+      "sha256": "dc822482525a04e7829f7610c6b8e88129f8907a9a32544ecb7a21927d02382b",
+      "sourcePeak": 0.528334,
+      "sourceRms": 0.060023
+    },
+    {
+      "key": "010126bcfdccc9c748e4ef8c343cf5ba302fd14859ff51c4bfecd0e1a2fe3d84",
+      "text": "Look for a brown tree trunk.",
+      "file": "./assets/narration/bella-v1/010126bcfdccc9c748e4ef8c343cf5ba302fd14859ff51c4bfecd0e1a2fe3d84.mp3",
+      "bytes": 19724,
+      "seconds": 2.55,
+      "sha256": "a8b5ab855b8d3c4a4f837f487733398a31d3b98b9d0c641c356ababe6ed5912a",
+      "sourcePeak": 0.555932,
+      "sourceRms": 0.067219
+    },
+    {
+      "key": "20fc6b07ba7205e2e73d41ffac79076105c15d54dbd28c2df8b817cc8641fa3b",
+      "text": "Find a darker colour in nature.",
+      "file": "./assets/narration/bella-v1/20fc6b07ba7205e2e73d41ffac79076105c15d54dbd28c2df8b817cc8641fa3b.mp3",
+      "bytes": 20588,
+      "seconds": 2.625,
+      "sha256": "82b9060ad069021468d1d93228a50585ccb430c09e5e4551e9765fb27afdaacf",
+      "sourcePeak": 0.65888,
+      "sourceRms": 0.067868
+    },
+    {
+      "key": "3e41f4b82e06c976c15acf89996bb760875b0e35c322f217f8fb214564b6f8b4",
+      "text": "The Ancient Stone Kingdom. A gentle stone giant has a riddle. Find shapes and patterns you can see safely from the path. No picking up rocks or climbing!",
+      "file": "./assets/narration/bella-v1/3e41f4b82e06c976c15acf89996bb760875b0e35c322f217f8fb214564b6f8b4.mp3",
+      "bytes": 106820,
+      "seconds": 11.7,
+      "sha256": "017e7713fecee41a3d5c476e63b3a92b83b618f3792ecdc48c09188c3a52d019",
+      "sourcePeak": 0.835547,
+      "sourceRms": 0.088117
+    },
+    {
+      "key": "bbd04abead709e95cec9161842a06770f76f448a1bbed8523ea52b877868d676",
+      "text": "Spot a rock with a pattern.",
+      "file": "./assets/narration/bella-v1/bbd04abead709e95cec9161842a06770f76f448a1bbed8523ea52b877868d676.mp3",
+      "bytes": 19268,
+      "seconds": 2.45,
+      "sha256": "c24755b4de2e878bdd52488a00bf2e7381a36fb4abd8ad08bcb702a832574d9d",
+      "sourcePeak": 0.48051,
+      "sourceRms": 0.064891
+    },
+    {
+      "key": "04ac81182eac4299bb8897e275d138bf3f927231c52c12903bff08b01f16d9a3",
+      "text": "Find a patterned tree trunk.",
+      "file": "./assets/narration/bella-v1/04ac81182eac4299bb8897e275d138bf3f927231c52c12903bff08b01f16d9a3.mp3",
+      "bytes": 18788,
+      "seconds": 2.45,
+      "sha256": "8957847f566c94542d4aef9f094a8d9dc86f5e00eee608fc78b0ad59cd209529",
+      "sourcePeak": 0.652668,
+      "sourceRms": 0.068049
+    },
+    {
+      "key": "04fdb3a1193bb27dbdc99b1dc00d8d0cfb49b67dbf008713764f3627897ddb22",
+      "text": "Look for something with stripes or spots.",
+      "file": "./assets/narration/bella-v1/04fdb3a1193bb27dbdc99b1dc00d8d0cfb49b67dbf008713764f3627897ddb22.mp3",
+      "bytes": 25580,
+      "seconds": 3.125,
+      "sha256": "dbd17f5c565726d00321960563f10adde0587cb9d5f980d2f78af02cd7baad86",
+      "sourcePeak": 0.622914,
+      "sourceRms": 0.073169
+    },
+    {
+      "key": "ff123afae7187dbdad4895433fc47dfd791523062ab5eb691972b94494d162f2",
+      "text": "Find a round-looking stone.",
+      "file": "./assets/narration/bella-v1/ff123afae7187dbdad4895433fc47dfd791523062ab5eb691972b94494d162f2.mp3",
+      "bytes": 20756,
+      "seconds": 2.55,
+      "sha256": "f4b4e40adee3277aedd0fadc0105d3fc32c111a27b9f85bd6e5c2cc48b559245",
+      "sourcePeak": 0.690634,
+      "sourceRms": 0.064511
+    },
+    {
+      "key": "c9c1d92556b416988db6fec221e4692579f0109db2341631d11533eac4249437",
+      "text": "Find a round shape in nature.",
+      "file": "./assets/narration/bella-v1/c9c1d92556b416988db6fec221e4692579f0109db2341631d11533eac4249437.mp3",
+      "bytes": 20324,
+      "seconds": 2.575,
+      "sha256": "a8eb7b7f7b645061fcf44cca95aef01ecb4bc3e0b6b51885fe53f74bb5ba2028",
+      "sourcePeak": 0.679636,
+      "sourceRms": 0.068505
+    },
+    {
+      "key": "fa1ccdffc67a009050e0921b3b8f76d138383de430a0e2fec7de8813c23789ad",
+      "text": "Make a round stone shape with your hands.",
+      "file": "./assets/narration/bella-v1/fa1ccdffc67a009050e0921b3b8f76d138383de430a0e2fec7de8813c23789ad.mp3",
+      "bytes": 26276,
+      "seconds": 3.2,
+      "sha256": "054d635850d0ea0a6f8f4850c93e7ef1bf55d10c8877aede7a82aefe59e03e1e",
+      "sourcePeak": 0.556525,
+      "sourceRms": 0.071117
+    },
+    {
+      "key": "ca5cd72bca5a69ebb1973c4c0c187813412127f3348fbce4468788ccf1517871",
+      "text": "Point to a rock bigger than your shoe.",
+      "file": "./assets/narration/bella-v1/ca5cd72bca5a69ebb1973c4c0c187813412127f3348fbce4468788ccf1517871.mp3",
+      "bytes": 22412,
+      "seconds": 2.775,
+      "sha256": "62de5539c35cbf11c9dd114f2b394020e08e1a7145aecf2271f1ebe5e844a40e",
+      "sourcePeak": 0.547628,
+      "sourceRms": 0.068085
+    },
+    {
+      "key": "e3eecc27398e1d19eb0cc25e3f85b2ae1a044afae596f1fc26b0a35ee4df49c8",
+      "text": "Find a tree trunk wider than your shoe.",
+      "file": "./assets/narration/bella-v1/e3eecc27398e1d19eb0cc25e3f85b2ae1a044afae596f1fc26b0a35ee4df49c8.mp3",
+      "bytes": 25364,
+      "seconds": 3,
+      "sha256": "949a8a227c9ed89681fe4023b4345a4c4d5d55903566064d93f906e2fb6bf0e7",
+      "sourcePeak": 0.742169,
+      "sourceRms": 0.068334
+    },
+    {
+      "key": "a12ee61e54bdc78d405cb6bf8386ac01dc6c3fcd6ee52bc6022ac7ac303098fd",
+      "text": "Make a big shape with your arms.",
+      "file": "./assets/narration/bella-v1/a12ee61e54bdc78d405cb6bf8386ac01dc6c3fcd6ee52bc6022ac7ac303098fd.mp3",
+      "bytes": 20252,
+      "seconds": 2.575,
+      "sha256": "c3bf96cc3b0a965a427a83fda37c82cad2094dc096d42e58636b6c226d3431b5",
+      "sourcePeak": 0.522635,
+      "sourceRms": 0.071399
+    },
+    {
+      "key": "c6cbccabed804b55e9a14d52d1612640f4f5fc5cd092ff17f9d0bec401dd6377",
+      "text": "The Whispering Woodland. Shhh… the forest has a message. Stand safely beside a grown-up, use your listening ears, and keep your eyes open.",
+      "file": "./assets/narration/bella-v1/c6cbccabed804b55e9a14d52d1612640f4f5fc5cd092ff17f9d0bec401dd6377.mp3",
+      "bytes": 99716,
+      "seconds": 11.05,
+      "sha256": "5cda1e71c601965e70ad0af8f8764737e1224430bd6b049d9550627810ba4f00",
+      "sourcePeak": 0.683492,
+      "sourceRms": 0.085501
+    },
+    {
+      "key": "ccf5e5179320575fd8d82d039e91d0d8bd36645d5d15ac648b69a3ec505ab36b",
+      "text": "Listen for a bird call.",
+      "file": "./assets/narration/bella-v1/ccf5e5179320575fd8d82d039e91d0d8bd36645d5d15ac648b69a3ec505ab36b.mp3",
+      "bytes": 17852,
+      "seconds": 2.35,
+      "sha256": "31c83d5f7a4049a823666076ef5e90c63629fddb2df1a03930071b0b6142f5e3",
+      "sourcePeak": 0.552022,
+      "sourceRms": 0.069701
+    },
+    {
+      "key": "818a97b188cbd0acc63e26502b11da2742a05008443c2c5d8ee7b3558f6faa87",
+      "text": "Listen for any quiet outdoor sound.",
+      "file": "./assets/narration/bella-v1/818a97b188cbd0acc63e26502b11da2742a05008443c2c5d8ee7b3558f6faa87.mp3",
+      "bytes": 27332,
+      "seconds": 3.3,
+      "sha256": "c5eb04553371c7cbee4ba2fc5b10727366e26faa3333dd55a036fde890261c1a",
+      "sourcePeak": 0.659083,
+      "sourceRms": 0.070406
+    },
+    {
+      "key": "dab66f464d77d8ba517ad50afe69181fb8da69fc75d64c99f39ef525a728e146",
+      "text": "Rub your palms gently and listen to the sound.",
+      "file": "./assets/narration/bella-v1/dab66f464d77d8ba517ad50afe69181fb8da69fc75d64c99f39ef525a728e146.mp3",
+      "bytes": 32252,
+      "seconds": 3.925,
+      "sha256": "e309d717b84196595ff4563667b78bb077a7070364fb6ac3fe5353f9ce4afe17",
+      "sourcePeak": 0.62474,
+      "sourceRms": 0.076833
+    },
+    {
+      "key": "4301bd8583f814a8d7b8aac65e8ca7780d5c0ecc658d7521dc0175590adcae79",
+      "text": "Listen for rustling leaves.",
+      "file": "./assets/narration/bella-v1/4301bd8583f814a8d7b8aac65e8ca7780d5c0ecc658d7521dc0175590adcae79.mp3",
+      "bytes": 20300,
+      "seconds": 2.575,
+      "sha256": "487e3ab5649dcc493ef3e005d174b5cab281b4f0972abeb0bd346a8b4c30019f",
+      "sourcePeak": 0.550684,
+      "sourceRms": 0.0656
+    },
+    {
+      "key": "7538d3b1a0f32879fb26213a8671888cad335ad5ec0d794b393bec9c414c1028",
+      "text": "Listen to the breeze.",
+      "file": "./assets/narration/bella-v1/7538d3b1a0f32879fb26213a8671888cad335ad5ec0d794b393bec9c414c1028.mp3",
+      "bytes": 16316,
+      "seconds": 2.125,
+      "sha256": "de3fd2b012e65e92170f159182d0c12d4438c2304f6f2d5c80b92683e45f1e48",
+      "sourcePeak": 0.53982,
+      "sourceRms": 0.068962
+    },
+    {
+      "key": "c97e4fb159b76d5a25efeac4d6c7981f75c6ff8f1fe9d82ff282514ca8661aee",
+      "text": "Listen to your own gentle footsteps.",
+      "file": "./assets/narration/bella-v1/c97e4fb159b76d5a25efeac4d6c7981f75c6ff8f1fe9d82ff282514ca8661aee.mp3",
+      "bytes": 24044,
+      "seconds": 2.975,
+      "sha256": "c65095aaaa36d58d3ed9886f330ca0112aa9c24f48bc1cbcfa5701ec004cf98e",
+      "sourcePeak": 0.554122,
+      "sourceRms": 0.071933
+    },
+    {
+      "key": "df1ccc96afb007c8a535fc3748dba4437bd228aa2ed0f1cc6c3d7505e2b35251",
+      "text": "Listen quietly for 10 seconds.",
+      "file": "./assets/narration/bella-v1/df1ccc96afb007c8a535fc3748dba4437bd228aa2ed0f1cc6c3d7505e2b35251.mp3",
+      "bytes": 22844,
+      "seconds": 2.875,
+      "sha256": "ce63a98c0f7aaa5bf73e4043a78f8e71d67bace03c2711e782ba37e1991129c1",
+      "sourcePeak": 0.566968,
+      "sourceRms": 0.072772
+    },
+    {
+      "key": "703ba5100bd7483ad4e49eaba2e048b655ce9eeadd3fb2513e5902b080b38c39",
+      "text": "Count to five together in whispers.",
+      "file": "./assets/narration/bella-v1/703ba5100bd7483ad4e49eaba2e048b655ce9eeadd3fb2513e5902b080b38c39.mp3",
+      "bytes": 24212,
+      "seconds": 2.9,
+      "sha256": "6c22efe7fc7672c0d87444c12f09a26d5e334e7e4851153ac8ae411ecfe86533",
+      "sourcePeak": 0.413839,
+      "sourceRms": 0.062483
+    },
+    {
+      "key": "5b887ddc586a1674c3631b11d5dc21203fde88878df104b06b0ebf8e832dc6fa",
+      "text": "Listen to a grown-up softly tap their own palm.",
+      "file": "./assets/narration/bella-v1/5b887ddc586a1674c3631b11d5dc21203fde88878df104b06b0ebf8e832dc6fa.mp3",
+      "bytes": 34244,
+      "seconds": 4.05,
+      "sha256": "1100c1f4c884e5cc9dfc6e454a16cbfc72ef4bae475fafe07a07a779c1a1bcb0",
+      "sourcePeak": 0.613009,
+      "sourceRms": 0.075133
+    },
+    {
+      "key": "7be249966d4f8947de5e0b309f1ccb426962a9a0f61cb784a022a0a1d3e4e9dc",
+      "text": "The Escarpment Lookout. Our lookout is right here on the safe path! Look for tall trees and funny branch shapes. No stairs, edges, or climbing needed.",
+      "file": "./assets/narration/bella-v1/7be249966d4f8947de5e0b309f1ccb426962a9a0f61cb784a022a0a1d3e4e9dc.mp3",
+      "bytes": 101540,
+      "seconds": 11.175,
+      "sha256": "7e2d699e68917b6ba8650236e3872f82bdd283714cf20402a44f9629e8d2036e",
+      "sourcePeak": 0.702914,
+      "sourceRms": 0.087121
+    },
+    {
+      "key": "db347407343635988f9fe3e76ccff32490409b685eff8b17e45701279b4dcdfd",
+      "text": "Spot a tree taller than a house.",
+      "file": "./assets/narration/bella-v1/db347407343635988f9fe3e76ccff32490409b685eff8b17e45701279b4dcdfd.mp3",
+      "bytes": 21620,
+      "seconds": 2.625,
+      "sha256": "3c202b44b4fea7def8dc3054c20a50406f168afed26f45996a928040e70f829d",
+      "sourcePeak": 0.555938,
+      "sourceRms": 0.06311
+    },
+    {
+      "key": "144d6961f1d745624c1c01a986c52e236cd9865d5f06eea8505b707ec0b046bc",
+      "text": "Find the tallest tree you can see.",
+      "file": "./assets/narration/bella-v1/144d6961f1d745624c1c01a986c52e236cd9865d5f06eea8505b707ec0b046bc.mp3",
+      "bytes": 21428,
+      "seconds": 2.675,
+      "sha256": "5de2ff140a8a1dbfaaf9750cd65c46282a2ffd093a0c4f2acbf945d030b2d8b4",
+      "sourcePeak": 0.805104,
+      "sourceRms": 0.074492
+    },
+    {
+      "key": "14ee78f4d70eeebd4830ceb912ce00efe6963e10e3148c918fa059e2ef5e0199",
+      "text": "Stretch up tall like a tree.",
+      "file": "./assets/narration/bella-v1/14ee78f4d70eeebd4830ceb912ce00efe6963e10e3148c918fa059e2ef5e0199.mp3",
+      "bytes": 20564,
+      "seconds": 2.55,
+      "sha256": "74b0f493b7a654e86889c9b10c807e4639f1a408fc020ad484149342f370d064",
+      "sourcePeak": 0.641165,
+      "sourceRms": 0.065932
+    },
+    {
+      "key": "8d631998b4019052a068e97e5a68721689df5550dc80e3955248ec4715130ed7",
+      "text": "Find interesting tree bark.",
+      "file": "./assets/narration/bella-v1/8d631998b4019052a068e97e5a68721689df5550dc80e3955248ec4715130ed7.mp3",
+      "bytes": 21068,
+      "seconds": 2.6,
+      "sha256": "5fa962871e8d1d7d94b3d23717a0b32857d9fb05ee847044bdc5c55d02488d60",
+      "sourcePeak": 0.678228,
+      "sourceRms": 0.072131
+    },
+    {
+      "key": "93830c13c63c790c263f1eef29bf0b58e1ab094589966add830aa66c13918cf3",
+      "text": "Find a tree with two colours.",
+      "file": "./assets/narration/bella-v1/93830c13c63c790c263f1eef29bf0b58e1ab094589966add830aa66c13918cf3.mp3",
+      "bytes": 19604,
+      "seconds": 2.45,
+      "sha256": "52ee13ddea22a3e6b22f19c80e6dfdfea6ee7f9fb4b403bb43662d683112db0f",
+      "sourcePeak": 0.804281,
+      "sourceRms": 0.073813
+    },
+    {
+      "key": "604ca670b0aa6c1209ac866d800621056fed9ebdef518c7b9d00c103d3fae00d",
+      "text": "Look for a bumpy pattern in nature.",
+      "file": "./assets/narration/bella-v1/604ca670b0aa6c1209ac866d800621056fed9ebdef518c7b9d00c103d3fae00d.mp3",
+      "bytes": 24524,
+      "seconds": 2.95,
+      "sha256": "19dcc8aa92df8435d6c774ef4c0486a888019e0e5c0f26a25af13a3c075b7eb7",
+      "sourcePeak": 0.63553,
+      "sourceRms": 0.066664
+    },
+    {
+      "key": "c62d65e6731f27a0c53b9c191e2657937fc119b86e54c326f86acdf74fe8a4d1",
+      "text": "Spot a branch shaped like a letter.",
+      "file": "./assets/narration/bella-v1/c62d65e6731f27a0c53b9c191e2657937fc119b86e54c326f86acdf74fe8a4d1.mp3",
+      "bytes": 23468,
+      "seconds": 2.825,
+      "sha256": "0590bde46e575d5507ed4ae55c5bd6164bba62ee6786cc4b76e9a474777240fc",
+      "sourcePeak": 0.553172,
+      "sourceRms": 0.069108
+    },
+    {
+      "key": "d33b6ec8784cdfd717a5687da61e886928bed2574245967f3a06e15f82d3e3f0",
+      "text": "Find a branch that makes a Y.",
+      "file": "./assets/narration/bella-v1/d33b6ec8784cdfd717a5687da61e886928bed2574245967f3a06e15f82d3e3f0.mp3",
+      "bytes": 22652,
+      "seconds": 2.75,
+      "sha256": "62a5b146148f09219debc6ecc0a9b0f9af0bd94382b7a18d0c82d87240f3d950",
+      "sourcePeak": 0.698617,
+      "sourceRms": 0.068924
+    },
+    {
+      "key": "f47ca085600cb9dd24060a3d3b8921bfb1fefc15c2513f0805fd54830533b49a",
+      "text": "Make a Y with your arms.",
+      "file": "./assets/narration/bella-v1/f47ca085600cb9dd24060a3d3b8921bfb1fefc15c2513f0805fd54830533b49a.mp3",
+      "bytes": 17612,
+      "seconds": 2.275,
+      "sha256": "59d2293d50dfc06a5220e4a1d2a326928e1e161bcf16d5d896aca69bf3b4feb8",
+      "sourcePeak": 0.525271,
+      "sourceRms": 0.068569
+    },
+    {
+      "key": "7740e157ea0fae0b661e156697963d7becf344b1c6f3f05fd4e5a4d80a65c20d",
+      "text": "The Guardian’s Final Spell. One final crystal needs the whole team! Share your favourite discoveries and give the forest a friendly thank-you.",
+      "file": "./assets/narration/bella-v1/7740e157ea0fae0b661e156697963d7becf344b1c6f3f05fd4e5a4d80a65c20d.mp3",
+      "bytes": 92684,
+      "seconds": 10.35,
+      "sha256": "23f34cce0b90024a359e0965b9de0be0c47ed883c1373435d3730069f27b4f68",
+      "sourcePeak": 0.710653,
+      "sourceRms": 0.086112
+    },
+    {
+      "key": "997b8ddc3085156e25528a6032ec0c88351e05cb8337b7c78b1a42d52bbb3b8f",
+      "text": "Everyone shares a favourite find.",
+      "file": "./assets/narration/bella-v1/997b8ddc3085156e25528a6032ec0c88351e05cb8337b7c78b1a42d52bbb3b8f.mp3",
+      "bytes": 23852,
+      "seconds": 2.975,
+      "sha256": "955f34c4d32a88a60b4577aaabf0fe899653151f7710f677604e58ecff3a4174",
+      "sourcePeak": 0.659094,
+      "sourceRms": 0.062112
+    },
+    {
+      "key": "efbdb2cef401ccbe7e00b61e772aadb73a619ef12d9a029589d6f2a74e59ab43",
+      "text": "Everyone points to something they like.",
+      "file": "./assets/narration/bella-v1/efbdb2cef401ccbe7e00b61e772aadb73a619ef12d9a029589d6f2a74e59ab43.mp3",
+      "bytes": 24524,
+      "seconds": 3.025,
+      "sha256": "af07b4f299c8d3b97a478799786754c75510d2fd31b61fc9906aaadb8a6bbed6",
+      "sourcePeak": 0.705817,
+      "sourceRms": 0.063098
+    },
+    {
+      "key": "1f8102ba911c2abd038cddff30f8cc905cb209c4f2b85cc20cfbf10cd59112c2",
+      "text": "Each explorer points to a favourite colour nearby.",
+      "file": "./assets/narration/bella-v1/1f8102ba911c2abd038cddff30f8cc905cb209c4f2b85cc20cfbf10cd59112c2.mp3",
+      "bytes": 32540,
+      "seconds": 3.875,
+      "sha256": "8fe50433f9ae0dc0fb776c77ee44fe260be14cf9848c656f35a7c4cb0aad1327",
+      "sourcePeak": 0.555056,
+      "sourceRms": 0.068032
+    },
+    {
+      "key": "09ee44a397f9e2a0f11dd76f677455c5c7c7ef62edac890cc8588c707478f6b7",
+      "text": "Count five trees together.",
+      "file": "./assets/narration/bella-v1/09ee44a397f9e2a0f11dd76f677455c5c7c7ef62edac890cc8588c707478f6b7.mp3",
+      "bytes": 18404,
+      "seconds": 2.425,
+      "sha256": "893cd9f5dc1e539681736ccd534dc87fc7e21d6dbc41721647420b650941f4c2",
+      "sourcePeak": 0.456818,
+      "sourceRms": 0.066364
+    },
+    {
+      "key": "1924a15a3931d3c25dc2270529caa8217b1f78f988a03a56be916f118bb12707",
+      "text": "Count five leaves without picking them.",
+      "file": "./assets/narration/bella-v1/1924a15a3931d3c25dc2270529caa8217b1f78f988a03a56be916f118bb12707.mp3",
+      "bytes": 24356,
+      "seconds": 3.075,
+      "sha256": "1d3e432f2ebe325535dbf435270ff16e9784e719aee7df17b4e42726ed848c78",
+      "sourcePeak": 0.419868,
+      "sourceRms": 0.066221
+    },
+    {
+      "key": "4ba6f5ebec5e6a0c2305f53d8d5600bde055cc453bd6dfc4c40117e3940ac3e1",
+      "text": "Count your explorers together; use fingers to help.",
+      "file": "./assets/narration/bella-v1/4ba6f5ebec5e6a0c2305f53d8d5600bde055cc453bd6dfc4c40117e3940ac3e1.mp3",
+      "bytes": 33404,
+      "seconds": 4.025,
+      "sha256": "9ecae5ef50ef1f12b0e621647ddb26165a4997fc68c1396537ef3c55be5469fa",
+      "sourcePeak": 0.494817,
+      "sourceRms": 0.076717
+    },
+    {
+      "key": "064ae1be06cc97eca169dd2957f50fa1c5e423e463dd41ca1f8f5042614508a5",
+      "text": "Give the forest a thank-you wave.",
+      "file": "./assets/narration/bella-v1/064ae1be06cc97eca169dd2957f50fa1c5e423e463dd41ca1f8f5042614508a5.mp3",
+      "bytes": 22364,
+      "seconds": 2.825,
+      "sha256": "822f1282d898c532b82fe9ef9afced06a8ed5dc786cde0d80bafc9761ea51f6c",
+      "sourcePeak": 0.571885,
+      "sourceRms": 0.06526
+    },
+    {
+      "key": "3781e6310c9b5f4eb2dc3b38b5c81bbdf203da0ca350409c6d92a2752fa6f7fe",
+      "text": "Give your team a gentle high-five.",
+      "file": "./assets/narration/bella-v1/3781e6310c9b5f4eb2dc3b38b5c81bbdf203da0ca350409c6d92a2752fa6f7fe.mp3",
+      "bytes": 22628,
+      "seconds": 2.9,
+      "sha256": "6965a5629d60e1a4a6e6457f94c1b20d3f1087aaa6712af8d239be52f8c572fa",
+      "sourcePeak": 0.526062,
+      "sourceRms": 0.06465
+    },
+    {
+      "key": "49e209ed992a79acee4b50e3e25fa4b17fe876c5d718b357b6dd47dce769524b",
+      "text": "Say a quiet thank-you to the forest.",
+      "file": "./assets/narration/bella-v1/49e209ed992a79acee4b50e3e25fa4b17fe876c5d718b357b6dd47dce769524b.mp3",
+      "bytes": 23180,
+      "seconds": 2.825,
+      "sha256": "6425bbbe453ce5044c6ea8aa2eb914e8d5f91bbec2e318d810d482b722a847c8",
+      "sourcePeak": 0.450153,
+      "sourceRms": 0.069316
+    },
+    {
+      "key": "3f93b08a3eb2ec84e7cbb4cdc7a0cd73f38fcb863c15c17901a53857a5af9292",
+      "text": "The Rainbow Leaf Quest. The Guardian has a new adventure for you! Find a rainbow from your safe path: green, yellow, orange, red, then white. A missing colour? Swap that clue. Looking and pointing are enough!",
+      "file": "./assets/narration/bella-v1/3f93b08a3eb2ec84e7cbb4cdc7a0cd73f38fcb863c15c17901a53857a5af9292.mp3",
+      "bytes": 138044,
+      "seconds": 15.2,
+      "sha256": "99fbae6332a5ae569596b44676380005d355067b2ba730856ea8a26ea7967d81",
+      "sourcePeak": 0.76316,
+      "sourceRms": 0.090299
+    },
+    {
+      "key": "1d4f2cda2433eedc0cc9356d34d8c6617303f7681669d9dc5309389f11893ea3",
+      "text": "Find a green leaf.",
+      "file": "./assets/narration/bella-v1/1d4f2cda2433eedc0cc9356d34d8c6617303f7681669d9dc5309389f11893ea3.mp3",
+      "bytes": 14924,
+      "seconds": 2.075,
+      "sha256": "5f2828d8cf7f724b86916f5ddfd7c676d68d3aa209dcfb5a8f9ea3af9ea6939b",
+      "sourcePeak": 0.68432,
+      "sourceRms": 0.066394
+    },
+    {
+      "key": "1f7bf86aa755cafb697ef4d841b36ff230fbd3e9cb84210309e656c5ac80fff2",
+      "text": "Find something else green in nature.",
+      "file": "./assets/narration/bella-v1/1f7bf86aa755cafb697ef4d841b36ff230fbd3e9cb84210309e656c5ac80fff2.mp3",
+      "bytes": 24404,
+      "seconds": 2.975,
+      "sha256": "86b86d7df0e5b91f5d7b0d5f2dc5bcc1e6c5bf190b1f2f83faa7eaf960112954",
+      "sourcePeak": 0.725525,
+      "sourceRms": 0.070237
+    },
+    {
+      "key": "c1fc454afdc2b199545f7f87a9cdefdd3b03a84688b5c1fa8e400a094e5376f1",
+      "text": "Point to a colour on your clothes.",
+      "file": "./assets/narration/bella-v1/c1fc454afdc2b199545f7f87a9cdefdd3b03a84688b5c1fa8e400a094e5376f1.mp3",
+      "bytes": 20708,
+      "seconds": 2.6,
+      "sha256": "5587185bbaa07fb518d55d8e849bd57626ce43d60e098d1782acc2c1426da3f9",
+      "sourcePeak": 0.567285,
+      "sourceRms": 0.068101
+    },
+    {
+      "key": "620f5885b7c2aff0fcc52706d2906fd9f8b3387aa2adde376a37c6186fa2f9b6",
+      "text": "Find a yellow leaf.",
+      "file": "./assets/narration/bella-v1/620f5885b7c2aff0fcc52706d2906fd9f8b3387aa2adde376a37c6186fa2f9b6.mp3",
+      "bytes": 15212,
+      "seconds": 2.125,
+      "sha256": "7145fbf3d2f2dda11507e03db9044b789cbf79a3737849955157631e945f7c7e",
+      "sourcePeak": 0.682267,
+      "sourceRms": 0.063508
+    },
+    {
+      "key": "ded6de842ec6146aa705e2a85e9b80ee15b4b7a7e701a20501f1ec80d0fa4860",
+      "text": "Find something else yellow in nature.",
+      "file": "./assets/narration/bella-v1/ded6de842ec6146aa705e2a85e9b80ee15b4b7a7e701a20501f1ec80d0fa4860.mp3",
+      "bytes": 24956,
+      "seconds": 2.975,
+      "sha256": "ef30a8cad2c87a7781807346c9e7dc07b02c5c3026a8a84601075a2308699835",
+      "sourcePeak": 0.694659,
+      "sourceRms": 0.066723
+    },
+    {
+      "key": "9c0b61e37b2260b8e05ff3642aa07c3cba838fc1d52d449972cc5e08bbc0f391",
+      "text": "Spread your fingers like rays of sunshine.",
+      "file": "./assets/narration/bella-v1/9c0b61e37b2260b8e05ff3642aa07c3cba838fc1d52d449972cc5e08bbc0f391.mp3",
+      "bytes": 29444,
+      "seconds": 3.425,
+      "sha256": "77c2f861e09b9bc5aa058147c24a03b1f0034936aa7c2a68a76e3d579d4a1bbc",
+      "sourcePeak": 0.632193,
+      "sourceRms": 0.069974
+    },
+    {
+      "key": "8f1694b8153eee538a6ecdb89e4a3b8aaaedb900a568d475c21e293d6306a8e6",
+      "text": "Find an orange leaf.",
+      "file": "./assets/narration/bella-v1/8f1694b8153eee538a6ecdb89e4a3b8aaaedb900a568d475c21e293d6306a8e6.mp3",
+      "bytes": 17612,
+      "seconds": 2.275,
+      "sha256": "b3f63d08926cfb049c2bf1c446b7b51cd968eb54fb7ff28ab0a4906bdcb8e857",
+      "sourcePeak": 0.700516,
+      "sourceRms": 0.068248
+    },
+    {
+      "key": "f1cce93835570ae7fcf5f43c42e044c0210d33a68580c0119eff5adac2547088",
+      "text": "Find something else orange in nature.",
+      "file": "./assets/narration/bella-v1/f1cce93835570ae7fcf5f43c42e044c0210d33a68580c0119eff5adac2547088.mp3",
+      "bytes": 25124,
+      "seconds": 3.075,
+      "sha256": "7153cdbd333a6ae1e0cce3acd9ff9a38d924e5730274396fee989558104b1f2e",
+      "sourcePeak": 0.782261,
+      "sourceRms": 0.067306
+    },
+    {
+      "key": "2976a8e87aa26e72bc9fc1e23110cb8e39c4965c9ddd0e711c509294f6c2dd7e",
+      "text": "Make quiet fox ears with your hands.",
+      "file": "./assets/narration/bella-v1/2976a8e87aa26e72bc9fc1e23110cb8e39c4965c9ddd0e711c509294f6c2dd7e.mp3",
+      "bytes": 26276,
+      "seconds": 3.175,
+      "sha256": "8dc1d0e5b2a61b786bfc8fb7c3db8804dc91fd59118bc1f9166c2c1a6da493a6",
+      "sourcePeak": 0.560383,
+      "sourceRms": 0.074393
+    },
+    {
+      "key": "07d7738ac530cb4f82691fee0e9f30b656d240ff16187732616f69d0be6f913d",
+      "text": "Find a red leaf.",
+      "file": "./assets/narration/bella-v1/07d7738ac530cb4f82691fee0e9f30b656d240ff16187732616f69d0be6f913d.mp3",
+      "bytes": 15356,
+      "seconds": 2.05,
+      "sha256": "e6f258c0e64cb8c909ef01d82d8db23704c18e4cbd1ffb00f3454fc6016102e1",
+      "sourcePeak": 0.65142,
+      "sourceRms": 0.065214
+    },
+    {
+      "key": "bab6096827d4d858587e31d008c3a5ea60bdb42bb9f93513a87fe986854619f9",
+      "text": "Find something else red in nature.",
+      "file": "./assets/narration/bella-v1/bab6096827d4d858587e31d008c3a5ea60bdb42bb9f93513a87fe986854619f9.mp3",
+      "bytes": 23876,
+      "seconds": 2.875,
+      "sha256": "7356915a198d07148b07b172365f17ee7650edb11f6cc2df031175df642a8cac",
+      "sourcePeak": 0.676726,
+      "sourceRms": 0.066797
+    },
+    {
+      "key": "f4b0c8d46b5267e751560df52e12a411164c552eee033d2457d68ddd88e21cb5",
+      "text": "Point to a colour different from your last find.",
+      "file": "./assets/narration/bella-v1/f4b0c8d46b5267e751560df52e12a411164c552eee033d2457d68ddd88e21cb5.mp3",
+      "bytes": 30116,
+      "seconds": 3.7,
+      "sha256": "0dae221b8ff1c214d9e125296bca13a22ddf5ab15c3bec8a2400c234b2aefa40",
+      "sourcePeak": 0.558095,
+      "sourceRms": 0.074741
+    },
+    {
+      "key": "834bdc4f1e1bc9fb369fe869692a14476c04344e8300bba722a44655bdd6b1e0",
+      "text": "Find something white.",
+      "file": "./assets/narration/bella-v1/834bdc4f1e1bc9fb369fe869692a14476c04344e8300bba722a44655bdd6b1e0.mp3",
+      "bytes": 16004,
+      "seconds": 2.15,
+      "sha256": "0752d0602d03b1ea4db9aa9b1527d18830d8d48d7340d0995bc1ff8a629afae1",
+      "sourcePeak": 0.645522,
+      "sourceRms": 0.067463
+    },
+    {
+      "key": "83cbdfa814465ccd00ce026c467c2e5f55e1f114b892e42bbc59fbc6adbbaccc",
+      "text": "Spot a white cloud without looking at the sun.",
+      "file": "./assets/narration/bella-v1/83cbdfa814465ccd00ce026c467c2e5f55e1f114b892e42bbc59fbc6adbbaccc.mp3",
+      "bytes": 29804,
+      "seconds": 3.575,
+      "sha256": "2f823b22c19c8cd6649796b39f58187452311c5a729f583e4982dee62545103e",
+      "sourcePeak": 0.476076,
+      "sourceRms": 0.071806
+    },
+    {
+      "key": "7f759cc74b30854919a9d471852f649f000f48cc536fdd4ef6352db0da286025",
+      "text": "Find the lightest colour on your clothes.",
+      "file": "./assets/narration/bella-v1/7f759cc74b30854919a9d471852f649f000f48cc536fdd4ef6352db0da286025.mp3",
+      "bytes": 24908,
+      "seconds": 3,
+      "sha256": "baf56a72370826cab51ea7bd8e23797e285cb43e2af4d8dee1cda40abf4e48c1",
+      "sourcePeak": 0.653466,
+      "sourceRms": 0.068676
+    },
+    {
+      "key": "5862b7149beb13b5184deb16e843cb2065ce13c9ae045bff1738d4d33d27b4dd",
+      "text": "The Forest Treasure Hunt. The best treasures are the things that make you smile. Look for little forest wonders, notice their shapes and patterns, and leave every real treasure where it belongs.",
+      "file": "./assets/narration/bella-v1/5862b7149beb13b5184deb16e843cb2065ce13c9ae045bff1738d4d33d27b4dd.mp3",
+      "bytes": 120164,
+      "seconds": 13.125,
+      "sha256": "175589c666b65a0cc81d60d6ef37e16ecd05168d8a8d744cc49feb9f0755fda9",
+      "sourcePeak": 0.887264,
+      "sourceRms": 0.08882
+    },
+    {
+      "key": "da683da946ae3cf173e139bea90215098b18be7ad5d5ff5b2a75c677f754d813",
+      "text": "Spot a pine cone from the path. Look without picking it up.",
+      "file": "./assets/narration/bella-v1/da683da946ae3cf173e139bea90215098b18be7ad5d5ff5b2a75c677f754d813.mp3",
+      "bytes": 38036,
+      "seconds": 4.475,
+      "sha256": "b07e36c2acd777499735d7973198cd9710c0a3870c91a93eb37f99bb27f0007c",
+      "sourcePeak": 0.609408,
+      "sourceRms": 0.075901
+    },
+    {
+      "key": "d02c765a65ebc0347c82d8a342ac7424a27c9d676c6f39ead977ca3b1a6720dc",
+      "text": "Spot a cone on a tree from the path. Look without picking it up.",
+      "file": "./assets/narration/bella-v1/d02c765a65ebc0347c82d8a342ac7424a27c9d676c6f39ead977ca3b1a6720dc.mp3",
+      "bytes": 38492,
+      "seconds": 4.575,
+      "sha256": "32841f2fc6e657a3b575a419e68689d27e69ed2327f932b485d0bef1fb4cf4cb",
+      "sourcePeak": 0.673393,
+      "sourceRms": 0.077134
+    },
+    {
+      "key": "04357fc8cec17a863285b61fbc1cccb748e4411dce9ae4ad6c8b7a4c4ae8d803",
+      "text": "Make a pine cone shape with your hands. Look without picking it up.",
+      "file": "./assets/narration/bella-v1/04357fc8cec17a863285b61fbc1cccb748e4411dce9ae4ad6c8b7a4c4ae8d803.mp3",
+      "bytes": 40508,
+      "seconds": 4.75,
+      "sha256": "c5690fe3c6d2a2ec942e379febfc4c49eef9cd051502aa88b346d046ce736495",
+      "sourcePeak": 0.641766,
+      "sourceRms": 0.080914
+    },
+    {
+      "key": "375dd5191660733dd46a931c5063811a46cef55a7265046d571e1122f4207d8b",
+      "text": "Spot a mark on a nut or acorn from the path. Notice a line, dot or other natural pattern without moving closer. Do not draw on it, pick it up or put nuts in your mouth.",
+      "file": "./assets/narration/bella-v1/375dd5191660733dd46a931c5063811a46cef55a7265046d571e1122f4207d8b.mp3",
+      "bytes": 114140,
+      "seconds": 12.65,
+      "sha256": "4f8fcbc5637e1b050274bf922f29071e79c83577075cbf80a19288c6ba7b84fa",
+      "sourcePeak": 0.773754,
+      "sourceRms": 0.085974
+    },
+    {
+      "key": "0396f2b170093b0ab8a3dac1d911350ce334c8b6ffaa276fed040f7933813714",
+      "text": "Point to two marks on a tree trunk. Notice a line, dot or other natural pattern without moving closer. Do not draw on it, pick it up or put nuts in your mouth.",
+      "file": "./assets/narration/bella-v1/0396f2b170093b0ab8a3dac1d911350ce334c8b6ffaa276fed040f7933813714.mp3",
+      "bytes": 103868,
+      "seconds": 11.575,
+      "sha256": "19bf33da43769fa11f2d536ca6043d7fb2fd44241fbc4a7300994130028b1f02",
+      "sourcePeak": 0.699102,
+      "sourceRms": 0.086165
+    },
+    {
+      "key": "4e28f74e98b6b085499f482971f7b6a8712fe78cc33a428a20aa4f0ceccb0e05",
+      "text": "Pull a silly face for your family to copy. Notice a line, dot or other natural pattern without moving closer. Do not draw on it, pick it up or put nuts in your mouth.",
+      "file": "./assets/narration/bella-v1/4e28f74e98b6b085499f482971f7b6a8712fe78cc33a428a20aa4f0ceccb0e05.mp3",
+      "bytes": 110756,
+      "seconds": 12.325,
+      "sha256": "bf3071201c526c8535bc717184d30098e98b26ccb5a932e38ee25a34aa87ed0c",
+      "sourcePeak": 0.620461,
+      "sourceRms": 0.085867
+    },
+    {
+      "key": "c8c388060d433bd0516f7ca59c5b24cae0011afacc458c9bc3a09f6fba543e54",
+      "text": "Find something you think is a treasure. Your treasure stays in nature; the crystal is the treasure you collect in the game.",
+      "file": "./assets/narration/bella-v1/c8c388060d433bd0516f7ca59c5b24cae0011afacc458c9bc3a09f6fba543e54.mp3",
+      "bytes": 74252,
+      "seconds": 8.175,
+      "sha256": "332079cfcf6bb7695304e65b4a3c0525c04da15c4c9309b40aa776f674d7b8b0",
+      "sourcePeak": 0.756064,
+      "sourceRms": 0.082289
+    },
+    {
+      "key": "b3ce9d715607c216e574a6ca59570118f2241150212de16b8a1f9847199adcdd",
+      "text": "Point to your favourite nature discovery. Your treasure stays in nature; the crystal is the treasure you collect in the game.",
+      "file": "./assets/narration/bella-v1/b3ce9d715607c216e574a6ca59570118f2241150212de16b8a1f9847199adcdd.mp3",
+      "bytes": 78044,
+      "seconds": 8.6,
+      "sha256": "9252372c8a1a763a5017ed62bdd0124d5d6e5f7275b583a93e620a39c587566f",
+      "sourcePeak": 0.695113,
+      "sourceRms": 0.082575
+    },
+    {
+      "key": "2e63b097551e01e1130166ba7af6981f84b427b7658530900e17d26be9647f80",
+      "text": "Point to two things you can see and choose a favourite. Your treasure stays in nature; the crystal is the treasure you collect in the game.",
+      "file": "./assets/narration/bella-v1/2e63b097551e01e1130166ba7af6981f84b427b7658530900e17d26be9647f80.mp3",
+      "bytes": 84404,
+      "seconds": 9.3,
+      "sha256": "96c9c16ca38a098ed252a01710524672f3f27f1d77ea87cda92664d3ddf8bd8e",
+      "sourcePeak": 0.771181,
+      "sourceRms": 0.082544
+    },
+    {
+      "key": "f90435c69f40a45321ac7fdc85816507861e6b7ffa81c52e9557b84659d88df6",
+      "text": "The Tiny World Detectives. Put on your pretend detective hats! Look for a spider web, a little bug, and something hanging in a tree. Tiny homes and creatures need lots of space.",
+      "file": "./assets/narration/bella-v1/f90435c69f40a45321ac7fdc85816507861e6b7ffa81c52e9557b84659d88df6.mp3",
+      "bytes": 117452,
+      "seconds": 13.025,
+      "sha256": "0b28dad473dd6dd25fb3e4459e8b866986f68b9407fc37ebaceac0e8ae8e56b9",
+      "sourcePeak": 0.730459,
+      "sourceRms": 0.087624
+    },
+    {
+      "key": "591ceb19bcb13aeaa5e86490b59f41cab0d3de80fd6d52e30a933bc9fc0268e5",
+      "text": "Find a spider web. Look from a distance. Do not touch the web or its spider.",
+      "file": "./assets/narration/bella-v1/591ceb19bcb13aeaa5e86490b59f41cab0d3de80fd6d52e30a933bc9fc0268e5.mp3",
+      "bytes": 55028,
+      "seconds": 6.1,
+      "sha256": "5e9f115d51170aec13283da973f3cee3e9448f4b3ea3b285713aa37258a12d76",
+      "sourcePeak": 0.601324,
+      "sourceRms": 0.081675
+    },
+    {
+      "key": "d79ccaff79b7371ff5e29a7446e33fc12e041fbeca9fb3d9e8e43e60d62d8edc",
+      "text": "Find a web-like pattern on bark. Look from a distance. Do not touch the web or its spider.",
+      "file": "./assets/narration/bella-v1/d79ccaff79b7371ff5e29a7446e33fc12e041fbeca9fb3d9e8e43e60d62d8edc.mp3",
+      "bytes": 63260,
+      "seconds": 6.975,
+      "sha256": "f4c197293b8f4dabb9378803e3d083dcc1658d9dc80ce12dbbb6f5e6e8fd151d",
+      "sourcePeak": 0.671491,
+      "sourceRms": 0.080945
+    },
+    {
+      "key": "ed6651ef50494df2a4a6a42a20b77bd708e8a493271bd9ee3da5f9dce4ab09fa",
+      "text": "Trace a web pattern in the air with your finger. Look from a distance. Do not touch the web or its spider.",
+      "file": "./assets/narration/bella-v1/ed6651ef50494df2a4a6a42a20b77bd708e8a493271bd9ee3da5f9dce4ab09fa.mp3",
+      "bytes": 68012,
+      "seconds": 7.5,
+      "sha256": "301baeae28c7d94c717cc06698acf0d89c5a04a3e8bbebd9bfb5f59ebb56c8e0",
+      "sourcePeak": 0.621294,
+      "sourceRms": 0.081573
+    },
+    {
+      "key": "cc3adcba34499353cac388380d6fcc8256299a73f0f53547d4eba3f0984d9107",
+      "text": "Find a bug. No handling, poking, lifting logs or disturbing insects.",
+      "file": "./assets/narration/bella-v1/cc3adcba34499353cac388380d6fcc8256299a73f0f53547d4eba3f0984d9107.mp3",
+      "bytes": 53108,
+      "seconds": 6,
+      "sha256": "924c6a98cc0e497f40792d08d4eca16915019a0e80dae9f0535ad1f0b5d63854",
+      "sourcePeak": 0.689228,
+      "sourceRms": 0.076717
+    },
+    {
+      "key": "42f2eabf773f135ccc8278c7d0642877879102d5baa5391071b31a67151dc4a3",
+      "text": "Look for a tiny leaf or twig instead. No handling, poking, lifting logs or disturbing insects.",
+      "file": "./assets/narration/bella-v1/42f2eabf773f135ccc8278c7d0642877879102d5baa5391071b31a67151dc4a3.mp3",
+      "bytes": 75260,
+      "seconds": 8.35,
+      "sha256": "eecf4bd6d9d575d476ec6826a7dcc10b8fb8baff206f767ae45c6a7c81cb87f2",
+      "sourcePeak": 0.639549,
+      "sourceRms": 0.084067
+    },
+    {
+      "key": "b29643593406fe009954e33fca5dca0a84d514640d3e351aba4eb2d4558aa006",
+      "text": "Walk two fingers across your other hand like a bug. No handling, poking, lifting logs or disturbing insects.",
+      "file": "./assets/narration/bella-v1/b29643593406fe009954e33fca5dca0a84d514640d3e351aba4eb2d4558aa006.mp3",
+      "bytes": 77108,
+      "seconds": 8.6,
+      "sha256": "cb21e6dfddcc55fb049f2f1d413db33d85805d76ca211237c337cdaaf088d4f8",
+      "sourcePeak": 0.700565,
+      "sourceRms": 0.08446
+    },
+    {
+      "key": "167bf1979003db41a6f2606b356a64e0bf92fb67b4bacbb6723f5cb39c88601f",
+      "text": "Find something hanging in a tree. Look only from the path. Do not pull branches, climb, or approach nests or hanging objects.",
+      "file": "./assets/narration/bella-v1/167bf1979003db41a6f2606b356a64e0bf92fb67b4bacbb6723f5cb39c88601f.mp3",
+      "bytes": 83612,
+      "seconds": 9.25,
+      "sha256": "8adfe91a8a409dd5919b23bf54b63a373a93f9c845b355352dda2c65a9b0c8c9",
+      "sourcePeak": 0.682792,
+      "sourceRms": 0.084713
+    },
+    {
+      "key": "a14ddd29e2f2d1985aba83610436e4c67329d1322d8550b086d5d0fb410a2cd9",
+      "text": "Spot a dangling leaf or seed from the path. Look only from the path. Do not pull branches, climb, or approach nests or hanging objects.",
+      "file": "./assets/narration/bella-v1/a14ddd29e2f2d1985aba83610436e4c67329d1322d8550b086d5d0fb410a2cd9.mp3",
+      "bytes": 92276,
+      "seconds": 10.4,
+      "sha256": "77f27c1ee8421343305926ca853a42e96e53b9dfbc1307e53e622c7e0546b7ec",
+      "sourcePeak": 0.606106,
+      "sourceRms": 0.084962
+    },
+    {
+      "key": "453930e22644352839eb005f91902631b9f1da9448df5ed52db8e25eaeb82436",
+      "text": "Make your arm a gently swaying branch. Look only from the path. Do not pull branches, climb, or approach nests or hanging objects.",
+      "file": "./assets/narration/bella-v1/453930e22644352839eb005f91902631b9f1da9448df5ed52db8e25eaeb82436.mp3",
+      "bytes": 90308,
+      "seconds": 9.975,
+      "sha256": "859e56d79ab0d29648c8ad7aa11229fdf071dbcf0901d96e86630615c073e90d",
+      "sourcePeak": 0.611098,
+      "sourceRms": 0.084987
+    },
+    {
+      "key": "95256bcef847801042323d0486beb5a4e667c838e85c0951913f7fb2895ca003",
+      "text": "The Squirrel’s Secret Song. Listen first, then watch quietly. Can you hear a bird and spot a squirrel? Now act like an animal you saw, without moving closer to it. No animal today? Copy a quiet animal pose with your hands.",
+      "file": "./assets/narration/bella-v1/95256bcef847801042323d0486beb5a4e667c838e85c0951913f7fb2895ca003.mp3",
+      "bytes": 150068,
+      "seconds": 16.35,
+      "sha256": "f8a1089ed1a09828b9f0823787fd17be7817fafcfcc2bf43c1dfac251a7bc2f5",
+      "sourcePeak": 0.884303,
+      "sourceRms": 0.091246
+    },
+    {
+      "key": "981e207023f6db4a5a55734c1f25a9d948e2abee8962897a98b0db63ca7252c6",
+      "text": "Listen for a bird sound. Listen with your ears; no microphone or recording is needed.",
+      "file": "./assets/narration/bella-v1/981e207023f6db4a5a55734c1f25a9d948e2abee8962897a98b0db63ca7252c6.mp3",
+      "bytes": 59372,
+      "seconds": 6.775,
+      "sha256": "0623548dfc340d1f1da155eba1791b6652f40cbf10019b0299a74bf51be91afe",
+      "sourcePeak": 0.612264,
+      "sourceRms": 0.083704
+    },
+    {
+      "key": "47ff34c294c090a1b7f72e1fe93ce23be7291a34f1ef76a4c74cda3887e72118",
+      "text": "Listen for any gentle outdoor sound. Listen with your ears; no microphone or recording is needed.",
+      "file": "./assets/narration/bella-v1/47ff34c294c090a1b7f72e1fe93ce23be7291a34f1ef76a4c74cda3887e72118.mp3",
+      "bytes": 69860,
+      "seconds": 7.8,
+      "sha256": "5133b4f04e7db2b8ef63e3f89bcafc8fb092a35a84edac27005833414c52b3f9",
+      "sourcePeak": 0.799569,
+      "sourceRms": 0.08404
+    },
+    {
+      "key": "d5f06ff1e742c34f18c6cdb8ba66e478e4546209ec81637b0a574620e4054f03",
+      "text": "Rub your palms gently and listen to the sound. Listen with your ears; no microphone or recording is needed.",
+      "file": "./assets/narration/bella-v1/d5f06ff1e742c34f18c6cdb8ba66e478e4546209ec81637b0a574620e4054f03.mp3",
+      "bytes": 76724,
+      "seconds": 8.65,
+      "sha256": "b4dbca2d4909045bdbac25d1cb734ede0e75b8dd7af7ac24cf0fd558ba96ee81",
+      "sourcePeak": 0.652108,
+      "sourceRms": 0.086772
+    },
+    {
+      "key": "449fa95038d014973346bd4b2c0dcd6abe93e126023f9dd6a2eb8b51b81d162b",
+      "text": "Find a squirrel. Watch from far away. Do not feed, call, follow or chase it.",
+      "file": "./assets/narration/bella-v1/449fa95038d014973346bd4b2c0dcd6abe93e126023f9dd6a2eb8b51b81d162b.mp3",
+      "bytes": 54140,
+      "seconds": 6.4,
+      "sha256": "39d2e76cf7418eb80682273213e54f252f57d786ebbda61441185ef1498916da",
+      "sourcePeak": 0.55794,
+      "sourceRms": 0.080372
+    },
+    {
+      "key": "f7c698e10e00475aa752d36e4fa1060958bbbc83436f3a5ba18a11791bdb55ec",
+      "text": "Look at a tree a squirrel might visit. Watch from far away. Do not feed, call, follow or chase it.",
+      "file": "./assets/narration/bella-v1/f7c698e10e00475aa752d36e4fa1060958bbbc83436f3a5ba18a11791bdb55ec.mp3",
+      "bytes": 65804,
+      "seconds": 7.6,
+      "sha256": "19606ed6276a153934ee5f26c99a01240f49adf01271825ad44cd771863bc70a",
+      "sourcePeak": 0.644525,
+      "sourceRms": 0.083574
+    },
+    {
+      "key": "c20e8334ed9c6940bf52f455bcd07f3ac506a08760084f1d6f0f5d3fb8e13bb7",
+      "text": "Curl your fingers like two little squirrel paws. Watch from far away. Do not feed, call, follow or chase it.",
+      "file": "./assets/narration/bella-v1/c20e8334ed9c6940bf52f455bcd07f3ac506a08760084f1d6f0f5d3fb8e13bb7.mp3",
+      "bytes": 74876,
+      "seconds": 8.45,
+      "sha256": "c803254cf6701b0481b1e6187f95162f6dd905d1a5f5eba6956a4fa610b424fc",
+      "sourcePeak": 0.531619,
+      "sourceRms": 0.084315
+    },
+    {
+      "key": "d4c515059e413d65ea5633ae1d13db31c63ebbdd625665bc02e6a67d0455418c",
+      "text": "Act like an animal you see. Use little gestures while seated or with feet planted beside your grown-up. No animal calls near wildlife, chasing, running off, climbing, or frightening animals.",
+      "file": "./assets/narration/bella-v1/d4c515059e413d65ea5633ae1d13db31c63ebbdd625665bc02e6a67d0455418c.mp3",
+      "bytes": 129668,
+      "seconds": 14.05,
+      "sha256": "8c4b6a7763c0bc348eb23e115728ce9dd9cee05a443971840daff297ceb02004",
+      "sourcePeak": 0.832508,
+      "sourceRms": 0.087492
+    },
+    {
+      "key": "d7cbf0f0b27834d1cfd6a10ecfbce6f9b106cd31946deb46db4b9124ea3d699c",
+      "text": "Act like an animal you remember seeing. Use little gestures while seated or with feet planted beside your grown-up. No animal calls near wildlife, chasing, running off, climbing, or frightening animals.",
+      "file": "./assets/narration/bella-v1/d7cbf0f0b27834d1cfd6a10ecfbce6f9b106cd31946deb46db4b9124ea3d699c.mp3",
+      "bytes": 138524,
+      "seconds": 14.925,
+      "sha256": "bbeb6648046f73904d8d3595cc40253178a3c7c6add86e4ec72a214400f98f45",
+      "sourcePeak": 0.812904,
+      "sourceRms": 0.08742
+    },
+    {
+      "key": "4a243bda806223fed2d475871c71ccfeeb6b02d5eaa58364fd2ec0cbfd3c8a02",
+      "text": "Make small animal gestures with your hands. Use little gestures while seated or with feet planted beside your grown-up. No animal calls near wildlife, chasing, running off, climbing, or frightening animals.",
+      "file": "./assets/narration/bella-v1/4a243bda806223fed2d475871c71ccfeeb6b02d5eaa58364fd2ec0cbfd3c8a02.mp3",
+      "bytes": 140060,
+      "seconds": 15.225,
+      "sha256": "3b88c947ace55013d7ace5e34d9110d7bf40cc43a137d1bb4f078012d0ce4492",
+      "sourcePeak": 0.83048,
+      "sourceRms": 0.088811
+    },
+    {
+      "key": "3e77df38bd282e3da6dd4ac6fca8e3e031e1480c32c905ad20e2cd1eb53e942a",
+      "text": "The Explorer Photo Party. Time for some explorer poses! A grown-up chooses each safe spot and may use the phone’s normal camera. The game never opens a camera or asks for photos. Pointing and making poses with both feet down earn the same reward.",
+      "file": "./assets/narration/bella-v1/3e77df38bd282e3da6dd4ac6fca8e3e031e1480c32c905ad20e2cd1eb53e942a.mp3",
+      "bytes": 172076,
+      "seconds": 18.775,
+      "sha256": "5491d86fa22c1518d756173e45d8a1ebc552f529cce4cd3153c3e9ed9cd47670",
+      "sourcePeak": 0.835535,
+      "sourceRms": 0.090901
+    },
+    {
+      "key": "46af75c87337ff622680f0d5beb1d92aa9568fcdbc533581b9a47caaa0d4e03c",
+      "text": "Reach one hand up, then the other, with both feet planted. Make a pretend climbing stretch while seated or with both feet planted on safe level ground. Do not climb trees, fences, rocks, benches or steps, and stay away from heights and edges.",
+      "file": "./assets/narration/bella-v1/46af75c87337ff622680f0d5beb1d92aa9568fcdbc533581b9a47caaa0d4e03c.mp3",
+      "bytes": 165140,
+      "seconds": 18.075,
+      "sha256": "789c1023e8e44a8bb24804dbc16e141d129d40aa9d3aa5a1c6edc74c124672f1",
+      "sourcePeak": 0.659062,
+      "sourceRms": 0.091297
+    },
+    {
+      "key": "bba57fa5cda84264219786049bf87449cbeae14bc7b72332579fe79aca328a36",
+      "text": "Walk two fingers across your open palm like a tiny climber. Make a pretend climbing stretch while seated or with both feet planted on safe level ground. Do not climb trees, fences, rocks, benches or steps, and stay away from heights and edges.",
+      "file": "./assets/narration/bella-v1/bba57fa5cda84264219786049bf87449cbeae14bc7b72332579fe79aca328a36.mp3",
+      "bytes": 168140,
+      "seconds": 18.15,
+      "sha256": "1160d15c14abc8e0a7d9fdc29d9bfa21933c9fa51285dba38d50bd9138bc75e7",
+      "sourcePeak": 0.67923,
+      "sourceRms": 0.089973
+    },
+    {
+      "key": "ddd12148f674f7d885b616738510db91da1ccc4519189dc4dafc93c477a32ddf",
+      "text": "Reach up like a climber with both feet planted. Make a pretend climbing stretch while seated or with both feet planted on safe level ground. Do not climb trees, fences, rocks, benches or steps, and stay away from heights and edges.",
+      "file": "./assets/narration/bella-v1/ddd12148f674f7d885b616738510db91da1ccc4519189dc4dafc93c477a32ddf.mp3",
+      "bytes": 160412,
+      "seconds": 17.175,
+      "sha256": "5fc1dadf9b9fe53b10e3876a71f643e13f251a32d04031e35ceba48d9010b89f",
+      "sourcePeak": 0.663926,
+      "sourceRms": 0.090558
+    },
+    {
+      "key": "64a957d0d2da1793d5c51fbb3b7336f9b158659ac47d5ae6a426731b74eee8a3",
+      "text": "Find a bench and pose for a picture. Sit normally on a bench or stand beside it. A grown-up can take the photo; posing without a photo counts.",
+      "file": "./assets/narration/bella-v1/64a957d0d2da1793d5c51fbb3b7336f9b158659ac47d5ae6a426731b74eee8a3.mp3",
+      "bytes": 98252,
+      "seconds": 10.925,
+      "sha256": "1faf11bab3f31ee05c6b810d94bc2e5f59831d92b992dc3f30eb68d023433142",
+      "sourcePeak": 0.84412,
+      "sourceRms": 0.088074
+    },
+    {
+      "key": "4cf5246ab24a1545738522cba6fc5c9f07acd71a73d13004d19905787c8c7367",
+      "text": "Pose beside a safe place to rest. Sit normally on a bench or stand beside it. A grown-up can take the photo; posing without a photo counts.",
+      "file": "./assets/narration/bella-v1/4cf5246ab24a1545738522cba6fc5c9f07acd71a73d13004d19905787c8c7367.mp3",
+      "bytes": 99596,
+      "seconds": 10.875,
+      "sha256": "403591cbb84cefb8339d311b818de90d0b3c4c2ac3e8cdbfb785f659f46a9d44",
+      "sourcePeak": 0.915961,
+      "sourceRms": 0.087801
+    },
+    {
+      "key": "55289c20e4e758a18ac9470c958cc954ae6c3b1353a559ee3754f1378943ca75",
+      "text": "Make a seated superhero pose without a photo. Sit normally on a bench or stand beside it. A grown-up can take the photo; posing without a photo counts.",
+      "file": "./assets/narration/bella-v1/55289c20e4e758a18ac9470c958cc954ae6c3b1353a559ee3754f1378943ca75.mp3",
+      "bytes": 105428,
+      "seconds": 11.55,
+      "sha256": "878c71138e1e04b17836de8399538a73065b106faeb0586f05abfbd36176b997",
+      "sourcePeak": 1.094295,
+      "sourceRms": 0.088341
+    },
+    {
+      "key": "ab7e4710a82a6815306f2ace474a2e5606ae61544268b73455a133ae81a5d113",
+      "text": "Optional seated flying pose on safe level ground; a photo is not needed. If comfortable, sit on safe level ground beside a grown-up and briefly lift your toes. Keeping both feet down or floating your hands counts equally. No jumping, climbing, ledges or balancing. No camera is needed.",
+      "file": "./assets/narration/bella-v1/ab7e4710a82a6815306f2ace474a2e5606ae61544268b73455a133ae81a5d113.mp3",
+      "bytes": 194540,
+      "seconds": 21.325,
+      "sha256": "3c84997dd0311e4fa8bc9113e099c04ef66f969cb77f05fdf0dd574ae185b7c6",
+      "sourcePeak": 0.757403,
+      "sourceRms": 0.087705
+    },
+    {
+      "key": "a0c99ef1e920f35e5c7f70bbb7a449bfd8e09b263512c252565665b409c9f208",
+      "text": "Make a superhero pose with both feet on the ground. If comfortable, sit on safe level ground beside a grown-up and briefly lift your toes. Keeping both feet down or floating your hands counts equally. No jumping, climbing, ledges or balancing. No camera is needed.",
+      "file": "./assets/narration/bella-v1/a0c99ef1e920f35e5c7f70bbb7a449bfd8e09b263512c252565665b409c9f208.mp3",
+      "bytes": 180740,
+      "seconds": 19.725,
+      "sha256": "6716898c4a126fb46e39508093adb4b433b7307371c9e1bf65905180107a5056",
+      "sourcePeak": 0.599744,
+      "sourceRms": 0.087939
+    },
+    {
+      "key": "1359cb35a54a7fc3865cdd47e0054f320e3929bd786b6bfad997dfa445b94d7b",
+      "text": "Reach up with your arms for a pretend flying picture. If comfortable, sit on safe level ground beside a grown-up and briefly lift your toes. Keeping both feet down or floating your hands counts equally. No jumping, climbing, ledges or balancing. No camera is needed.",
+      "file": "./assets/narration/bella-v1/1359cb35a54a7fc3865cdd47e0054f320e3929bd786b6bfad997dfa445b94d7b.mp3",
+      "bytes": 177812,
+      "seconds": 19.6,
+      "sha256": "a60da612a512e5ad3aa75236f99b2dc283ed249d7b92e14c1da6e4cd842013b4",
+      "sourcePeak": 0.670121,
+      "sourceRms": 0.087825
+    }
+  ],
+  "totalBytes": 26590804,
+  "totalSeconds": 2951.175,
+  "fingerprint": "08cddd711eab324d9e9631b772731f9ca8507f508451ca390902c71905141b48"
+}
