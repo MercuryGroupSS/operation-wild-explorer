@@ -12,7 +12,8 @@ function harness(active=false,remoteScript=script){
   const response=(body,status=200)=>({ok:status>=200&&status<300,status,type:'basic',text:async()=>body,clone:()=>response(body,status)});
   const caches={open:async name=>{if(!stores.has(name))stores.set(name,new Map());const map=stores.get(name);return {addAll:async urls=>{for(const url of urls)map.set(key(url),response('cached:'+url));},match:async url=>map.get(key(url)),put:async(url,r)=>map.set(key(url),r),delete:async url=>map.delete(key(url))};},keys:async()=>[...stores.keys()],delete:async name=>stores.delete(name)};
   const self={registration:{active},location:{origin},addEventListener:(name,fn)=>handlers[name]=fn,skipWaiting:async()=>events.skip++,clients:{claim:async()=>events.claim++}};
-  vm.runInNewContext(script,{self,caches,URL,Response,fetch:async request=>{events.network++;if(!online)throw new Error('synthetic offline');return response(key(request).endsWith('/sw.js')?remoteScript:'network:'+key(request));}},{filename:'sw.js'});
+  const context={self,caches,URL,Response,Headers,importScripts:()=>vm.runInNewContext(readFileSync(new URL('../public/narration-worker.js',import.meta.url),'utf8'),context),fetch:async request=>{events.network++;if(!online)throw new Error('synthetic offline');return response(key(request).endsWith('/sw.js')?remoteScript:'network:'+key(request));}};
+  vm.runInNewContext(script,context,{filename:'sw.js'});
   async function fire(type,input={}){let pending;handlers[type]({...input,waitUntil:p=>pending=p,respondWith:p=>pending=p});return await pending;}
   return {handlers,stores,events,caches,fire,offline:()=>online=false};
 }
@@ -33,7 +34,7 @@ await test('Installed HTML stays paired with cached JS, and all required files w
   assert.equal(h.events.network,0);
 });
 await test('Activation removes only older game caches and preserves unrelated sites',async()=>{
-  const h=harness();await h.caches.open('wild-explorer-2.0.0');await h.caches.open('other-app-cache');await h.fire('install');await h.fire('activate');assert.deepEqual(await h.caches.keys(),['other-app-cache','wild-explorer-'+VERSION]);assert.equal(h.events.claim,1);
+  const h=harness();await h.caches.open('wild-explorer-2.0.0');await h.caches.open('other-app-cache');await h.caches.open('wild-narration-bella-v1');await h.fire('install');await h.fire('activate');assert.deepEqual(await h.caches.keys(),['other-app-cache','wild-narration-bella-v1','wild-explorer-'+VERSION]);assert.equal(h.events.claim,1);
 });
 await test('Uncached offline navigation gives clear 503; POST and cross-origin requests are untouched',async()=>{
   const h=harness();h.offline();const response=await h.fire('fetch',{request:{method:'GET',url:origin+'/',mode:'navigate'}});assert.equal(response.status,503);assert.match(await response.text(),/once with internet/);
@@ -46,5 +47,10 @@ await test('Explicit offline download repairs missing assets only for the matchi
   await newer.fire('message',{data:{type:'PREPARE_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,false);assert.match(reply.error,/different game release/);assert.equal(await old.match('./app.js?v='+VERSION),undefined);
   const offline=harness();await offline.fire('install');const incomplete=await offline.caches.open('wild-explorer-'+VERSION);await incomplete.delete('./postcards.js?v='+VERSION);offline.offline();
   await offline.fire('message',{data:{type:'PREPARE_OFFLINE'},ports:[{postMessage:r=>reply=r}]});assert.equal(reply.ready,false);assert.match(reply.error,/offline/);
+});
+await test('Credits navigation serves attribution instead of the app shell, even offline',async()=>{
+  const h=harness();await h.fire('install');h.offline();
+  const response=await h.fire('fetch',{request:{method:'GET',url:origin+'/assets/narration/NOTICE.txt',mode:'navigate'}});
+  assert.match(await response.text(),/cached:.\/assets\/narration\/NOTICE.txt/);assert.equal(h.events.network,0);
 });
 console.log(`\n${passed} service-worker groups passed. These are mocks; an installed browser worker still needs end-to-end QA.`);

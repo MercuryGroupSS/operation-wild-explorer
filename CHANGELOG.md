@@ -6,6 +6,9 @@
 - Add an opt-in device compass with honest practice fallback and strict invalid/stale/lifecycle handling.
 - Add adjustable, steady orange screen lanterns that persist across gameplay without hardware flashlight access.
 - Add cape, companion, flag, pattern and storytelling activities without extra reward grants.
+- Add an interactive fantasy treasure map for day/night and the original ten-crystal hunt, with saved-discovery sheets and finale gates.
+- Refine rewards into floating faceted crystals with quiet opt-in chimes, volume and reduced-motion support.
+- Add Bella’s fixed-text narration, tap-to-stop, honest local-device fallback and an explicit 26.6 MB offline voice pack with verified files and Safari byte ranges.
 - Preserve all saves, players, costumes, story contexts, collected rewards and offline update behavior.
 
 ## 3.2.0 — More players, Halloween costumes and hands-on adventures

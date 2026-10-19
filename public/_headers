@@ -34,3 +34,15 @@
   Cache-Control: no-cache
 /quest-magic.css
   Cache-Control: no-cache
+
+/narration.js
+  Cache-Control: no-cache
+/narration-content.js
+  Cache-Control: no-cache
+/narration-manifest.js
+  Cache-Control: no-cache
+/narration-worker.js
+  Cache-Control: no-cache
+/assets/narration/bella-v1/*
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: audio/mpeg

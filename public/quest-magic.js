@@ -99,7 +99,7 @@
     const hidden=()=>host.document?.hidden===true;
     function stop() {
       epoch++;
-      for(const voice of voices){try{voice.stop();}catch{}try{voice.disconnect();}catch{}}
+      for(const voice of voices){try{voice.oscillator.stop();}catch{}try{voice.oscillator.disconnect();voice.envelope.disconnect();}catch{}}
       voices.clear();
       if(context&&context.state==='running')try{const result=context.suspend();result?.catch(()=>{});}catch{}
     }
@@ -120,8 +120,8 @@
               const oscillator=context.createOscillator(),envelope=context.createGain();
               oscillator.type='sine';oscillator.frequency.value=frequency*ratio;
               envelope.gain.setValueAtTime(0,start);envelope.gain.linearRampToValueAtTime(gain*volume,start+.025);envelope.gain.exponentialRampToValueAtTime(.0001,start+duration);
-              oscillator.connect(envelope);envelope.connect(context.destination);voices.add(oscillator);
-              oscillator.onended=()=>{voices.delete(oscillator);try{oscillator.disconnect();envelope.disconnect();}catch{}};
+              oscillator.connect(envelope);envelope.connect(context.destination);const voice={oscillator,envelope};voices.add(voice);
+              oscillator.onended=()=>{voices.delete(voice);try{oscillator.disconnect();envelope.disconnect();}catch{}};
               oscillator.start(start);oscillator.stop(start+duration+.03);
             });
           });

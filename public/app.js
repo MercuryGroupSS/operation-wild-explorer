@@ -9,6 +9,20 @@
   const G = window.WildGear;
   const Q = window.WildQuestMagic;
   const magicSound = Q.createSoundEngine(window);
+  const narrationManifest = window.WildNarrationManifest || {};
+  const narrator = window.WildNarration?.createPlayer(window, narrationManifest, {
+    beforePlay: () => magicSound.stop(),
+    onStatus: info => {
+      speechActive = info.state === 'playing' || info.state === 'loading';
+      document.querySelectorAll('[data-action="read"]').forEach(button => {
+        button.setAttribute('aria-pressed', String(speechActive));
+        button.setAttribute('aria-label', speechActive ? 'Stop narration' : 'Read aloud with Bella');
+      });
+      document.querySelectorAll('[data-narration-status]').forEach(el => { el.textContent = speechActive ? (info.source === 'device' ? 'Device voice · tap the speaker to stop' : 'Bella · tap the speaker to stop') : 'Bella · gentle read-aloud'; });
+      if(info.message)toast(info.message);
+    }
+  });
+  const voicePack = window.WildNarration?.createPack(window, narrationManifest);
   const SPECIALTIES = {scout:{label:'Scout',emoji:'🔎',hint:'Point out a colour, shape or tiny detail.'},listener:{label:'Listener',emoji:'👂',hint:'Invite everyone to pause and notice a quiet sound.'},detective:{label:'Detective',emoji:'🧩',hint:'Ask a curious question and connect two discoveries.'}};
   const DEFAULT_SPECIALTIES = ['scout','listener','detective','scout','listener'];
   const MAX_NEW_PLAYERS = 24;
@@ -161,7 +175,7 @@
   let activeTab='home', treasureTab='crystals', toastTimer=null, audioContext=null, sheetReturn=null, draftHero=null, speechActive=false;
   let locationFix=null,gpsBusy=false,gpsError='',gpsRequestId=0,swRegistration=null;
   let gearItem=null,gearStep=0,compassSession=0,compassTimer=null,compassStaleTimer=null,compassListening=false;
-  let compassMode='practice',compassHeading=null,practiceHeading=0,compassMessage='Practice dial: you choose the direction. This is not a real heading.';
+  let compassEnableAfter=0,compassMode='practice',compassHeading=null,practiceHeading=0,compassMessage='Practice dial: you choose the direction. This is not a real heading.';
   let uid=0, offlineReady=false, photoBusy=false, viewedPostcardId=null, challengeTapUntil=0, sheetEpoch=0;
   function syncFromStorage(showMessage=true){
     let value;
@@ -176,7 +190,7 @@
     magicSound.stop();state=latest;lastSavedValue=value;saveIssue='';
     draftHero=null;pendingRestore=null;puzzlePicked=[];viewedPostcardId=null;challengeTapUntil=0;
     closeSheet();$('sheet-content').innerHTML='';
-    if('speechSynthesis'in window)speechSynthesis.cancel();speechActive=false;
+    stopNarration();
     renderAll();
     if(showMessage)toast('Your adventure was updated in another window. Please try your action again.');
     return true;
@@ -243,17 +257,33 @@
   }
   const motionAllowed=()=>state.settings.motion&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function toast(message){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').hidden=false;toastTimer=setTimeout(()=>$('toast').hidden=true,3200);}
-  function playSound(win=false){magicSound.play(win?'reward':'discovery',{enabled:state.settings.sound,volume:state.settings.volume});}
+  function playSound(win=false){if(speechActive)return;magicSound.play(win?'reward':'discovery',{enabled:state.settings.sound,volume:state.settings.volume});}
   function confetti(){if(!motionAllowed())return;const box=$('confetti');box.replaceChildren();['#efbf4c','#6bb765','#75bed0','#c999d4','#ed9d82'].forEach((c,k)=>{for(let i=0;i<6;i++){const el=document.createElement('i');el.style.setProperty('--piece',c);el.style.setProperty('--left',`${Math.random()*100}%`);el.style.setProperty('--delay',`${Math.random()*.35}s`);box.append(el);}});setTimeout(()=>box.replaceChildren(),2800);}
+  function stopNarration(){
+    narrator?.stop();
+    if(!narrator&&'speechSynthesis' in window)speechSynthesis.cancel();
+    speechActive=false;
+  }
   function readQuest(){
-    if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){toast('Read-aloud is unavailable here. A grown-up can read the card.');return;}
-    if(speechActive){speechSynthesis.cancel();speechActive=false;toast('Narration stopped.');return;}
-    const card=currentCard(),cm=C.MISSIONS[state.classic.index],ci=state.classic.checks.findIndex(x=>!x);
-    const text=state.mode==='classic'?(cm?cm.title+'. '+cm.story+'. '+(ci>=0?cm.tasks[ci][state.classic.variants[ci]||0]+'. '+(cm.hints?.[ci]||''):'Your crystal is ready.'):'Your classic hunt is complete.'):card?`${card.type}. ${card.title}. ${card.prompt}. Safe alternative: ${card.alternative}`:'Your discoveries brought the map together. Share your favourite memory.';
-    try{speechSynthesis.cancel();const say=new SpeechSynthesisUtterance(text+(isNight()?' Stay beside your grown-up. Stop walking before looking at the screen.':' Stay together on the safe path.'));say.lang='en-CA';say.rate=.85;say.pitch=1.04;
-      const voices=speechSynthesis.getVoices(),voice=voices.find(v=>v.localService&&/^en/.test(v.lang));if(voice)say.voice=voice;
-      say.onend=()=>{speechActive=false;};say.onerror=()=>{speechActive=false;toast('That voice is unavailable. A grown-up can read the card.');};speechActive=true;speechSynthesis.speak(say);
-    }catch{speechActive=false;toast('Read-aloud is unavailable. The text card is ready to read.');}
+    if(speechActive){stopNarration();toast('Narration stopped.');return;}
+    if(!narrator||!window.WildNarrationContent){toast('Read-aloud is unavailable here. A grown-up can read the card.');return;}
+    narrator.play(window.WildNarrationContent.segments(state));
+  }
+  function voicePackControls(){
+    const mb=voicePack?.info.megabytes||'0';
+    return `<div class="panel"><h3>Bella read-aloud</h3><p class="helper">Your gentle narrator plays when you tap the speaker. Phone volume controls her voice. If a recording is unavailable, a local device voice may be used and will be labeled.</p><button class="btn quiet full" data-action="download-voice" ${voicePack?.downloading()?'disabled':''}>Download Bella for offline play · ${mb} MB</button><button class="subtle-button wide" data-action="cancel-voice-download" ${voicePack?.downloading()?'':'hidden'}>Pause voice download</button><p class="muted-note" data-voice-pack-note aria-live="polite">Optional audio download. The adventure download does not include Bella. Keep this browser’s site data.</p><p class="helper"><a href="./assets/narration/NOTICE.txt" target="_blank" rel="noopener">Voice credits and license</a></p></div>`;
+  }
+  function voicePackProgress(info){
+    document.querySelectorAll('[data-voice-pack-note]').forEach(el=>{el.textContent=info.ready?'Bella is ready offline on this device. Browser storage can still be cleared.':`${info.present} of ${info.files} voice clips saved · ${voicePack?.info.megabytes} MB total`;});
+  }
+  async function checkVoicePack(){if(voicePack){const status=await voicePack.status();if(status.present)voicePackProgress(status);}}
+  async function downloadVoice(){
+    if(!voicePack){toast('Offline voice download is unavailable in this browser.');return;}
+    document.querySelectorAll('[data-action="download-voice"]').forEach(el=>el.disabled=true);
+    document.querySelectorAll('[data-action="cancel-voice-download"]').forEach(el=>el.hidden=false);
+    try{const info=await voicePack.download(voicePackProgress);voicePackProgress(info);if(!info.ready)throw new Error('Bella’s offline download could not be verified. Keep internet on and try again.');toast('Bella is ready for offline read-aloud.');}
+    catch(error){toast(error.message||'Could not finish downloading Bella. Try again online.');}
+    finally{document.querySelectorAll('[data-action="download-voice"]').forEach(el=>el.disabled=false);document.querySelectorAll('[data-action="cancel-voice-download"]').forEach(el=>el.hidden=true);}
   }
   const safetyTip=()=>isNight()?`<div class="guardian-tip night-safety">${fox()}<p><b>Little lantern rule</b>${active().options.setting==='indoor'?'Keep room lights on and floors clear. No flames, hiding in darkness or climbing.':active().options.setting==='neighbourhood'?'A grown-up leads on familiar sidewalks. Stay together; stop somewhere safe before using the screen. No clue needs a road crossing or a door visit.':'A grown-up checks this familiar trail is open and suitable after dark. Stay on marked paths, together, away from water, edges and wildlife. Stop before using the screen.'} Use your own flashlight if helpful, pointed down and away from eyes, traffic, homes and animals. Choose the simpler action or let a grown-up help.</p></div>`:`<div class="guardian-tip">${fox()}<p><b>The Guardian’s golden rule</b>Stay together on marked paths. Look, don’t pick. Grown-ups choose where to walk.</p></div>`;
   function renderStatus(){
@@ -284,7 +314,7 @@
   function renderClassicQuest(){
     const c=state.classic,m=C.MISSIONS[c.index],i=c.checks.findIndex(x=>!x),el=$('quest-screen');
     if(!m){el.innerHTML=`<span class="eyebrow">THE ORIGINAL TEN-CRYSTAL HUNT</span><div class="complete-scene"><div class="trophy">🏆</div><h2>Ten crystals,<br>one wonderful family!</h2><p>Your original story, all seventeen bonus activities, and every earned reward are safe.</p></div>${classicCollection()}<button class="btn full" data-action="expedition-mode">Explore our varied adventures</button><button class="btn quiet full" data-action="builder">Plan a new outing</button>${safetyTip()}`;return;}
-    el.innerHTML=`<div class="quest-head"><span class="eyebrow">CLASSIC CHAPTER ${c.index+1} OF 10 · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read this classic clue aloud">${icon('sound')}</button></div><h1 class="page-title">${esc(m.title)}</h1><p class="intro">${esc(m.story)}</p><button class="qm-quest-link" data-action="tab" data-value="trail">${icon('map')} Open our treasure map ${icon('arrow')}</button><div class="challenge-card"><div class="card-meta"><span class="type-chip">Classic hunt</span><span>${c.checks.filter(Boolean).length}/${m.tasks.length} explored</span></div>${i<0?`${Q.crystalScene(m,{ready:true,count:m.tasks.length,length:m.tasks.length})}<h2>Our crystal is ready!</h2><button class="btn gold full" data-action="classic-claim" data-chapter="${c.index}">Claim crystal + ${m.xp} XP</button>`:`${Q.crystalScene(m,{count:c.checks.filter(Boolean).length,length:m.tasks.length})}<h2>${esc(m.tasks[i][c.variants[i]||0])}</h2>${m.hints?.[i]?`<p class="challenge-prompt">${esc(m.hints[i])}</p>`:''}<button class="btn full" data-action="classic-check" data-value="${i}" data-chapter="${c.index}">We explored it!</button><button class="subtle-button wide" data-action="classic-swap" data-value="${i}" data-chapter="${c.index}">Try a safe alternative</button>`}</div><p class="helper">Your original ten-chapter progress is saved separately, with shared family XP and camp crystals. You can pause at any time.</p><div class="quick-actions"><button class="btn quiet" data-action="rest">Take a break</button><button class="btn quiet" data-action="expedition-mode">Varied adventures</button></div>${safetyTip()}`;
+    el.innerHTML=`<div class="quest-head"><span class="eyebrow">CLASSIC CHAPTER ${c.index+1} OF 10 · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read aloud with Bella" aria-pressed="false">${icon('sound')}</button></div><p class="helper" data-narration-status aria-live="polite">Bella · gentle read-aloud</p><h1 class="page-title">${esc(m.title)}</h1><p class="intro">${esc(m.story)}</p><button class="qm-quest-link" data-action="tab" data-value="trail">${icon('map')} Open our treasure map ${icon('arrow')}</button><div class="challenge-card"><div class="card-meta"><span class="type-chip">Classic hunt</span><span>${c.checks.filter(Boolean).length}/${m.tasks.length} explored</span></div>${i<0?`${Q.crystalScene(m,{ready:true,count:m.tasks.length,length:m.tasks.length})}<h2>Our crystal is ready!</h2><button class="btn gold full" data-action="classic-claim" data-chapter="${c.index}">Claim crystal + ${m.xp} XP</button>`:`${Q.crystalScene(m,{count:c.checks.filter(Boolean).length,length:m.tasks.length})}<h2>${esc(m.tasks[i][c.variants[i]||0])}</h2>${m.hints?.[i]?`<p class="challenge-prompt">${esc(m.hints[i])}</p>`:''}<button class="btn full" data-action="classic-check" data-value="${i}" data-chapter="${c.index}">We explored it!</button><button class="subtle-button wide" data-action="classic-swap" data-value="${i}" data-chapter="${c.index}">Try a safe alternative</button>`}</div><p class="helper">Your original ten-chapter progress is saved separately, with shared family XP and camp crystals. You can pause at any time.</p><div class="quick-actions"><button class="btn quiet" data-action="rest">Take a break</button><button class="btn quiet" data-action="expedition-mode">Varied adventures</button></div>${safetyTip()}`;
   }
   function classicCollection(){return `<section class="panel"><h3>Original crystal collection · ${state.classic.index}/10</h3><div class="classic-gems">${C.MISSIONS.map((m,i)=>`<span class="badge" title="${esc(m.gem)}">${i<state.classic.index?esc(m.gem):'🔒 '+esc(m.short)}</span>`).join('')}</div><button class="subtle-button wide" data-action="classic-mode">${state.classic.index===10?'See our classic celebration':'Continue the original hunt'}</button></section>`;}
   function classicCheck(button){if(syncFromStorage())return;
@@ -296,11 +326,12 @@
   }
 
   function renderQuest(){
+    stopNarration();
     if(state.mode==='classic'){renderClassicQuest();return;}
     const el=$('quest-screen'),a=active(),m=storyMissions()[Math.min(a.chapter,4)],card=currentCard();
     if(a.ended){el.innerHTML=`<span class="eyebrow">${a.claimedChapters.length===5?'FIVE PIECES. ONE FAMILY STORY.':'A LITTLE ADVENTURE COUNTS.'}</span><div class="complete-scene"><div class="trophy" aria-hidden="true">${a.claimedChapters.length===5?'🏆':'🌿'}</div><h2>${isNight()?(a.claimedChapters.length===5?'The pumpkin party<br>is glowing!':'A cozy place<br>to pause.'):(a.claimedChapters.length===5?'The forest is full<br>of your discoveries!':'A lovely place<br>to pause.')}</h2><p>${isNight()?'Our pretend friends are tucked in under the smiling moon. Your family brought all the kindness they needed.<br>':''}${a.done.length} challenges explored together.<br>Your XP, crystals and base camp stay with you.</p></div>${a.claimedChapters.length===5&&!a.puzzleSolved?`<button class="btn gold full" data-action="puzzle">${icon('map')} Solve our discovery map</button>`:''}<button class="btn full" data-action="postcards">${icon('book')} Make our private postcard</button><button class="btn quiet full" data-action="builder">Plan another adventure</button>${safetyTip()}`;return;}
     const ready=E.isChapterReady(state.expedition),lead=specialty(state.leader),length=a.deck[a.chapter].length;
-    el.innerHTML=`<div class="quest-head"><span class="eyebrow">CHAPTER ${a.chapter+1} OF 5 · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read the challenge aloud, or stop narration">${icon('sound')}</button></div><h1 class="page-title">${esc(m.title)}</h1>${isNight()?`<p class="night-context">${NIGHT_PLACES[a.options.setting].emoji} ${esc(NIGHT_PLACES[a.options.setting].name)} · Stop together to play</p>`:''}
+    el.innerHTML=`<div class="quest-head"><span class="eyebrow">CHAPTER ${a.chapter+1} OF 5 · ${esc(state.names[state.leader])} LEADS</span><button class="audio-button" data-action="read" aria-label="Read aloud with Bella" aria-pressed="false">${icon('sound')}</button></div><p class="helper" data-narration-status aria-live="polite">Bella · gentle read-aloud</p><h1 class="page-title">${esc(m.title)}</h1>${isNight()?`<p class="night-context">${NIGHT_PLACES[a.options.setting].emoji} ${esc(NIGHT_PLACES[a.options.setting].name)} · Stop together to play</p>`:''}
       <div class="chapter-strip">${MISSIONS.map((x,i)=>`<span class="map-piece ${a.claimedChapters.includes(i)?'found':''}" aria-label="Map piece ${i+1}${a.claimedChapters.includes(i)?' found':''}">${a.claimedChapters.includes(i)?(isNight()?'🏮':'🧩'):i+1}</span>`).join('')}</div>
       <button class="qm-quest-link" data-action="tab" data-value="trail">${icon('map')} Open our treasure map ${icon('arrow')}</button><div class="lead-banner"><div class="lead-avatar">${avatar(state.leader)}</div><p><b>${esc(state.names[state.leader])} · ${lead.emoji} ${lead.label}</b><span>${esc(lead.hint)}</span></p><button class="subtle-button" data-action="pass-lead">Pass lead</button></div>
       ${ready?`<div class="challenge-card ready">${Q.crystalScene(m,{ready:true,count:length,length,night:isNight()})}<span class="eyebrow">${isNight()?'A LITTLE LANTERN IS READY':'YOUR MAP PIECE IS READY'}</span><h2>Wonderful teamwork!</h2><p>${isNight()?'Your kindness lights another lantern for our pretend pumpkin party.':'Your discoveries light up another piece of the Guardian’s map.'}</p><button class="btn gold full" data-action="claim" data-chapter="${a.chapter}">${icon('sparkles')} Claim crystal + ${m.xp} XP</button></div>`:card?`<article class="challenge-card"><div class="card-meta"><span class="type-chip type-${esc(card.type.toLowerCase())}">${esc(card.type==='Imagine'?'Make & tell':card.type)}</span><span>Challenge ${a.step+1} / ${length}</span></div>${Q.crystalScene(m,{count:a.step,length,night:isNight()})}<h2>${esc(card.title)}</h2><p class="challenge-prompt">${esc(card.prompt)}</p><details class="safe-alternative"><summary>${isNight()?'Try a simpler hands-on way':'No need to find it: a safe alternative'}</summary><p>${esc(card.alternative)}</p></details><p class="challenge-help">${esc(card.difficultyPrompt||'Make, notice or choose. Grown-up help counts too.')}</p><label class="field-label" for="clue-memory">${isNight()?'What did we make or notice?':'What did we notice?'} <small>Optional</small></label><input class="text-field" id="clue-memory" maxlength="140" placeholder="${isNight()?'Our paper hat, a sound, a shape…':'A word, a colour, a little wonder…'}"><button class="btn full" data-action="complete-challenge" data-card="${esc(card.id)}" data-key="${esc(card.challengeKey)}" data-chapter="${a.chapter}" data-step="${a.step}">${icon('check')} We explored it!</button><button class="subtle-button wide" data-action="swap-challenge">${isNight()?'Need different materials? Swap this challenge':'Can’t find it? Try an easier way'}</button></article>`:''}
@@ -351,13 +382,14 @@
   function renderAll(){renderStatus();renderHome();renderQuest();renderHeroes();renderTreasure();renderTrail();}
   function setTab(tab){
     if(!['home','quest','heroes','treasure','trail'].includes(tab))return;
-    if('speechSynthesis'in window)speechSynthesis.cancel();speechActive=false;
+    stopNarration();
     magicSound.stop();activeTab=tab;renderAll();
     document.querySelectorAll('[data-screen]').forEach(el=>el.hidden=el.dataset.screen!==tab);
     document.querySelectorAll('.bottom-nav [data-action="tab"]').forEach(el=>{if(el.dataset.value===tab)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
     window.scrollTo({top:0,behavior:'auto'});
   }
   function openSheet(content){
+    stopNarration();
     stopCompass();gearItem=null;
     sheetEpoch++;
     const dialog=$('sheet');if(!dialog.open)sheetReturn=document.activeElement;
@@ -367,7 +399,7 @@
     dialog.querySelector('button, input, select, textarea')?.focus({preventScroll:true});
   }
   const sheetHeader=title=>`<div class="sheet-top"><h2 id="sheet-title">${esc(title)}</h2><button data-action="close-sheet" aria-label="Close">${icon('close')}</button></div>`;
-  function closeSheet(){stopCompass();gearItem=null;sheetEpoch++;draftHero=null;pendingRestore=null;puzzlePicked=[];viewedPostcardId=null;const dialog=$('sheet');if(dialog.open)dialog.close();}
+  function closeSheet(){stopNarration();stopCompass();gearItem=null;sheetEpoch++;draftHero=null;pendingRestore=null;puzzlePicked=[];viewedPostcardId=null;const dialog=$('sheet');if(dialog.open)dialog.close();}
   $('sheet').addEventListener('close',()=>{if($('sheet').open)return;stopCompass();gearItem=null;sheetEpoch++;draftHero=null;pendingRestore=null;puzzlePicked=[];viewedPostcardId=null;const target=sheetReturn;if(target?.isConnected)target.focus({preventScroll:true});else $('settings-button').focus({preventScroll:true});});
   $('sheet').addEventListener('click',e=>{if(e.target===$('sheet')){const r=$('sheet').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeSheet();}});
   function openHero(index,adding=false){
@@ -410,7 +442,7 @@
     },error=>{if(id!==gpsRequestId)return;gpsBusy=false;locationFix=null;gpsError=error.code===1?'Location permission was not granted. No problem—use your park name and keep exploring.':error.code===3?'The location request timed out. Try again outdoors when it is safe, or play without GPS.':'Your phone could not find a location. The adventure still works without GPS.';renderTrail();},{enableHighAccuracy:true,timeout:12000,maximumAge:30000});
   }
   function openSettings(){
-    openSheet(sheetHeader('Grown-up corner')+`<div class="sheet-body"><div class="settings-row"><div><b>Celebration sounds</b><small>Soft crystal chimes, only after you tap</small></div><button class="switch" role="switch" aria-label="Celebration sounds" aria-checked="${state.settings.sound}" data-action="setting" data-value="sound"></button></div><div class="settings-row"><div><b>Animations</b><small>Floating crystals and map markers. Turn off to pause.</small></div><button class="switch" role="switch" aria-label="Animations" aria-checked="${state.settings.motion}" data-action="setting" data-value="motion"></button></div><label class="qm-sound-level" for="magic-volume"><span>Magic sound volume <b id="magic-volume-label">${state.settings.volume}%</b></span><input id="magic-volume" type="range" min="0" max="100" step="5" value="${state.settings.volume}" aria-label="Magic sound volume"><small>Sound starts muted. Your phone’s volume also applies.</small></label><button class="btn quiet full" data-action="download-adventure">${icon('download')} Download and verify offline adventure</button><button class="btn quiet full" data-action="install">${icon('home')} Play from your Home Screen</button><button class="btn quiet full" data-action="export">${icon('download')} Export progress backup</button><button class="btn quiet full" data-action="import">${icon('refresh')} Restore a progress backup</button><button class="btn quiet full" data-action="check-update">${icon('refresh')} Check for a game update</button><button class="subtle-button wide" data-action="new-adventure">Start a fresh adventure</button>
+    openSheet(sheetHeader('Grown-up corner')+`<div class="sheet-body">${voicePackControls()}<div class="settings-row"><div><b>Celebration sounds</b><small>Soft crystal chimes, only after you tap</small></div><button class="switch" role="switch" aria-label="Celebration sounds" aria-checked="${state.settings.sound}" data-action="setting" data-value="sound"></button></div><div class="settings-row"><div><b>Animations</b><small>Floating crystals and map markers. Turn off to pause.</small></div><button class="switch" role="switch" aria-label="Animations" aria-checked="${state.settings.motion}" data-action="setting" data-value="motion"></button></div><label class="qm-sound-level" for="magic-volume"><span>Magic sound volume <b id="magic-volume-label">${state.settings.volume}%</b></span><input id="magic-volume" type="range" min="0" max="100" step="5" value="${state.settings.volume}" aria-label="Magic sound volume"><small>Sound starts muted. Your phone’s volume also applies.</small></label><button class="btn quiet full" data-action="download-adventure">${icon('download')} Download and verify offline adventure</button><button class="btn quiet full" data-action="install">${icon('home')} Play from your Home Screen</button><button class="btn quiet full" data-action="export">${icon('download')} Export progress backup</button><button class="btn quiet full" data-action="import">${icon('refresh')} Restore a progress backup</button><button class="btn quiet full" data-action="check-update">${icon('refresh')} Check for a game update</button><button class="subtle-button wide" data-action="new-adventure">Start a fresh adventure</button>
       <p class="backup-note"><b>Saved on this device:</b> names, outfits, XP, crystals and journal. No account, ads, microphone or analytics. Photos are optional local files chosen by a grown-up; the game never opens a camera or uploads them. GPS is optional, never saved, and never uploaded. Backups contain chosen names, park, progress and postcard text, but no GPS readings or photo pixels. Export each photo postcard separately to keep its pictures.</p><p class="helper">Clearing website data or changing browsers can remove progress. Export a backup first. Safari and a Home Screen web app may have separate saved data; use export/restore to transfer it.</p><p class="helper">Guardian stories are offline prompts. There is no live AI service, plant recognition, researched trail map, or automatic location-based mission generation in this version.</p><span class="badge">Version ${VERSION} · ${navigator.onLine?'Online':'Offline'}</span><span class="badge" id="offline-status">${offlineReady?'Offline files verified':'Offline files not yet verified'}</span></div>`);
   }
   function openInstall(){openSheet(sheetHeader('A little app of your own')+`<div class="sheet-body"><p>Open your published Netlify address in <b>Safari</b>, then:</p><ol class="install-steps"><li>Open the Safari <b>Share</b> menu.</li><li>Choose <b>Add to Home Screen</b>.</li><li>Turn on <b>Open as Web App</b> when shown, then tap <b>Add</b>.</li><li>Launch <b>Wild Explorer</b> from its new leaf icon.</li></ol><p class="helper">The Home Screen version removes Safari’s browser bars. This button cannot install it automatically on iPhone.</p><p class="helper">Open the app once with internet and wait for its offline cache to finish before your hike. Device storage settings can still remove cached data.</p><button class="btn full" data-action="close-sheet">Got it!</button></div>`);}
@@ -537,6 +569,7 @@
     if(gearItem==='compass'&&compassMode!=='practice'){stopCompass();compassMode='idle';compassMessage='Compass paused while the game is hidden. Tap Enable phone compass to start again.';updateCompass();}
   }
   function openCompass(){
+    compassEnableAfter=Date.now()+600;
     compassMode='practice';practiceHeading=0;compassMessage='Practice dial: you choose the direction. This is not a real heading.';
     openSheet(sheetHeader('Star compass')+`<div class="sheet-body compass-tool"><p class="gear-mode" id="compass-mode"></p><div class="compass-case"><span class="compass-pointer" aria-hidden="true">▼</span><div class="compass-dial" id="compass-dial" aria-hidden="true"><b class="north">N</b><b class="east">E</b><b class="south">S</b><b class="west">W</b><span class="compass-needle">✦</span></div></div><p class="heading-readout" id="compass-reading"></p><p class="helper" id="compass-message" role="status"></p><button class="btn full" id="compass-enable" data-action="compass-enable">Enable phone compass</button><p class="helper">With your permission, a supported phone can share compass readings with this page. Readings stay on this device and are never saved or uploaded. Hold the phone flat, face up, in portrait. Nearby metal may affect it.</p><div id="compass-practice"><label class="field-label" for="compass-practice-dial">Turn the practice dial</label><input class="gear-range" id="compass-practice-dial" type="range" min="0" max="359" value="0"><div class="gear-turns"><button class="btn quiet" data-action="compass-turn" data-value="-45">↶ Turn left</button><button class="btn quiet" data-action="compass-turn" data-value="45">Turn right ↷</button></div><p class="helper">Try pointing the top marker at E, then S. You can stay seated.</p></div><button class="btn quiet full" id="compass-manual" data-action="compass-practice">Use practice dial instead</button><p class="safe-note">A direction-learning toy, never a navigation or safety tool. A grown-up chooses the real route. Stay still together while looking at the screen.</p></div>`);
     gearItem='compass';updateCompass();
@@ -552,6 +585,7 @@
   }
   function compassFallback(message){stopCompass();compassMode='practice';compassMessage=message+' Practice dial only: you control it; it is not your real direction.';updateCompass();}
   async function enableCompass(){
+    if(Date.now()<compassEnableAfter){toast('Read the compass note, then tap Enable phone compass when you are ready.');return;}
     if(gearItem!=='compass'||!ownsGear('compass')||['requesting','waiting','live'].includes(compassMode))return;
     stopCompass();const request=compassSession;
     if(!window.isSecureContext||!window.DeviceOrientationEvent){compassFallback('This browser cannot provide a phone compass.');return;}
@@ -652,7 +686,7 @@
     if(syncFromStorage()&&!['settings','export','close-sheet'].includes(a))return;
     switch(a){
       case 'tab':setTab(v);break;
-      case 'settings':openSettings();break;
+      case 'settings':openSettings();void checkVoicePack();break;
       case 'builder':openBuilder();break;
       case 'night-picker':openNightPicker();break;
       case 'night-ready':openNightReady(v);break;
@@ -686,6 +720,8 @@
       case 'export-postcard':void exportPostcard(v);break;
       case 'export-postcard-text':void exportPostcard(v,true);break;
       case 'download-adventure':void downloadAdventure();break;
+      case 'download-voice':void downloadVoice();break;
+      case 'cancel-voice-download':voicePack?.cancel();break;
       case 'puzzle':openPuzzle();break;
       case 'puzzle-choice':choosePuzzle(v);break;
       case 'close-sheet':closeSheet();break;
@@ -716,7 +752,7 @@
       case 'new-adventure':newAdventurePrompt();break;
       case 'reset-confirmed':openBuilder();break;
       case 'check-update':void checkForUpdate();break;
-      case 'update':if(swRegistration?.waiting)swRegistration.waiting.postMessage({type:'SKIP_WAITING'});else{toast('Checking for an update…');void checkForUpdate();}break;
+      case 'update':stopNarration();if(swRegistration?.waiting)swRegistration.waiting.postMessage({type:'SKIP_WAITING'});else{toast('Checking for an update…');void checkForUpdate();}break;
     }
   });
   document.addEventListener('input',e=>{
@@ -763,10 +799,10 @@
     }catch{if(request!==importRequest||sheetEpoch!==expectedSheet||(wasSheetOpen&&!$('sheet').open))return;pendingRestore=null;toast('That isn’t a valid Wild Explorer progress backup. Nothing was changed.');}
   });
   // Actions save immediately. Unload/background saves can overwrite a newer tab.
-  document.addEventListener('visibilitychange',()=>{document.body.classList.toggle('qm-effects-paused',document.hidden);if(document.hidden){magicSound.stop();pauseCompass();if('speechSynthesis'in window)speechSynthesis.cancel();speechActive=false;}else syncFromStorage();});
+  window.addEventListener('pagehide',()=>{stopNarration();magicSound.stop();voicePack?.cancel();pauseCompass();});
+  document.addEventListener('visibilitychange',()=>{document.body.classList.toggle('qm-effects-paused',document.hidden);if(document.hidden){magicSound.stop();pauseCompass();stopNarration();}else syncFromStorage();});
   window.addEventListener('focus',()=>syncFromStorage());
   window.addEventListener('pageshow',()=>syncFromStorage());
-  window.addEventListener('pagehide',()=>{magicSound.stop();pauseCompass();});
   window.addEventListener('orientationchange',()=>{if(compassListening){compassHeading=null;compassMode='waiting';compassMessage='Orientation changed. Hold the phone flat, face up, in portrait for a fresh reading.';updateCompass();}});
   window.addEventListener('storage',event=>{if((!event.storageArea||event.storageArea===localStorage)&&(event.key===SAVE_KEY||event.key===null))syncFromStorage();});
   // First-launch migration is non-destructive; the original save fields remain usable.

@@ -1,0 +1,28 @@
+Wild Explorer — Bella narration
+
+These synthetic stock-voice clips were generated locally from the game's fixed
+public challenge text. Voice: af_bella, Kokoro 82M v1.0, American English.
+Speaking speed: 0.9. CPU inference: full precision (fp32), 24 kHz mono.
+MP3: libmp3lame quality 2, uniform −2 dB gain, no pitch change. These settings
+match the Bella audition selected for the game on 18 October 2026.
+
+Original model: https://huggingface.co/hexgrad/Kokoro-82M
+Voice catalog: https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
+Official code: https://github.com/hexgrad/kokoro/tree/main/kokoro.js
+ONNX conversion linked by the official JavaScript project:
+https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX
+Official license: https://github.com/hexgrad/kokoro/blob/main/LICENSE
+Model and official code: Apache License 2.0, copied alongside this notice.
+Generation used kokoro-js 1.2.1, transformers.js 3.8.1 and ONNX Runtime 1.21.0.
+The deployed game does not include or run the synthesis model or these packages.
+
+No custom voice clone, paid API, subscription, account, telemetry or live
+generation service is used. Names, journal notes, GPS and private photos are
+never used as narration input. The game requests only its own static MP3 files.
+Device-voice fallback, when available, selects a local English device voice and
+is explicitly labeled. Offline Bella audio is a separate, optional download.
+
+Technical audio validation is distinct from auditory review. The selected
+audition was approved by the user. Game clips have not been claimed to have
+received a listening or transcription review. Pronunciation and physical
+iPhone playback should be checked on the target device.

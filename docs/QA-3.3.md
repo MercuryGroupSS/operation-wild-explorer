@@ -39,4 +39,15 @@ Real iPhone/Safari headings, native permission UI, magnetic accuracy, installed 
 - [Chrome absolute versus relative orientation](https://developer.chrome.com/blog/device-orientation-changes/)
 - [W3C Screen Orientation](https://www.w3.org/TR/screen-orientation/)
 
-Final map/crystal and browser evidence is recorded after integration below.
+## Integrated verification and browser evidence
+
+- 100 unit tests, 46 app-runtime groups, 5 Bella/app groups, 9 engine groups (193,037 assertions), and 7 service-worker groups pass. Narration additionally covers all 478 fixed readQuest paths and verifies 299 MP3 files by size, SHA-256, decode, finite samples, non-silence and clipping checks.
+- Cloud Chromium on the actual Deploy Preview exercised the live app in true 320×740, 390×844 and 844×390 iframe viewports, plus doubled computed text. The browser ignored requested popup dimensions, so no phone-device emulation claim is made. No horizontal overflow in the checked home, compass, map, reward, night and gear sheets; large-text map and story-tent layouts remained readable.
+- Observed steady orange lantern effect, on/off restoration of the night palette, persistent glow after reload and mode changes, and unchanged six-player synthetic roster. Quantitative minimum body/helper contrast across the full background gradient: 9.04/6.71 at 20%, 7.77/5.77 at 60%, 7.03/5.22 at 100%.
+- Compass manual turn changed 0° N to 45° NE with the practice label. With no genuine browser sensor, seven-second timeout returned an explicit unavailable explanation and usable practice dial. No actual heading was claimed. A rapid purchase double-tap exposed click-through to Enable; a 600ms fresh-sheet permission guard was added with a regression test.
+- Opened locked/current/earned map nodes, followed current node to quest, completed all three discoveries, double-clicked claim, and verified exactly +60 XP and +1 crystal. Reload preserved that progress, the private synthetic discovery note and earned marker; locked inspection changed no rewards.
+- Crystal SVG has a running six-second float; switching Animations off removes the CSS animation. Optional sound setting and volume controls are reachable. Audio lifecycle/envelopes are automated-tested; acoustic quality is not inferred from screenshots.
+- Bought a compass from 12 synthetic crystals with a double-click: wallet became 10, one ownership entry. Existing-item activity playback never charges additional crystals or grants XP.
+- No real family data, physical device or outdoor navigation was used. Native iPhone compass, Safari media unlock, installed Home Screen update, and physical sound playback remain explicit device-test limits.
+
+See `QUEST-MAGIC-QA.md` and narration documentation for focused implementation/test details. Final Bella browser playback checks are recorded after preview integration.

@@ -12,6 +12,9 @@ Buy crystal gear once, then use it whenever you like. Choose **Use our gear** ab
 - The **Star compass** opens an interactive practice dial. **Enable phone compass** uses a genuine device reading only when supported and permitted. Hold the phone flat, face up and in portrait. Unsupported or denied sensors leave the explicitly labeled practice dial available. This is a direction-learning toy, never a route or safety tool.
 - The **Firefly lantern** and **Pumpkin lantern** give the game screen a steady orange glow. Adjust the strength, keep playing with it on, or choose **Turn glow off**. This does not control the hardware flashlight or device brightness.
 - Capes dress the team and include hand-shape games. The fox, bat, bunting, tent and flag each have repeatable little activities. Owned items never charge again, and gear play does not inflate rewards.
+- The **Map** tab is a fantasy treasure route with current, earned and locked discoveries, and an X marking the finale. Day/night adventures have five stops; the original hunt has all ten. It is never a real walking map.
+- Faceted crystals float and glint as discoveries accumulate. Optional soft chimes have a volume control; animation and sound can be turned off in Grown-up settings.
+- **Bella read-aloud** uses the approved gentle local Kokoro voice (0.9 speed, −2 dB). Tap the speaker to play or stop. An optional **26.6 MB** voice pack enables offline Bella; the ordinary adventure download stays small. No runtime voice service or private-text upload.
 - All 3.2.0 progress, extra players, costumes, stories and crystal purchases stay intact. Lantern preferences are saved on-device; compass readings and permissions are not saved or uploaded.
 - See `docs/QA-3.3.md` for verification and physical-device limits.
 
@@ -57,9 +60,10 @@ Run:
 ```
 node scripts/check.mjs
 node scripts/check-hunt.mjs
-node --test scripts/engine.test.cjs scripts/postcards.test.cjs scripts/night.test.cjs scripts/gear.test.cjs
+node --test scripts/engine.test.cjs scripts/postcards.test.cjs scripts/night.test.cjs scripts/gear.test.cjs scripts/quest-magic.test.cjs scripts/narration.test.cjs
 node scripts/qa-engine.mjs
 node scripts/qa-runtime.mjs
+node scripts/narration-app.test.mjs
 node scripts/qa-worker.mjs
 ```
 
@@ -71,7 +75,7 @@ The application keeps the original `wildExplorerSaveV2` and `wildExplorerSave` k
 
 Progress is stored only in this browser/device. Other open game windows refresh when progress changes; an action from an outdated window is cancelled so it cannot replace the newer adventure. The same HTTPS origin is required to retain access; previews have separate storage. JSON backups contain text, progress and photo references, not photo pixels. Optional JPEG/PNG/WebP selections are resized and re-encoded locally, removing source metadata, then stored in IndexedDB. Photos are never sent to Netlify. Download individual HTML postcards to retain their embedded photos. Clearing site data, browser eviction or changing browsers can remove local data. Photos from another browser's backup need to be added again.
 
-GPS is opt-in, one-shot and not persisted or uploaded. No camera or microphone APIs, remote scripts, analytics, advertising, accounts or recurring AI calls are used. Read-aloud depends on available browser/device voices and may be unavailable offline.
+GPS is opt-in, one-shot and not persisted or uploaded. No camera or microphone APIs, remote scripts, analytics, advertising, accounts or recurring AI calls are used. Bella recordings play from this site or the optional downloaded voice pack. If a recording is unavailable, the app clearly labels the local device-voice fallback; device voices may be unavailable offline.
 
 ## Offline and updates
 

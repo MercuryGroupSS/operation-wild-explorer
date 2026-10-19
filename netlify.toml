@@ -1,5 +1,5 @@
 # Link this repository to the EXISTING operation-wild-explorer Netlify project.
 # Repository root is the base directory. Only public/ is served to visitors.
 [build]
-  command = "node scripts/check.mjs && node scripts/check-hunt.mjs && node --test scripts/engine.test.cjs scripts/postcards.test.cjs scripts/night.test.cjs scripts/gear.test.cjs scripts/quest-magic.test.cjs && node scripts/qa-engine.mjs && node scripts/qa-runtime.mjs && node scripts/qa-worker.mjs"
+  command = "node scripts/check.mjs && node scripts/check-hunt.mjs && node --test scripts/engine.test.cjs scripts/postcards.test.cjs scripts/night.test.cjs scripts/gear.test.cjs scripts/quest-magic.test.cjs scripts/narration.test.cjs && node scripts/qa-engine.mjs && node scripts/qa-runtime.mjs && node scripts/narration-app.test.mjs && node scripts/qa-worker.mjs"
   publish = "public"
