@@ -1,6 +1,6 @@
 # 3.3.0 playable gear and treasure-quest presentation QA
 
-Date: 2026-10-18. Synthetic fixtures only. No private family saves are bundled.
+Dates: 2026-10-18–19. Synthetic fixtures only. No private family saves are bundled.
 
 ## Purchased gear
 
@@ -50,4 +50,14 @@ Real iPhone/Safari headings, native permission UI, magnetic accuracy, installed 
 - Bought a compass from 12 synthetic crystals with a double-click: wallet became 10, one ownership entry. Existing-item activity playback never charges additional crystals or grants XP.
 - No real family data, physical device or outdoor navigation was used. Native iPhone compass, Safari media unlock, installed Home Screen update, and physical sound playback remain explicit device-test limits.
 
-See `QUEST-MAGIC-QA.md` and narration documentation for focused implementation/test details. Final Bella browser playback checks are recorded after preview integration.
+See `QUEST-MAGIC-QA.md` and narration documentation for focused implementation/test details. The final integrated Bella browser checks are recorded below.
+
+## Final integrated preview
+
+- Preview commit `dc121bb5ee542defa8c5c07780ceb2cc76df8d61` passed the full Netlify build.
+- Cloud Chromium exercised Bella tap-to-read, tap-to-stop and navigation cancellation in the actual 320px app. The Bella label remained active beyond the unavailable timeout without switching to device voice. No physical speaker or acoustic-quality claim is made.
+- The visible optional pack size is 26.6 MB. Pause stopped a real download at 79/299 clips, and Resume continued from the cached clips. The narrow settings sheet had no horizontal overflow.
+- Temporary synthetic-fixture QA pages are removed from the final production tree.
+- A complete Bella reading returned naturally to the idle speaker control. The real optional download completed with all 299 clips present and reported ready after reopening Settings. Network-disconnected playback on a physical phone was not tested.
+- All 299 preview MP3s and 13 deployed application/license files matched local bytes exactly (26,965,659 bytes checked). A byte-range request returned HTTP 206 and the correct first 100 bytes.
+- Re-tested the rapid purchase-confirmation double-tap in the integrated preview: one compass, 12 → 10 crystals, practice label intact, and no automatic phone-compass enable action.
